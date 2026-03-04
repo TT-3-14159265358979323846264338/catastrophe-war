@@ -9,14 +9,14 @@ import java.util.stream.Stream;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
 import com.example.defaultdata.Core;
 import com.example.defaultdata.other.OtherData;
 
-@Component
+@Controller
 public class TopPage extends Timer{
 	private final SimpMessagingTemplate messaging;
 	private final FallMotion[] fallMotion;
@@ -76,7 +76,7 @@ public class TopPage extends Timer{
 		return mainTimer.isEnd()? task.apply(finalMotion[number]): task.apply(fallMotion[number]);
 	}
 	
-	@MessageMapping("/app/requestImages")
+	@MessageMapping("/requestImages")
 	void sendImage() {
 		messaging.convertAndSend("/topic/topImage", createImageLinkList());
 	}
