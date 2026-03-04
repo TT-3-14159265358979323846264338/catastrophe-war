@@ -9,14 +9,14 @@ class FallMotion implements CorePosition{
 	private ScheduledFuture<?> fallFuture;
 	private double angle;
 	private final int x;
-	private int y = -100;
+	private int y = -300;
 	private boolean canStart;
-	private final int MAX_X = 400;
+	private final int MAX_X = 1050;
 	private final double STEP_SIZE = 100.0;
 	private final int MAX_ANGLE = (int) (Math.PI * 2 * STEP_SIZE);
 	private final double ANGLE_CHANGE = 0.1;
 	private final int COODINATE_CHANGE = 10;
-	private final int FINAL_COODINATE = 450;
+	private final int FINAL_COODINATE = 800;
 	private final int DELAY = 20;
 	
 	FallMotion(){

@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,21 +19,21 @@ import com.example.defaultdata.other.OtherData;
 
 @Controller
 public class TopPage extends Timer{
-	private final SimpMessagingTemplate messaging;
+	@Autowired
+	private SimpMessagingTemplate messaging;
+	
 	private final FallMotion[] fallMotion;
 	private final FinalMotion[] finalMotion;
 	private final MainTimer mainTimer;
 	private final List<Integer> randamList;
 	private final int NUMBER = 20;
 	
-	TopPage(ScheduledExecutorService scheduler, SimpMessagingTemplate messaging){
+	TopPage(ScheduledExecutorService scheduler){
 		super(scheduler);
-		this.messaging = messaging;
 		fallMotion = createFallMotion();
 		finalMotion = createFinalMotion();
 		mainTimer = createMainTimer(scheduler);
 		randamList = createRandamList();
-		timerStart(this::repaint);
 	}
 	
 	FallMotion[] createFallMotion(){
@@ -91,5 +92,11 @@ public class TopPage extends Timer{
 	
 	Stream<String> createCoreLinkList(){
 		return ImageLink.normalCoreLinkStream();
+	}
+	
+	@MessageMapping("/timerStart")
+	void timerStart() {
+		mainTimer.timerStart();
+		timerStart(this::repaint);
 	}
 }

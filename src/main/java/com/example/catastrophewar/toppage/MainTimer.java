@@ -17,6 +17,9 @@ class MainTimer {
 		this.scheduler = scheduler;
 		this.fallMotion = fallMotion;
 		this.finalMotion = finalMotion;
+	}
+	
+	void timerStart() {
 		mainFuture = createEffectTimer();
 	}
 	
