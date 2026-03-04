@@ -1,0 +1,296 @@
+package com.example.defaultdata.stage;
+
+import java.awt.Point;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
+import com.example.defaultdata.Difficulty;
+import com.example.defaultdata.Enemy;
+import com.example.defaultdata.Facility;
+import com.example.catastrophewar.battle.BattleEnemy;
+import com.example.catastrophewar.battle.BattleFacility;
+import com.example.catastrophewar.battle.BattleUnit;
+import com.example.catastrophewar.battle.GameData;
+import com.example.catastrophewar.battle.GameTimer;
+import com.example.savedata.SaveGameProgress;
+
+public class No0004Stage4 extends StageData {
+	@Override
+	public String getName() {
+		return "stage 4";
+	}
+
+	@Override
+	public boolean canActivate(SaveGameProgress saveGameProgress) {
+		return hasClearedMerit(saveGameProgress, 2, 2, 1);
+	}
+
+	@Override
+	public String getImageName() {
+		return "/image/field/stage 2.png";
+	}
+
+	@Override
+	public List<Facility> getFacility() {
+		return Arrays.asList(Facility.CASTLE, Facility.FRONT_GATE, Facility.SIDE_GATE, Facility.SIDE_GATE);
+	}
+
+	@Override
+	public List<Point> getFacilityPoint() {
+		return Arrays.asList(new Point(457, 70), new Point(457, 260), new Point(192, 76), new Point(723, 76));
+	}
+
+	@Override
+	public List<List<List<Double>>> getPlacementPoint() {
+		double size = 29.5;
+		double centerX = 483;
+		double centerY = 265;
+		return Arrays.asList(
+				Arrays.asList(Arrays.asList(centerX - size * 7, centerY - size * 5),
+						Arrays.asList(centerX - size * 5, centerY - size * 5),
+						Arrays.asList(centerX + size * 5, centerY - size * 5),
+						Arrays.asList(centerX + size * 7, centerY - size * 5),
+						
+						Arrays.asList(centerX - size, centerY - size),
+						Arrays.asList(centerX + size, centerY - size)),
+				Arrays.asList(Arrays.asList(centerX - size * 9, centerY - size * 8),
+						Arrays.asList(centerX + size * 9, centerY - size * 8),
+						
+						Arrays.asList(centerX - size * 6, centerY - size * 7),
+						Arrays.asList(centerX - size * 4, centerY - size * 7),
+						Arrays.asList(centerX + size * 6, centerY - size * 7),
+						Arrays.asList(centerX + size * 4, centerY - size * 7),
+						
+						Arrays.asList(centerX - size * 9, centerY - size * 3),
+						Arrays.asList(centerX - size * 5, centerY - size * 3),
+						Arrays.asList(centerX - size * 3, centerY - size * 3),
+						Arrays.asList(centerX + size * 9, centerY - size * 3),
+						Arrays.asList(centerX + size * 5, centerY - size * 3),
+						Arrays.asList(centerX + size * 3, centerY - size * 3),
+						
+						Arrays.asList(centerX - size * 9, centerY - size),
+						Arrays.asList(centerX + size * 9, centerY - size),
+						
+						Arrays.asList(centerX - size * 7, centerY + size),
+						Arrays.asList(centerX - size * 5, centerY + size),
+						Arrays.asList(centerX - size * 3, centerY + size),
+						Arrays.asList(centerX + size * 7, centerY + size),
+						Arrays.asList(centerX + size * 5, centerY + size),
+						Arrays.asList(centerX + size * 3, centerY + size)),
+				Arrays.asList(Arrays.asList(centerX - size * 3, centerY - size * 5),
+						Arrays.asList(centerX + size * 3, centerY - size * 5),
+						
+						Arrays.asList(centerX - size, centerY - size * 3),
+						Arrays.asList(centerX + size, centerY - size * 3)
+						));
+	}
+
+	@Override
+	public List<List<Boolean>> canUsePlacement(GameTimer gameTimer, BattleEnemy[] enemyData) {
+		return Arrays.asList(
+				Arrays.asList(true,
+						true,
+						true,
+						true,
+						
+						true,
+						true),
+				Arrays.asList(true,
+						true,
+						
+						true,
+						true,
+						true,
+						true,
+						
+						true,
+						true,
+						true,
+						true,
+						true,
+						true,
+						
+						true,
+						true,
+						
+						true,
+						true,
+						true,
+						true,
+						true,
+						true),
+				Arrays.asList(true,
+						true,
+						
+						true,
+						true
+						));
+	}
+	
+	@Override
+	public int getCost() {
+		return 50;
+	}
+	
+	@Override
+	public List<Integer> getMorale(){
+		return Arrays.asList(0, 0);
+	}
+
+	@Override
+	public String getClearCondition() {
+		return "全ての敵を撃破する";
+	}
+
+	@Override
+	public boolean canClear(BattleUnit[] unitMainData, BattleUnit[] unitLeftData, BattleFacility[] facilityData, BattleEnemy[] enemyData, GameData gameData) {
+		return canAllDefeat(enemyData);
+	}
+
+	@Override
+	public String getGameOverCondition() {
+		return "本丸を制圧される";
+	}
+
+	@Override
+	public boolean existsGameOver(BattleUnit[] unitMainData, BattleUnit[] unitLeftData, BattleFacility[] facilityData, BattleEnemy[] enemyData, GameData gameData) {
+		return canAllBreak(facilityData[0]);
+	}
+
+	@Override
+	public List<String> getMerit() {
+		return Arrays.asList("ステージをクリアする(normal)",
+				"総覚醒回数が5回以上(normal)",
+				"ステージをクリアする(hard)",
+				"ユニットが一度も倒されない(hard)");
+	}
+
+	@Override
+	public List<Boolean> canClearMerit(BattleUnit[] unitMainData, BattleUnit[] unitLeftData, BattleFacility[] facilityData, BattleEnemy[] enemyData, GameData gameData, Difficulty nowDifficulty) {
+		return Arrays.asList(canClearStage(Difficulty.NORMAL, nowDifficulty),
+				existsOverAwakening(Difficulty.NORMAL, nowDifficulty, 5, unitMainData),
+				canClearStage(Difficulty.HARD, nowDifficulty),
+				canNotDefeat(Difficulty.HARD, nowDifficulty, unitMainData, unitLeftData));
+	}
+
+	@Override
+	public List<String> getReward() {
+		return Arrays.asList("メダル100",
+				"メダル200",
+				"メダル300",
+				"メダル500");
+	}
+
+	@Override
+	protected List<Method> giveReward() {
+		try {
+			return Arrays.asList(getClass().getMethod("give100Medal"),
+					getClass().getMethod("give200Medal"),
+					getClass().getMethod("give300Medal"),
+					getClass().getMethod("give500Medal"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Arrays.asList();
+		}
+	}
+	
+	@Override
+	public List<List<Integer>> getEnemy() {
+		return Arrays.asList(
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 2, 500, 0, 0),
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 6, 500, 0, 0),
+				
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 0, 1000, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 1, 1500, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 4, 6000, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 5, 6500, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 0, 11000, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 1, 11500, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 4, 16000, 0, 0),
+				Arrays.asList(Enemy.BLUE_SLIME.getId(), 5, 16500, 0, 0),
+				
+				Arrays.asList(Enemy.GREEN_SLIME.getId(), 0, 35000, 0, 0),
+				Arrays.asList(Enemy.GREEN_SLIME.getId(), 4, 35000, 0, 0),
+				Arrays.asList(Enemy.GREEN_SLIME.getId(), 1, 40000, 0, 0),
+				Arrays.asList(Enemy.GREEN_SLIME.getId(), 5, 40000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 45000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 45000, 0, 0),
+				
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 2, 55000, 0, 0),
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 6, 55000, 0, 0),
+				
+				Arrays.asList(Enemy.RED_SLIME.getId(), 0, 55000, 0, 0),
+				Arrays.asList(Enemy.RED_SLIME.getId(), 4, 55000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 65000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 65000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 70000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 70000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 75000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 75000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 80000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 80000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 0, 85000, 0, 0),
+				Arrays.asList(Enemy.YELLOW_SLIME.getId(), 4, 85000, 0, 0),
+				
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 1, 90000, 0, 0),
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 2, 90000, 0, 0),
+				Arrays.asList(Enemy.HIGH_SLIME.getId(), 6, 90000, 0, 0)
+				);
+	}
+
+	@Override
+	public List<Integer> getDisplayOrder() {
+		return Arrays.asList(Enemy.BLUE_SLIME.getId(), Enemy.RED_SLIME.getId(), Enemy.GREEN_SLIME.getId(), Enemy.YELLOW_SLIME.getId(), Enemy.HIGH_SLIME.getId());
+	}
+
+	@Override
+	public List<List<List<Integer>>> getRoute() {
+		return Arrays.asList(
+				//route0: 左下から中央城門へ1
+				Arrays.asList(
+						Arrays.asList(-50, 400, 0, 0, 0),
+						Arrays.asList(460, 0, 270, 0, 0)
+						),
+				//route1: 左下から中央城門へ2
+				Arrays.asList(
+						Arrays.asList(-50, 420, 0, 0, 0),
+						Arrays.asList(450, 0, 270, 0, 0)
+						),
+				//route2: 左下から左城門へ1
+				Arrays.asList(
+						Arrays.asList(-50, 400, 0, 0, 0),
+						Arrays.asList(80, 0, 270, 0, 0),
+						Arrays.asList(0, 70, 0, 0, 0)
+						),
+				//route3: 左下から左城門へ2
+				Arrays.asList(
+						Arrays.asList(-50, 420, 0, 0, 0),
+						Arrays.asList(60, 0, 270, 0, 0),
+						Arrays.asList(0, 80, 0, 0, 0)
+						),
+				//route4: 右下から中央城門へ1
+				Arrays.asList(
+						Arrays.asList(835, 510, 270, 0, 0),
+						Arrays.asList(0, 400, 180, 0, 0),
+						Arrays.asList(450, 0, 270, 0, 0)
+						),
+				//route5: 右下から中央城門へ2
+				Arrays.asList(
+						Arrays.asList(855, 510, 270, 0, 0),
+						Arrays.asList(0, 420, 180, 0, 0),
+						Arrays.asList(460, 0, 270, 0, 0)
+						),
+				//route6: 右下から右城門へ1
+				Arrays.asList(
+						Arrays.asList(835, 510, 270, 0, 0),
+						Arrays.asList(0, 70, 180, 0, 0)
+						),
+				//route7: 右下から右城門へ2
+				Arrays.asList(
+						Arrays.asList(855, 510, 270, 0, 0),
+						Arrays.asList(0, 80, 180, 0, 0)
+						)
+				);
+	}
+}

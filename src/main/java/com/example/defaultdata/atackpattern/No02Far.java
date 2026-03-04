@@ -1,0 +1,19 @@
+package com.example.defaultdata.atackpattern;
+
+import java.util.Comparator;
+import java.util.List;
+
+import com.example.catastrophewar.battle.BattleData;
+
+public class No02Far extends AtackPatternData{
+
+	@Override
+	public String getExplanation() {
+		return "最遠";
+	}
+
+	@Override
+	public List<BattleData> getTarget() {
+		return candidate.stream().filter(this::activeCheck).filter(this::rangeCheck).sorted(Comparator.comparing(this::distanceCalculate).reversed()).limit(myself.getAtackNumber()).toList();
+	}
+}

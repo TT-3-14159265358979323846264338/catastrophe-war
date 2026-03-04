@@ -1,0 +1,83 @@
+package com.example.defaultdata.core;
+
+import java.util.List;
+
+public abstract class CoreData {
+	/**
+	 * コアの名称。
+	 * @return コアの名称を返却する。<br>
+	 * 			最大字数は全角で11字。
+	 */
+	public abstract String getName();
+	
+	/**
+	 * コアの説明。<br>
+	 * 所有するバフ・デバフを記載する。
+	 * @return コアの説明を返却する。<br>
+	 * 			最大字数は全角で39字。
+	 */
+	public abstract String getExplanation();
+	
+	/**
+	 * 通常時のコア画像ファイル名。
+	 * @return コアを単独で表示する際の画像ファイル名を返却する。
+	 */
+	public abstract String getImageName();
+	
+	/**
+	 * 攻撃時のコア画像ファイル名。
+	 * @return 武器と共に表示する際のコア画像ファイル名を返却する。
+	 */
+	public abstract String getActionImageName();
+	
+	/**
+	 * コアのレアリティ。
+	 * @return コアのレアリティを返却する。1以上の値をとり、一定の値まで到達したら{@link defendthecastle.screendisplay.SortPanel SortPanel}の表示位置を再調整すること。
+	 */
+	public abstract int getRarity();
+	
+	/**
+	 * 装備した武器のステータス上昇率(倍率上昇)。
+	 * @return {@link defaultdata.CoreAtack CoreAtack}の順にステータス上昇率をリスト化。
+	 */
+	public abstract List<Double> getWeaponStatus();
+	
+	/**
+	 * ユニットのステータス上昇率(倍率上昇)。
+	 * @return {@link defaultdata.CoreUnit CoreUnit}の順にステータス上昇率をリスト化。
+	 */
+	public abstract List<Double> getUnitStatus();
+	
+	/**
+	 * ダメージカット率上昇量(加算上昇)。
+	 * @return {@link defaultdata.Element Element}の順にステータス上昇量をリスト化。
+	 */
+	public abstract List<Integer> getCutStatus();
+	
+	/**
+	 * 発生させるバフ情報。<br>
+	 * バフ情報を入力した複数のListを返却する。
+	 * @return List(timing, target, range, status, culculate, effect, interval, max, duration, recast, cost)<br>
+	 * 			<br>
+	 * 			timing - 発生させるタイミングコード。{@link defendthecastle.battle.InternalData.Buff Buff}の発生タイミングコードで指定。Coreでは{@link defendthecastle.battle.InternalData.Buff#HIT HIT}, {@link defendthecastle.battle.InternalData.Buff#KILL KILL}使用不可。<br>
+	 * 			target - 与える対象コード。{@link defendthecastle.battle.InternalData.Buff Buff}の発生対象コードで指定。<br>
+	 * 			range - 与える範囲コード。{@link defendthecastle.battle.InternalData.Buff Buff}の効果範囲コードで指定。timingが{@link defendthecastle.battle.InternalData.Buff#DEFEAT DEFEAT}なら{@link defendthecastle.battle.InternalData.Buff#ALL ALL}, {@link battle.TARGET TARGET}のみ有効<br>
+	 * 			status - 効果のあるステータスコード。{@link defendthecastle.battle.InternalData.Buff Buff}の対象ステータスコードで指定。{@link defendthecastle.battle.InternalData.Buff#MORALE MORALE}, {@link defendthecastle.battle.InternalData.Buff#GAME_COST GAME_COST} を指定した場合、targetを{@link defendthecastle.battle.InternalData.Buff#GAME GAME}に指定する必要がある。<br>
+	 * 			culculate - 最終ステータスへの計算方法コード。{@link defendthecastle.battle.InternalData.Buff Buff}の加減乗除コードで指定。targetが{@link defendthecastle.battle.InternalData.Buff#GAME GAME}であれば、{@link defendthecastle.battle.InternalData.Buff#MULTIPLICATION MULTIPLICATION}, {@link defendthecastle.battle.InternalData.Buff#DIVISION DIVISION}使用不可。<br>
+	 * 			effect - 1回あたりの効果量。intervalを指定した際でも最大値ではないので注意。<br>
+	 * 			interval - 効果の発生間隔[s]。未使用なら{@link defendthecastle.battle.InternalData.Buff#NONE Buff.NONE}を指定。<br>
+	 * 			max - intervalを指定した時の最大値。未使用なら{@link defendthecastle.battle.InternalData.Buff#NONE Buff.NONE}を指定。<br>
+	 * 			duration - 効果持続時間[s]。未使用なら{@link defendthecastle.battle.InternalData.Buff#NONE Buff.NONE}を指定。<br>
+	 * 			recast - スキルの再使用時間[s]。timingが{@link defendthecastle.battle.InternalData.Buff#SKILL SKILL}の時のみ指定することがある。未使用なら{@link defendthecastle.battle.InternalData.Buff#NONE Buff.NONE}を指定。<br>
+	 * 			cost - スキルに使用するコスト。未使用なら{@link defendthecastle.battle.InternalData.Buff#NONE Buff.NONE}を指定。<br>
+	 * 			<br>
+	 * 			バフを保有していない場合、空のArrays.asList()を返却する。
+	 */
+	public abstract List<List<Double>> getBuff();
+	
+	/**
+	 * スキルのアイコン画像ファイル名。
+	 * @return スキルを保有する場合、そのアイコン画像名を返却する。スキルを保有しないときはnullを指定する。
+	 */
+	public abstract String getSkillImageName();
+}
