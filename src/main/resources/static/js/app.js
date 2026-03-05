@@ -4,9 +4,12 @@ const socket = new SockJS('/ws-game');
 const stompClient = Stomp.over(socket);
 const titleImage = new Image();
 const coreImages = [];
+const TITLE_X = 80;
+const TITLE_Y = 100;
 
 stompClient.connect({}, () => {
-	stompClient.subscribe("/topic/topImage", (load) => {
+	stompClient.send("/app/top/images", {}, {});
+	stompClient.subscribe("/topic/top/images", (load) => {
 		const list = JSON.parse(load.body);
 		titleImage.src = list[0];
 		for(let i = 1; i < list.length; i++){
@@ -14,16 +17,13 @@ stompClient.connect({}, () => {
 			image.src = list[i];
 			coreImages.push(image);
 		}
-		stompClient.send("/app/timerStart", {}, {});
+		stompClient.send("/app/top/timer/start", {}, {});
 	});
-	stompClient.subscribe('/topic/topPage', (load) => drawImage(JSON.parse(load.body).state));
-	stompClient.send("/app/requestImages", {}, {});
+	stompClient.subscribe('/topic/top/repaint', (load) => drawImage(JSON.parse(load.body)));
 });
 
-function drawImage(state) {
-	if(coreImages.length === 0){
-		return;
-	}
+function drawImage(data) {
+	const {state, isEnded} = data;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	state.forEach(i => {
 		const image = coreImages[i.id];
@@ -35,6 +35,9 @@ function drawImage(state) {
 		ctx.drawImage(image, -width, -height);
 		ctx.restore();
 	});
+	if(isEnded){
+		ctx.drawImage(titleImage, TITLE_X, TITLE_Y);
+	}
 }
 
 window.addEventListener('pagehide', _ => {
