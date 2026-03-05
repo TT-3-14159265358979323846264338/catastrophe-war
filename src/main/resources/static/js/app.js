@@ -45,10 +45,10 @@ function draw(coreState){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	const gachaButton = document.getElementById("gacha");
-	const recycleButton = document.getElementById("recycle");
-	const compositionButton = document.getElementById("composition");
-	const stageButton = document.getElementById("stage");
+	const gachaButton = document.getElementById("go-to-gacha-from-toppage");
+	const recycleButton = document.getElementById("go-to-recycle-from-toppage");
+	const compositionButton = document.getElementById("go-to-composition-from-toppage");
+	const stageButton = document.getElementById("go-to-stage-from-toppage");
 	gachaButton.addEventListener('click', gachaButtonAction);
 	recycleButton.addEventListener('click', recycleButtonAction);
 	compositionButton.addEventListener('click', compositionButtonAction);
