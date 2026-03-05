@@ -8,7 +8,7 @@ class FinalMotion implements CorePosition{
 	private ScheduledFuture<?> finalFuture;
 	private final int number;
 	private final int x;
-	private int y = 380;
+	private int y = 340;
 	private int count;
 	private final int MAX_COUNT = 10;
 	private final int COLUMN = 5;

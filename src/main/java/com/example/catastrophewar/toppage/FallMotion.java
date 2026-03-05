@@ -16,7 +16,7 @@ class FallMotion implements CorePosition{
 	private final int MAX_ANGLE = (int) (Math.PI * 2 * STEP_SIZE);
 	private final double ANGLE_CHANGE = 0.1;
 	private final int COODINATE_CHANGE = 10;
-	private final int FINAL_COODINATE = 800;
+	private final int FINAL_COODINATE = 600;
 	private final int DELAY = 20;
 	
 	FallMotion(){
