@@ -10,7 +10,7 @@ class FallMotion implements CorePosition{
 	private double angle;
 	private final int x;
 	private int y = -300;
-	private boolean canStart;
+	private boolean isRunning;
 	private final int MAX_X = 1050;
 	private final double STEP_SIZE = 100.0;
 	private final int MAX_ANGLE = (int) (Math.PI * 2 * STEP_SIZE);
@@ -38,7 +38,7 @@ class FallMotion implements CorePosition{
 	
 	void fallTimerStart(ScheduledExecutorService scheduler) {
 		fallFuture = createFallFuture(scheduler);
-		canStart = true;
+		isRunning = true;
 	}
 	
 	ScheduledFuture<?> createFallFuture(ScheduledExecutorService scheduler){
@@ -53,14 +53,14 @@ class FallMotion implements CorePosition{
 	
 	void timerStop() {
 		if(FINAL_COODINATE < y) {
-			canStart = false;
+			isRunning = false;
 			fallFuture.cancel(true);
 			fallFuture = null;
 		}
 	}
 	
-	boolean canStart() {
-		return canStart;
+	boolean isRunning() {
+		return isRunning;
 	}
 	
 	@Override

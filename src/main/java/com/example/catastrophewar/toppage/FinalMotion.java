@@ -43,6 +43,10 @@ class FinalMotion implements CorePosition{
 		}
 	}
 	
+	boolean isEnded() {
+		return finalFuture == null;
+	}
+	
 	@Override
 	public double getAngle() {
 		return 0;

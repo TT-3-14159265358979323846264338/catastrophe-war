@@ -45,7 +45,7 @@ public class TopPage extends Timer{
 	}
 	
 	MainTimer createMainTimer(ScheduledExecutorService scheduler){
-		return new MainTimer(scheduler, fallMotion, finalMotion);
+		return new MainTimer(this, scheduler, fallMotion, finalMotion);
 	}
 	
 	List<Integer> createRandamList(){
@@ -57,29 +57,9 @@ public class TopPage extends Timer{
 		return new Random();
 	}
 	
-	void repaint() {
-		messaging.convertAndSend("/topic/topPage", createState());
-	}
-	
-	State createState(){
-		return new State(IntStream.range(0, NUMBER).mapToObj(this::createCoreState).toList());
-	}
-	
-	record State(List<CoreState> state) {}
-	
-	CoreState createCoreState(int number) {
-		return new CoreState(randamList.get(number), getData(number, CorePosition::getX), getData(number, CorePosition::getY), getData(number, CorePosition::getAngle));
-	}
-	
-	record CoreState(int id, int x, int y, double angle) {}
-	
-	<T> T getData(int number, Function<CorePosition, T> task) {
-		return mainTimer.isEnd()? task.apply(finalMotion[number]): task.apply(fallMotion[number]);
-	}
-	
-	@MessageMapping("/requestImages")
+	@MessageMapping("/top/images")
 	void sendImage() {
-		messaging.convertAndSend("/topic/topImage", createImageLinkList());
+		messaging.convertAndSend("/topic/top/images", createImageLinkList());
 	}
 	
 	List<String> createImageLinkList(){
@@ -94,9 +74,33 @@ public class TopPage extends Timer{
 		return ImageLink.normalCoreLinkStream();
 	}
 	
-	@MessageMapping("/timerStart")
+	@MessageMapping("/top/timer/start")
 	void timerStart() {
 		mainTimer.timerStart();
 		timerStart(this::repaint);
+	}
+	
+	void repaint() {
+		messaging.convertAndSend("/topic/top/repaint", createState());
+	}
+	
+	State createState(){
+		return new State(IntStream.range(0, NUMBER).mapToObj(this::createCoreState).toList(), mainTimer.isEndedFallMotion());
+	}
+	
+	record State(List<CoreState> state, boolean isEnded) {}
+	
+	CoreState createCoreState(int number) {
+		return new CoreState(randamList.get(number), getData(number, CorePosition::getX), getData(number, CorePosition::getY), getData(number, CorePosition::getAngle));
+	}
+	
+	record CoreState(int id, int x, int y, double angle) {}
+	
+	<T> T getData(int number, Function<CorePosition, T> task) {
+		return mainTimer.isEndedFallMotion()? task.apply(finalMotion[number]): task.apply(fallMotion[number]);
+	}
+	
+	void endTimer() {
+		timerStop();
 	}
 }
