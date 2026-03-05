@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Catastrophe War</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/index.css}">
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script th:src="@{/js/app.js}" defer></script>
@@ -14,12 +14,8 @@
 		<h1>Catastrophe War</h1>
 		<div>
 			<canvas id="mainCanvas" width="1235" height="600"></canvas>
-			<div class="button-arrangement">
-				<button id="gacha" type="button" >ガチャ</button>
-				<button id="recycle" type="button" >リサイクル</button>
-				<button id="composition" type="button">編成</button>
-				<button id="stage" type="button">ステージ選択</button>
-			</div>
+			<div th:replace="~{fragments/app :: topPage}"></div>
+			<div th:replace="~{fragments/gacha :: gachaPage}"></div>
 		</div>
 	</div>
 </body>
