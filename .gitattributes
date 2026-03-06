@@ -2,4 +2,4 @@
 *.css linguist-detectable=true
 *.js linguist-detectable=true
 
-src/main/java/com/example/defaultdata/* linguist-vendored
+src/main/java/com/example/defaultdata/** linguist-vendored
