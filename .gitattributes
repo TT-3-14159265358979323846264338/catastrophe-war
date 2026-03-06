@@ -1,0 +1,4 @@
+*.html linguist-detectable=true
+*.css linguist-detectable=true
+
+src/main/java/com/example/defaultdata/** linguist-vendored
