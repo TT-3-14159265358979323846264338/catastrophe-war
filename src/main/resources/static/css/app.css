@@ -1,6 +1,5 @@
-.canvas-container{
-	position: relative;
-	display: inline-block;
+.hidden{
+	display: none;
 }
 
 .toppage-item {

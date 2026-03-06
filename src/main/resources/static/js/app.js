@@ -1,17 +1,26 @@
+import {gacha} from './gacha.js';
+
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
-const socket = new SockJS('/ws-game');
-const stompClient = Stomp.over(socket);
+const stompClient = Stomp.over(new SockJS('/ws-game'));
+let inputSubscribe;
+let timerSubscribe;
+const topPage = document.querySelector('.toppage-item');
+const gachaPage = document.querySelector('.gacha-item');
 const titleImage = new Image();
 const coreImages = [];
 const TITLE_X = 80;
 const TITLE_Y = 40;
 
 stompClient.connect({}, () => {
+	inputSubscribe = stompClient.subscribe("/topic/top/images", initialize);
 	stompClient.send("/app/top/images", {}, {});
-	stompClient.subscribe("/topic/top/images", inputImage);
-	stompClient.subscribe('/topic/top/repaint', drawImage);
 });
+
+function initialize(data){
+	inputImage(data);
+	postProcessing();
+}
 
 function inputImage(data){
 	const imageList = JSON.parse(data.body);
@@ -21,6 +30,17 @@ function inputImage(data){
 		image.src = imageList[i];
 		coreImages.push(image);
 	}
+}
+
+function postProcessing(){
+	inputSubscribe.unsubscribe();
+	inputSubscribe = null;
+	repaintStart();
+}
+
+export function repaintStart(){
+	repaintStop();
+	timerSubscribe = stompClient.subscribe('/topic/top/repaint', drawImage);
 	stompClient.send("/app/top/timer/start", {}, {});
 }
 
@@ -56,7 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function gachaButtonAction(_){
-	
+	topPage.classList.add('hidden');
+	gachaPage.classList.remove('hidden');
+	gacha(stompClient);
+	repaintStop();
 }
 
 function recycleButtonAction(_){
@@ -69,6 +92,14 @@ function compositionButtonAction(_){
 
 function stageButtonAction(_){
 	
+}
+
+function repaintStop(){
+	if(!timerSubscribe){
+		return;
+	}
+	timerSubscribe.unsubscribe();
+	timerSubscribe = null;
 }
 
 window.addEventListener('pagehide', _ => {
