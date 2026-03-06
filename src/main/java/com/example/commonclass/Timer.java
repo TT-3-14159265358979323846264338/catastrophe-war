@@ -8,7 +8,7 @@ public abstract class Timer {
 	private final ScheduledExecutorService scheduler;
 	private ScheduledFuture<?> future;
 	
-	public Timer(ScheduledExecutorService scheduler) {
+	protected Timer(ScheduledExecutorService scheduler) {
 		this.scheduler = scheduler;
 	}
 	
@@ -16,7 +16,10 @@ public abstract class Timer {
 	 * 約60fpsで画面の更新を行う。
 	 * @param task - {@link org.springframework.messaging.simp.SimpMessagingTemplate SimpMessagingTemplate}でデータ送信を行うメソッド
 	 */
-	public void timerStart(Runnable task) {
+	protected void timerStart(Runnable task) {
+		if(isRunning()) {
+			return;
+		}
 		future = repaintFuture(task);
 	}
 	
@@ -27,10 +30,14 @@ public abstract class Timer {
 	/**
 	 * 起動中のタイマーがあれば停止する。
 	 */
-	public void timerStop() {
-		if(future != null) {
+	protected void timerStop() {
+		if(isRunning()) {
 			future.cancel(true);
 			future = null;
 		}
+	}
+	
+	protected boolean isRunning() {
+		return future != null;
 	}
 }

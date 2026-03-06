@@ -76,8 +76,11 @@ public class TopPage extends Timer{
 	
 	@MessageMapping("/top/timer/start")
 	void timerStart() {
-		mainTimer.timerStart();
+		if(isRunning()) {
+			return;
+		}
 		timerStart(this::repaint);
+		mainTimer.timerStart();
 	}
 	
 	void repaint() {
