@@ -1,4 +1,5 @@
 import {gacha} from './gacha.js';
+import {rotateDraw} from './editImage.js';
 
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
@@ -35,11 +36,11 @@ function inputImage(data){
 function postProcessing(){
 	inputSubscribe.unsubscribe();
 	inputSubscribe = null;
-	repaintStart();
+	topRepaintStart();
 }
 
-export function repaintStart(){
-	repaintStop();
+export function topRepaintStart(){
+	topRepaintStop();
 	timerSubscribe = stompClient.subscribe('/topic/top/repaint', drawImage);
 	stompClient.send("/app/top/timer/start", {}, {});
 }
@@ -55,13 +56,7 @@ function drawImage(data) {
 
 function draw(coreState){
 	const image = coreImages[coreState.id];
-	const width = image.width / 2
-	const height = image.height / 2;
-	ctx.save();
-	ctx.translate(coreState.x + width, coreState.y + height);
-	ctx.rotate(coreState.angle);
-	ctx.drawImage(image, -width, -height);
-	ctx.restore();
+	rotateDraw(ctx, image, coreState.x, coreState.y, coreState.angle);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -79,7 +74,7 @@ function gachaButtonAction(_){
 	topPage.classList.add('hidden');
 	gachaPage.classList.remove('hidden');
 	gacha(stompClient);
-	repaintStop();
+	topRepaintStop();
 }
 
 function recycleButtonAction(_){
@@ -94,7 +89,7 @@ function stageButtonAction(_){
 	
 }
 
-function repaintStop(){
+function topRepaintStop(){
 	if(!timerSubscribe){
 		return;
 	}
