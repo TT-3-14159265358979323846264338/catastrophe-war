@@ -1,52 +1,50 @@
 package com.example.catastrophewar.toppage;
 
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-class MainTimer {
+import com.example.commonclass.Timer;
+
+class MainTimer extends Timer{
 	private final TopPage topPage;
-	private final ScheduledExecutorService scheduler;
-	private ScheduledFuture<?> mainFuture;
 	private final FallMotion[] fallMotion;
 	private final FinalMotion[] finalMotion;
 	private int count;
 	private boolean isEndedFallMotion;
 	private final int DELAY = 300;
 	
-	MainTimer(TopPage topPage, ScheduledExecutorService scheduler, FallMotion[] fallMotion, FinalMotion[] finalMotion){
+	MainTimer(ScheduledExecutorService scheduler, TopPage topPage, FallMotion[] fallMotion, FinalMotion[] finalMotion){
+		super(scheduler);
 		this.topPage = topPage;
-		this.scheduler = scheduler;
 		this.fallMotion = fallMotion;
 		this.finalMotion = finalMotion;
 	}
 	
+	@Override
+	protected int interval() {
+		return DELAY;
+	}
+	
 	void timerStart() {
-		mainFuture = createEffectTimer();
+		timerStart(this::timerProcess);
 	}
 	
-	ScheduledFuture<?> createEffectTimer() {
-		return scheduler.scheduleAtFixedRate(this::effectTimerProcess, 0, DELAY, TimeUnit.MILLISECONDS);
-	}
-	
-	void effectTimerProcess() {
+	void timerProcess() {
 		if(isEndedFallMotion) {
-			if(Stream.of(finalMotion).anyMatch(FinalMotion::isEnded)) {
+			if(Stream.of(finalMotion).noneMatch(FinalMotion::isRunning)) {
 				topPage.endTimer();
-				mainFuture.cancel(true);
-				mainFuture = null;
+				timerStop();
 			}
 			return;
 		}
 		try {
-			fallMotion[count].fallTimerStart(scheduler);
+			fallMotion[count].timerStart();
 		}catch(Exception ignore) {
 			//これ以上新たに表示する画像がないので無視
 		}
 		count++;
 		if(Stream.of(fallMotion).noneMatch(FallMotion::isRunning)) {
-			Stream.of(finalMotion).forEach(i -> i.finalTimerStart(scheduler));
+			Stream.of(finalMotion).forEach(i -> i.timerStart());
 			isEndedFallMotion = true;
 		}
 	}

@@ -1,11 +1,10 @@
 package com.example.catastrophewar.toppage;
 
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-class FinalMotion implements CorePosition{
-	private ScheduledFuture<?> finalFuture;
+import com.example.commonclass.Timer;
+
+class FinalMotion extends Timer implements CorePosition{
 	private final int number;
 	private final int x;
 	private int y = 340;
@@ -17,34 +16,27 @@ class FinalMotion implements CorePosition{
 	private final int BASE_RISING = 10;
 	private final int DELAY = 50;
 	
-	FinalMotion(int number) {
+	FinalMotion(ScheduledExecutorService scheduler, int number) {
+		super(scheduler);
 		this.number = number;
 		x = CRRECTION_X + BASE_X * (number % COLUMN);
 	}
 	
-	void finalTimerStart(ScheduledExecutorService scheduler) {
-		finalFuture = createFinalFuture(scheduler);
+	@Override
+	protected int interval() {
+		return DELAY;
 	}
 	
-	ScheduledFuture<?> createFinalFuture(ScheduledExecutorService scheduler){
-		return scheduler.scheduleAtFixedRate(this::finalTimerProcess, 0, DELAY, TimeUnit.MILLISECONDS);
+	void timerStart() {
+		timerStart(this::timerProcess);
 	}
 	
-	void finalTimerProcess() {
+	void timerProcess() {
 		y -= BASE_RISING * (number / COLUMN);
 		count++;
-		timerStop();
-	}
-	
-	void timerStop() {
 		if(MAX_COUNT < count) {
-			finalFuture.cancel(true);
-			finalFuture = null;
+			timerStop();
 		}
-	}
-	
-	boolean isEnded() {
-		return finalFuture == null;
 	}
 	
 	@Override

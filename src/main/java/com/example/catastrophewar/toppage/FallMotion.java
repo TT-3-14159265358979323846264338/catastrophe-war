@@ -2,15 +2,13 @@ package com.example.catastrophewar.toppage;
 
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-class FallMotion implements CorePosition{
-	private ScheduledFuture<?> fallFuture;
+import com.example.commonclass.Timer;
+
+class FallMotion extends Timer implements CorePosition{
 	private double angle;
 	private final int x;
 	private int y = -300;
-	private boolean isRunning;
 	private final int MAX_X = 1050;
 	private final double STEP_SIZE = 100.0;
 	private final int MAX_ANGLE = (int) (Math.PI * 2 * STEP_SIZE);
@@ -19,7 +17,8 @@ class FallMotion implements CorePosition{
 	private final int FINAL_COODINATE = 600;
 	private final int DELAY = 20;
 	
-	FallMotion(){
+	FallMotion(ScheduledExecutorService scheduler){
+		super(scheduler);
 		angle = randomAngle();
 		x = randomX();
 	}
@@ -36,31 +35,21 @@ class FallMotion implements CorePosition{
 		return new Random();
 	}
 	
-	void fallTimerStart(ScheduledExecutorService scheduler) {
-		fallFuture = createFallFuture(scheduler);
-		isRunning = true;
+	@Override
+	protected int interval() {
+		return DELAY;
 	}
 	
-	ScheduledFuture<?> createFallFuture(ScheduledExecutorService scheduler){
-		return scheduler.scheduleAtFixedRate(this::fallTimerProcess, 0, DELAY, TimeUnit.MILLISECONDS);
+	void timerStart() {
+		timerStart(this::timerProcess);
 	}
 	
-	void fallTimerProcess() {
+	void timerProcess() {
 		angle += ANGLE_CHANGE;
 		y += COODINATE_CHANGE;
-		timerStop();
-	}
-	
-	void timerStop() {
 		if(FINAL_COODINATE < y) {
-			isRunning = false;
-			fallFuture.cancel(true);
-			fallFuture = null;
+			timerStop();
 		}
-	}
-	
-	boolean isRunning() {
-		return isRunning;
 	}
 	
 	@Override

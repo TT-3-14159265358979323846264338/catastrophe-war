@@ -30,22 +30,22 @@ public class TopPage extends Timer{
 	
 	TopPage(ScheduledExecutorService scheduler){
 		super(scheduler);
-		fallMotion = createFallMotion();
-		finalMotion = createFinalMotion();
+		fallMotion = createFallMotion(scheduler);
+		finalMotion = createFinalMotion(scheduler);
 		mainTimer = createMainTimer(scheduler);
 		randamList = createRandamList();
 	}
 	
-	FallMotion[] createFallMotion(){
-		return IntStream.range(0, NUMBER).mapToObj(_ -> new FallMotion()).toArray(FallMotion[]::new);
+	FallMotion[] createFallMotion(ScheduledExecutorService scheduler){
+		return IntStream.range(0, NUMBER).mapToObj(_ -> new FallMotion(scheduler)).toArray(FallMotion[]::new);
 	}
 	
-	FinalMotion[] createFinalMotion() {
-		return IntStream.range(0, NUMBER).mapToObj(i -> new FinalMotion(i)).toArray(FinalMotion[]::new);
+	FinalMotion[] createFinalMotion(ScheduledExecutorService scheduler) {
+		return IntStream.range(0, NUMBER).mapToObj(i -> new FinalMotion(scheduler, i)).toArray(FinalMotion[]::new);
 	}
 	
 	MainTimer createMainTimer(ScheduledExecutorService scheduler){
-		return new MainTimer(this, scheduler, fallMotion, finalMotion);
+		return new MainTimer(scheduler, this, fallMotion, finalMotion);
 	}
 	
 	List<Integer> createRandamList(){
@@ -67,7 +67,11 @@ public class TopPage extends Timer{
 	}
 	
 	Stream<String> titleStream(){
-		return Stream.of(OtherData.TITLE);
+		return Stream.of(getTitle());
+	}
+	
+	String getTitle() {
+		return new OtherData().getTitler();
 	}
 	
 	Stream<String> createCoreLinkList(){
