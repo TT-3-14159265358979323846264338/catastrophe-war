@@ -1,0 +1,21 @@
+.default-container{
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	gap: 2%;
+	z-index: 10;
+}
+
+.default-menu-button button{
+	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	background-color:rgb(240, 240, 185);
+	border: 10px solid;
+	border-color: rgb(255, 255, 200) rgb(192, 192, 192) rgb(192, 192, 192) rgb(255, 255, 200);
+}
+
+.default-menu-button button:active {
+	border-color: rgb(192, 192, 192) rgb(255, 255, 200) rgb(255, 255, 200) rgb(192, 192, 192);
+	transform: translate(3px, 3px);
+}

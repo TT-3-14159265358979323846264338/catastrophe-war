@@ -1,27 +1,11 @@
 .toppage-item {
-	position: absolute;
 	bottom: 2%;
 	left: 0%;
 	height: 10%;
 	width: 100%;
-	display: flex;
-	justify-content: center;
-	gap: 1%;
-	z-index: 3;
 }
 
 .toppage-item button {
 	height: 100%;
 	width: 20%;
-	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
-	font-size: 30px;
-	font-weight: bold;
-	background-color:rgb(240, 240, 185);
-	border: 10px solid;
-	border-color: rgb(255, 255, 200) rgb(192, 192, 192) rgb(192, 192, 192) rgb(255, 255, 200);
-}
-
-.toppage-item button:active {
-	border-color: rgb(192, 192, 192) rgb(255, 255, 200) rgb(255, 255, 200) rgb(192, 192, 192);
-	transform: translate(3px, 3px);
 }
