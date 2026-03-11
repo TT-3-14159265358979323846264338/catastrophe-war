@@ -15,9 +15,14 @@ let handleImage = new Image();
 let machineImage = [];
 let turnImage = new Image();
 let effectImage = new Image();
+let isPressed = false;
 const RATIO = 1.3;
 const GACHA_X = 200;
 const GACHA_Y = 10;
+const HANDLE_X = 342;
+const HANDLE_Y = 330;
+const TURN_X = 278;
+const TURN_Y = 266;
 
 export function gacha(stomp){
 	gachaRepaintStop();
@@ -26,6 +31,9 @@ export function gacha(stomp){
 		subscription.push(stompClient.subscribe("/topic/gacha/images", inputImage));	
 		stompClient.send("/app/gacha/images", {}, {});
 	}
+	canvas.addEventListener('mousedown', mousePressed);
+	window.addEventListener('mousemove', mouseDragged);
+	window.addEventListener('mouseup', mouseReleased);
 	subscription.push(stompClient.subscribe("/topic/gacha/repaint", drawImage));
 	stompClient.send("/app/gacha/timer/start", {}, {});
 }
@@ -51,11 +59,38 @@ function drawImage(data) {
 	ctx.drawImage(machineImage[0], GACHA_X, GACHA_Y);
 	//drawBall();
 	ctx.drawImage(machineImage[1], GACHA_X, GACHA_Y);
+	rotateDraw(ctx, handleImage, HANDLE_X, HANDLE_Y, state.handleAngle);
+	if(state.isTurning){
+		rotateDraw(ctx, turnImage, TURN_X, TURN_Y, state.turnAngle);
+	}
 	
 	
 	
-	
-	
+}
+
+function mousePressed(e){
+	isPressed = true;
+	sendPoint(e, "/app/gacha/mouse/pressed");
+}
+
+function mouseDragged(e){
+	if(isPressed){
+		sendPoint(e, "/app/gacha/mouse/dragged");
+	}
+}
+
+function mouseReleased(){
+	if(isPressed){
+		isPressed = false;
+		stompClient.send("/app/gacha/mouse/released", {}, {});
+	}
+}
+
+function sendPoint(e, address){
+	const canvasRect = canvas.getBoundingClientRect();
+	const x = Math.round(e.clientX - canvasRect.left);
+	const y = Math.round(e.clientY - canvasRect.top);
+	stompClient.send(address, {}, JSON.stringify({x, y}));
 }
 
 
@@ -87,6 +122,9 @@ function gachaRepaintStop(){
 	if(subscription.length === 0){
 		return;
 	}
+	canvas.removeEventListener('mousedown', mousePressed);
+	window.removeEventListener('mousemove', mouseDragged);
+	window.removeEventListener('mouseup', mouseReleased);
 	subscription.forEach(data => data.unsubscribe());
 	subscription = [];
 	stompClient.send("/app/gacha/timer/stop", {}, {});
