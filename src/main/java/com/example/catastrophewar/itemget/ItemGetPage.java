@@ -1,5 +1,6 @@
 package com.example.catastrophewar.itemget;
 
+import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -18,14 +19,20 @@ public class ItemGetPage extends Timer{
 	private SimpMessagingTemplate messaging;
 	
 	private final AutoRotate autoRotate;
+	private final HandleMotion handleMotion;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
 		autoRotate = createAutoRotate(scheduler);
+		handleMotion = createHandleMotion(scheduler);
 	}
 	
 	AutoRotate createAutoRotate(ScheduledExecutorService scheduler) {
 		return new AutoRotate(scheduler);
+	}
+	
+	HandleMotion createHandleMotion(ScheduledExecutorService scheduler) {
+		return new HandleMotion(scheduler);
 	}
 	
 	@MessageMapping("/gacha/images")
@@ -69,10 +76,30 @@ public class ItemGetPage extends Timer{
 	}
 	
 	State createState() {
-		return new State(autoRotate.getAngle());
+		return new State(autoRotate.getAngle(), !handleMotion.isRunning(), handleMotion.getAngle());
 	}
 	
-	record State(double angle) {}
+	record State(double turnAngle, boolean isTurning, double handleAngle) {}
+	
+	@MessageMapping("/gacha/mouse/pressed")
+	void mousePressed(Point point) {
+		handleMotion.mousePressed(point);
+	}
+	
+	@MessageMapping("/gacha/mouse/dragged")
+	void mouseDragged(Point point) {
+		handleMotion.mouseDragged(point);
+	}
+	
+	@MessageMapping("/gacha/mouse/released")
+	void mouseReleased() {
+		handleMotion.mouseReleased();
+	}
+	
+	
+	
+	
+	
 	
 	
 	
