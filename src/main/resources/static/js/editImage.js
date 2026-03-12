@@ -32,6 +32,10 @@ function reducedImage(image, ratio){
 }
 
 export function rotateDraw(ctx, image, x, y, angle){
+	if(angle === 0){
+		ctx.drawImage(image, x, y);
+		return;
+	}
 	const width = image.width / 2
 	const height = image.height / 2;
 	ctx.save();

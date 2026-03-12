@@ -12,6 +12,7 @@ const titleImage = new Image();
 const coreImages = [];
 const TITLE_X = 80;
 const TITLE_Y = 40;
+const INTERVAL = 25000;
 
 stompClient.connect({}, () => {
 	inputSubscribe = stompClient.subscribe("/topic/top/images", initialize);
@@ -100,3 +101,9 @@ function topRepaintStop(){
 window.addEventListener('pagehide', _ => {
 	navigator.sendBeacon('/api/shutdown');
 });
+
+setInterval(sendHeartbeat, INTERVAL);
+
+function sendHeartbeat(){
+	navigator.sendBeacon("/api/heartbeat");
+}
