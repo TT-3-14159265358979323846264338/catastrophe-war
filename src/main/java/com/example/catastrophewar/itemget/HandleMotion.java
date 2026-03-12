@@ -7,9 +7,9 @@ import java.util.function.BiFunction;
 import com.example.commonclass.Timer;
 
 class HandleMotion extends Timer{
-	//private final MenuItemGet MenuItemGet;
+	private final ItemGetPage itemGetPage;
 	//private final HoldMedal HoldMedal;
-	//private final BallMotion BallMotion;
+	private final FallBallMotion fallBallMotion;
 	private int startPointX;
 	private int startPointY;
 	private int activePointX;
@@ -20,21 +20,23 @@ class HandleMotion extends Timer{
 	private final double RIGHT_ANGLE = Math.PI / 2.0;
 	private final double AROUND = Math.PI * 2;
 	private final int DELAY = 20;
+	private final int DEFAULT = 0;
+	private final double ANGLE_CHANGE = 0.1;
 	
 	//HandleMotion(MenuItemGet menuItemGet, HoldMedal holdMedal, BallMotion ballMotion, ScheduledExecutorService scheduler) {
-	HandleMotion(ScheduledExecutorService scheduler) {
+	HandleMotion(ItemGetPage itemGetPage, FallBallMotion fallBallMotion, ScheduledExecutorService scheduler) {
 		super(scheduler);
-		//this.MenuItemGet = menuItemGet;
+		this.itemGetPage = itemGetPage;
 		//this.HoldMedal = holdMedal;
-		//this.BallMotion = ballMotion;
+		this.fallBallMotion = fallBallMotion;
 	}
 	
 	double getAngle() {
 		if(isRunning()) {
 			return angle;
 		}
-		if(startPointX == 0) {
-			return 0;
+		if(startPointX == DEFAULT) {
+			return DEFAULT;
 		}
 		angle = manualAngle();
 		return angle;
@@ -88,28 +90,25 @@ class HandleMotion extends Timer{
 	}
 	
 	void autoTurnStart() {
+		itemGetPage.playGacha();
 		//MenuItemGet.deactivatePanel();
-		timerStart(this::handleFutureProcess);
+		timerStart(this::timerProcess);
 	}
 	
-	void handleFutureProcess() {
-		angle += 0.1;
+	void timerProcess() {
+		angle += ANGLE_CHANGE;
 		if(AROUND < angle) {
-			autoTurnStop();
+			fallBallMotion.timerStart();
+			angle = DEFAULT;
+			reset();
+			timerStop();
 		}
 	}
 	
-	void autoTurnStop() {
-		timerStop();
-		//BallMotion.timerStart(this);
-		angle = 0;
-		reset();
-	}
-	
 	void reset() {
-		startPointX = 0;
-		startPointY = 0;
-		activePointX = 0;
-		activePointY = 0;
+		startPointX = DEFAULT;
+		startPointY = DEFAULT;
+		activePointX = DEFAULT;
+		activePointY = DEFAULT;
 	}
 }

@@ -3,6 +3,7 @@ package com.example.catastrophewar.itemget;
 import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,10 +21,14 @@ public class ItemGetPage extends Timer{
 	
 	private final AutoRotate autoRotate;
 	private final HandleMotion handleMotion;
+	private final FallBallMotion fallBallMotion;
+	private final OpenBallMotion openBallMotion;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
 		autoRotate = createAutoRotate(scheduler);
+		openBallMotion = createOpenBallMotion(scheduler);
+		fallBallMotion = createfallBallMotion(scheduler);
 		handleMotion = createHandleMotion(scheduler);
 	}
 	
@@ -31,8 +36,16 @@ public class ItemGetPage extends Timer{
 		return new AutoRotate(scheduler);
 	}
 	
+	OpenBallMotion createOpenBallMotion(ScheduledExecutorService scheduler) {
+		return new OpenBallMotion(this, scheduler);
+	}
+	
+	FallBallMotion createfallBallMotion(ScheduledExecutorService scheduler) {
+		return new FallBallMotion(openBallMotion, scheduler);
+	}
+	
 	HandleMotion createHandleMotion(ScheduledExecutorService scheduler) {
-		return new HandleMotion(scheduler);
+		return new HandleMotion(this, fallBallMotion, scheduler);
 	}
 	
 	@MessageMapping("/gacha/images")
@@ -44,7 +57,6 @@ public class ItemGetPage extends Timer{
 		OtherData otherData = createOtherData();
 		return new Image(ImageLink.normalCoreLinkStream().toList(),
 				ImageLink.normalWeaponLinkStream().toList(),
-				otherData.getBall(),
 				otherData.getHalfBall(),
 				otherData.getHandle(),
 				otherData.getMachine(),
@@ -58,7 +70,6 @@ public class ItemGetPage extends Timer{
 	
 	record Image(List<String> coreImageLink, 
 			List<String> weaponImageLink, 
-			String ballImageLink, 
 			List<String> halfBallImageLink, 
 			String handleImageLink, 
 			List<String> machineImageLink, 
@@ -76,10 +87,45 @@ public class ItemGetPage extends Timer{
 	}
 	
 	State createState() {
-		return new State(autoRotate.getAngle(), !handleMotion.isRunning(), handleMotion.getAngle());
+		return new State(autoRotate.getAngle(), 
+				canPlayGacha(), 
+				handleMotion.getAngle(), 
+				getState(BallState::getTopPoint), 
+				getState(BallState::getBottomPoint), 
+				getState(BallState::getTopAngle), 
+				getState(BallState::getBottomAngle));
 	}
 	
-	record State(double turnAngle, boolean isTurning, double handleAngle) {}
+	boolean canPlayGacha() {
+		return !isPlayingGacha();
+	}
+	
+	boolean isPlayingGacha() {
+		return handleMotion.isRunning() || fallBallMotion.isRunning() || openBallMotion.isRunning();
+	}
+	
+	<T> T getState(Function<BallState, T> task) {
+		if(openBallMotion.isRunning()) {
+			return task.apply(openBallMotion);
+		}
+		return task.apply(fallBallMotion);
+	}
+	
+	record State(double turnAngle, 
+			boolean canPlayGacha, 
+			double handleAngle, 
+			Point topPoint, 
+			Point bottomPoint, 
+			double topAngle, 
+			double bottomAngle) {}
+	
+	void playGacha() {
+		messaging.convertAndSend("/topic/gacha/play", "");
+	}
+	
+	void endGacha() {
+		messaging.convertAndSend("/topic/gacha/end", "");
+	}
 	
 	@MessageMapping("/gacha/mouse/pressed")
 	void mousePressed(Point point) {
