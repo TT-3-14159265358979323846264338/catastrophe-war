@@ -15,7 +15,6 @@ class FallBallMotion extends Timer implements BallState{
 	private final List<Integer> distanceList = Arrays.asList(3, 1, 2, -2, 1);
 	private int moveNumber;
 	private final Point defaultPoint = new Point(360, 407);
-	//275
 	private final int DELAY = 30;
 	private final int DEFAULT = 0;
 	private final double ANGLE_CHANGE = 0.2;

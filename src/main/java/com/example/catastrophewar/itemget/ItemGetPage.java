@@ -87,13 +87,15 @@ public class ItemGetPage extends Timer{
 	}
 	
 	State createState() {
-		return new State(autoRotate.getAngle(), 
-				canPlayGacha(), 
-				handleMotion.getAngle(), 
-				getState(BallState::getTopPoint), 
-				getState(BallState::getBottomPoint), 
-				getState(BallState::getTopAngle), 
-				getState(BallState::getBottomAngle));
+		return new State(autoRotate.getAngle(),
+				canPlayGacha(),
+				handleMotion.getAngle(),
+				getState(BallState::getTopPoint),
+				getState(BallState::getBottomPoint),
+				getState(BallState::getTopAngle),
+				getState(BallState::getBottomAngle),
+				openBallMotion.getColor(),
+				openBallMotion.getExpansion());
 	}
 	
 	boolean canPlayGacha() {
@@ -117,7 +119,9 @@ public class ItemGetPage extends Timer{
 			Point topPoint, 
 			Point bottomPoint, 
 			double topAngle, 
-			double bottomAngle) {}
+			double bottomAngle, 
+			int color, 
+			int expansion) {}
 	
 	void playGacha() {
 		messaging.convertAndSend("/topic/gacha/play", "");
