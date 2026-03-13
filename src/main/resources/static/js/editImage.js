@@ -44,3 +44,32 @@ export function rotateDraw(ctx, image, x, y, angle){
 	ctx.drawImage(image, -width, -height);
 	ctx.restore();
 }
+
+export function effectImage(image, color, expansion){
+	return blurCanvas(colorChangeCanvas(image, color), expansion);
+}
+
+function colorChangeCanvas(image, color){
+	const blue = 255 < color? 255: color;
+	const alpha = blue / 255;
+	const canvas = document.createElement('canvas');
+	canvas.width = image.width;
+	canvas.height = image.height;
+	const ctx = canvas.getContext('2d');
+	ctx.drawImage(image, 0, 0);
+	ctx.globalCompositeOperation = 'source-in';
+	ctx.fillStyle = `rgba(255, 255, ${blue}, ${alpha})`;
+	ctx.fillRect(0, 0, image.width, image.height);
+	ctx.globalCompositeOperation = 'source-over';
+	return canvas;
+}
+
+function blurCanvas(defaultCanvas, expansion){
+	const canvas = document.createElement('canvas');
+	canvas.width = defaultCanvas.width + expansion;
+	canvas.height = defaultCanvas.height + expansion;
+	const ctx = canvas.getContext('2d');
+	ctx.filter = `blur(4px) brightness(150%)`;
+	ctx.drawImage(defaultCanvas, 0, 0, defaultCanvas.width, defaultCanvas.height, 0, 0, canvas.width, canvas.height);
+	return canvas;
+}

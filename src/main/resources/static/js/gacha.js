@@ -1,5 +1,5 @@
 import {topRepaintStart} from './app.js';
-import {inputReducedImages, inputReducedImage, rotateDraw} from './editImage.js';
+import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from './editImage.js';
 
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
@@ -16,7 +16,7 @@ let halfBallImage = [];
 let handleImage = new Image();
 let machineImage = [];
 let turnImage = new Image();
-let effectImage = new Image();
+let dafaultEffectImage = new Image();
 let isPressed = false;
 const RATIO = 1.3;
 const GACHA_X = 200;
@@ -25,6 +25,8 @@ const HANDLE_X = 342;
 const HANDLE_Y = 330;
 const TURN_X = 278;
 const TURN_Y = 266;
+const EFFECT_X = 240;
+const EFFECT_Y = 350;
 
 export function gacha(stomp){
 	gachaRepaintStop();
@@ -48,7 +50,7 @@ async function inputImage(data){
 	handleImage = await inputReducedImage(links.handleImageLink, RATIO);
 	await inputReducedImages(machineImage, links.machineImageLink, RATIO);
 	turnImage = await inputReducedImage(links.turnImageLink, RATIO);
-	effectImage.src = links.effectImageLink;
+	dafaultEffectImage.src = links.effectImageLink;
 }
 
 function drawImage(data) {
@@ -64,6 +66,12 @@ function drawImage(data) {
 	rotateDraw(ctx, handleImage, HANDLE_X, HANDLE_Y, state.handleAngle);
 	if(state.canPlayGacha){
 		rotateDraw(ctx, turnImage, TURN_X, TURN_Y, state.turnAngle);
+	}
+	if(state.color !== 0){
+		const image = effectImage(dafaultEffectImage, state.color, state.expansion);
+		const x = EFFECT_X - state.expansion / 2;
+		const y = EFFECT_Y - state.expansion / 2;
+		ctx.drawImage(image, x, y);
 	}
 }
 
