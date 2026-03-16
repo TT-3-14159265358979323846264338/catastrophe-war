@@ -4,14 +4,18 @@ import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
+import com.example.defaultdata.DefaultEnum;
+import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.other.OtherData;
 
 @Controller
@@ -23,6 +27,7 @@ public class ItemGetPage extends Timer{
 	private final HandleMotion handleMotion;
 	private final FallBallMotion fallBallMotion;
 	private final OpenBallMotion openBallMotion;
+	private GachaCount gachaCount;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
@@ -30,6 +35,7 @@ public class ItemGetPage extends Timer{
 		openBallMotion = createOpenBallMotion(scheduler);
 		fallBallMotion = createfallBallMotion(scheduler);
 		handleMotion = createHandleMotion(scheduler);
+		gachaCount = GachaCount.TEN;
 	}
 	
 	AutoRotate createAutoRotate(ScheduledExecutorService scheduler) {
@@ -48,14 +54,28 @@ public class ItemGetPage extends Timer{
 		return new HandleMotion(this, fallBallMotion, scheduler);
 	}
 	
-	@MessageMapping("/gacha/images")
+	@MessageMapping("/gacha/data")
 	void sendImage() {
-		messaging.convertAndSend("/topic/gacha/images", createImageLink());
+		messaging.convertAndSend("/topic/gacha/data", createData());
 	}
 	
-	Image createImageLink() {
+	GachaData createData(){
+		return new GachaData(createGachaCount(), gachaCount.getId(), createImageLink());
+	}
+	
+	record GachaData(List<String> gachaCount, int id, GachaImageLink links) {};
+	
+	List<String> createGachaCount(){
+		return Stream.of(GachaCount.values()).map(this::gachaCountComment).toList();
+	}
+	
+	String gachaCountComment(GachaCount gachaCount) {
+		return String.format("%d連ガチャ\n%d枚", gachaCount.getLabel(), gachaCount.getUsedMedal());
+	}
+	
+	GachaImageLink createImageLink() {
 		OtherData otherData = createOtherData();
-		return new Image(ImageLink.normalCoreLinkStream().toList(),
+		return new GachaImageLink(ImageLink.normalCoreLinkStream().toList(),
 				ImageLink.normalWeaponLinkStream().toList(),
 				otherData.getHalfBall(),
 				otherData.getHandle(),
@@ -68,7 +88,7 @@ public class ItemGetPage extends Timer{
 		return new OtherData();
 	}
 	
-	record Image(List<String> coreImageLink, 
+	record GachaImageLink(List<String> coreImageLink, 
 			List<String> weaponImageLink, 
 			List<String> halfBallImageLink, 
 			String handleImageLink, 
@@ -132,13 +152,13 @@ public class ItemGetPage extends Timer{
 	}
 	
 	@MessageMapping("/gacha/mouse/pressed")
-	void mousePressed(Point point) {
-		handleMotion.mousePressed(point);
+	void mousePressed(@Payload ClickPoint clickPoint) {
+		handleMotion.mousePressed(clickPoint.x, clickPoint.y);
 	}
 	
 	@MessageMapping("/gacha/mouse/dragged")
-	void mouseDragged(Point point) {
-		handleMotion.mouseDragged(point);
+	void mouseDragged(@Payload ClickPoint clickPoint) {
+		handleMotion.mouseDragged(clickPoint.x, clickPoint.y);
 	}
 	
 	@MessageMapping("/gacha/mouse/released")
@@ -146,9 +166,14 @@ public class ItemGetPage extends Timer{
 		handleMotion.mouseReleased();
 	}
 	
+	record ClickPoint(int x, int y) {}
 	
+	@MessageMapping("/gacha/count/change")
+	void changeCount(@Payload ChangeId changeId) {
+		gachaCount = DefaultEnum.getEnum(GachaCount.values(), changeId.id);
+	}
 	
-	
+	record ChangeId(int id) {}
 	
 	
 	

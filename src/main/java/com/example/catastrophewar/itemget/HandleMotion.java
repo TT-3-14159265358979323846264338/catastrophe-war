@@ -1,6 +1,5 @@
 package com.example.catastrophewar.itemget;
 
-import java.awt.Point;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BiFunction;
 
@@ -60,20 +59,20 @@ class HandleMotion extends Timer{
 		return Math.acos((Math.pow(distance[0], 2) - Math.pow(distance[1], 2) - Math.pow(distance[2], 2)) / (-2 * distance[1] * distance[2]));
 	}
 	
-	void mousePressed(Point point) {
-		startPointX = point.x;
-		startPointY = point.y;
-		activePointX = point.x;
-		activePointY = point.y;
+	void mousePressed(int x, int y) {
+		startPointX = x;
+		startPointY = y;
+		activePointX = x;
+		activePointY = y;
 	}
 	
-	void mouseDragged(Point point) {
+	void mouseDragged(int x, int y) {
 		if(isRunning()) {
 			return;
 		}
 		//if(HoldMedal.canPossessMedal()) {
-			activePointX = point.x;
-			activePointY = point.y;
+			activePointX = x;
+			activePointY = y;
 			if(RIGHT_ANGLE < angle) {
 				autoTurnStart();
 			}

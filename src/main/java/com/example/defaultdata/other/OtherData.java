@@ -10,10 +10,6 @@ public class OtherData {
 	}
 
 	//ガチャ画像ファイル
-	public String getBall() {
-		return "/image/gacha/ball full.png";
-	}
-	
 	public List<String> getHalfBall(){
 		return List.of("/image/gacha/ball bottom.png", "/image/gacha/ball top.png");
 	}
