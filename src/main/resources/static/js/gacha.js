@@ -10,6 +10,8 @@ const countButton = document.getElementById("gacha-count");
 const returnButton = document.getElementById("go-to-toppage-from-gacha");
 const topPage = document.querySelector('.toppage-item');
 const gachaPage = document.querySelector('.gacha-item');
+let gachaCount = [];
+let id;
 let coreImage = [];
 let weaponImage = [];
 let halfBallImage = [];
@@ -32,18 +34,29 @@ export function gacha(stomp){
 	gachaRepaintStop();
 	if(!stompClient){
 		stompClient = stomp;
-		subscription.push(stompClient.subscribe("/topic/gacha/images", inputImage));	
-		stompClient.send("/app/gacha/images", {}, {});
+		subscription.push(stompClient.subscribe("/topic/gacha/data", dataInstall));	
+		stompClient.publish({destination: "/app/gacha/data"});
 	}
 	addMouseListener();
 	subscription.push(stompClient.subscribe("/topic/gacha/repaint", drawImage), 
 					stompClient.subscribe("/topic/gacha/play", playGacha),
 					stompClient.subscribe("/topic/gacha/end", endGacha));
-	stompClient.send("/app/gacha/timer/start", {}, {});
+	stompClient.publish({destination: "/app/gacha/timer/start"});
 }
 
-async function inputImage(data){
-	const links = JSON.parse(data.body);
+function dataInstall(data){
+	const gachaData = JSON.parse(data.body);
+	id = gachaData.id
+	inputGachaData(gachaData.gachaCount);
+	inputImage(gachaData.links);
+}
+
+function inputGachaData(countText){
+	countText.forEach(i => gachaCount.push(i));
+	changeCountButtonText();
+}
+
+async function inputImage(links){
 	await inputReducedImages(coreImage, links.coreImageLink, RATIO);
 	await inputReducedImages(weaponImage, links.weaponImageLink, RATIO);
 	await inputReducedImages(halfBallImage, links.halfBallImageLink, RATIO);
@@ -121,7 +134,7 @@ function mouseDragged(e){
 function mouseReleased(){
 	if(isPressed){
 		isPressed = false;
-		stompClient.send("/app/gacha/mouse/released", {}, {});
+		stompClient.publish({destination: "/app/gacha/mouse/released"});
 	}
 }
 
@@ -129,7 +142,10 @@ function sendPoint(e, address){
 	const canvasRect = canvas.getBoundingClientRect();
 	const x = Math.round(e.clientX - canvasRect.left);
 	const y = Math.round(e.clientY - canvasRect.top);
-	stompClient.send(address, {}, JSON.stringify({x, y}));
+	stompClient.publish({
+		destination: address,
+		body: JSON.stringify({x, y})
+	});
 }
 
 
@@ -150,7 +166,16 @@ function detailButtonAction(){
 }
 
 function countButtonAction(){
-	
+	id = (id === gachaCount.length - 1)? 0: id + 1;
+	changeCountButtonText();
+	stompClient.publish({
+		destination: "/app/gacha/count/change",
+		body: JSON.stringify({id})
+	});
+}
+
+function changeCountButtonText(){
+	countButton.textContent = gachaCount[id];
 }
 
 function returnButtonAction(_){
@@ -167,5 +192,5 @@ function gachaRepaintStop(){
 	removeMouseListener();
 	subscription.forEach(data => data.unsubscribe());
 	subscription = [];
-	stompClient.send("/app/gacha/timer/stop", {}, {});
+	stompClient.publish({destination: "/app/gacha/timer/stop"});
 }

@@ -3,7 +3,10 @@ import {rotateDraw} from './editImage.js';
 
 const canvas = document.getElementById('mainCanvas');
 const ctx = canvas.getContext('2d');
-const stompClient = Stomp.over(new SockJS('/ws-game'));
+const stompClient = new StompJs.Client({
+    webSocketFactory: () => new SockJS('/ws-game'),
+	reconnectDelay: 5000,
+});
 let inputSubscribe;
 let timerSubscribe;
 const topPage = document.querySelector('.toppage-item');
@@ -14,10 +17,12 @@ const TITLE_X = 80;
 const TITLE_Y = 40;
 const INTERVAL = 25000;
 
-stompClient.connect({}, () => {
+stompClient.onConnect = _ => {
 	inputSubscribe = stompClient.subscribe("/topic/top/images", initialize);
-	stompClient.send("/app/top/images", {}, {});
-});
+	stompClient.publish({destination:"/app/top/images"});
+};
+
+stompClient.activate();
 
 function initialize(data){
 	inputImage(data);
@@ -43,7 +48,7 @@ function postProcessing(){
 export function topRepaintStart(){
 	topRepaintStop();
 	timerSubscribe = stompClient.subscribe('/topic/top/repaint', drawImage);
-	stompClient.send("/app/top/timer/start", {}, {});
+	stompClient.publish({destination:"/app/top/timer/start"});
 }
 
 function drawImage(data) {
