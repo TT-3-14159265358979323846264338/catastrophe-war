@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="gachaPage" class="gacha-item default-container default-menu-button hidden">
+	<div class="gacha-scroll default-scroll">
+		<ul id="gacha-list" class="default-scroll-list"></ul>
+	</div>
 	<button id="gacha-detail" type="button">ガチャ詳細</button>
 	<div class="gacha-lower">
-		<button id="gacha-count" type="button">10連</button>
+		<button id="gacha-count" class="gacha-count-button" type="button">10連</button>
 		<button id="go-to-toppage-from-gacha" type="button">戻る</button>
 	</div>
 </div>
