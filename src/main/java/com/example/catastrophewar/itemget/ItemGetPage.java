@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
 import com.example.defaultdata.DefaultEnum;
+import com.example.defaultdata.Gacha;
 import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.other.OtherData;
 
@@ -23,6 +24,7 @@ public class ItemGetPage extends Timer{
 	@Autowired
 	private SimpMessagingTemplate messaging;
 	
+	private final SelectGacha selectGacha;
 	private final AutoRotate autoRotate;
 	private final HandleMotion handleMotion;
 	private final FallBallMotion fallBallMotion;
@@ -31,11 +33,16 @@ public class ItemGetPage extends Timer{
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
+		selectGacha = createSelectGacha();
 		autoRotate = createAutoRotate(scheduler);
 		openBallMotion = createOpenBallMotion(scheduler);
 		fallBallMotion = createfallBallMotion(scheduler);
 		handleMotion = createHandleMotion(scheduler);
 		gachaCount = GachaCount.TEN;
+	}
+	
+	SelectGacha createSelectGacha(){
+		return new SelectGacha();
 	}
 	
 	AutoRotate createAutoRotate(ScheduledExecutorService scheduler) {
@@ -55,7 +62,7 @@ public class ItemGetPage extends Timer{
 	}
 	
 	@MessageMapping("/gacha/data")
-	void sendImage() {
+	void sendGachaData() {
 		messaging.convertAndSend("/topic/gacha/data", createData());
 	}
 	
@@ -98,8 +105,13 @@ public class ItemGetPage extends Timer{
 	
 	@MessageMapping("/gacha/timer/start")
 	void timerStart() {
+		messaging.convertAndSend("/topic/gacha/list", createGachaList());
 		timerStart(this::repaint);
 		autoRotate.timerStart();
+	}
+	
+	Gacha[] createGachaList(){
+		return Gacha.values();
 	}
 	
 	void repaint() {
@@ -168,21 +180,19 @@ public class ItemGetPage extends Timer{
 	
 	record ClickPoint(int x, int y) {}
 	
+	@MessageMapping("/gacha/select")
+	void changeSelected(SelectId selectId) {
+		selectGacha.setSelectId(selectId.selectId);
+	}
+	
+	record SelectId(int selectId) {}
+	
 	@MessageMapping("/gacha/count/change")
 	void changeCount(@Payload ChangeId changeId) {
 		gachaCount = DefaultEnum.getEnum(GachaCount.values(), changeId.id);
 	}
 	
 	record ChangeId(int id) {}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@MessageMapping("/gacha/timer/stop")
 	void endTimer() {
