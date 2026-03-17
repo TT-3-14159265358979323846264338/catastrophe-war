@@ -1,7 +1,7 @@
 import {gacha} from './gacha.js';
 import {rotateDraw} from './editImage.js';
 
-const canvas = document.getElementById('mainCanvas');
+const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
 const stompClient = new StompJs.Client({
     webSocketFactory: () => new SockJS('/ws-game'),

@@ -1,15 +1,14 @@
 import {topRepaintStart} from './app.js';
 import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from './editImage.js';
 
-const canvas = document.getElementById('mainCanvas');
+const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
 let stompClient;
 let subscription = [];
+const gachaList = document.getElementById("gacha-list");
 const detailButton = document.getElementById("gacha-detail");
 const countButton = document.getElementById("gacha-count");
 const returnButton = document.getElementById("go-to-toppage-from-gacha");
-const topPage = document.querySelector('.toppage-item');
-const gachaPage = document.querySelector('.gacha-item');
 let gachaCount = [];
 let id;
 let coreImage = [];
@@ -31,14 +30,14 @@ const EFFECT_X = 240;
 const EFFECT_Y = 350;
 
 export function gacha(stomp){
-	gachaRepaintStop();
 	if(!stompClient){
 		stompClient = stomp;
 		subscription.push(stompClient.subscribe("/topic/gacha/data", dataInstall));	
 		stompClient.publish({destination: "/app/gacha/data"});
 	}
 	addMouseListener();
-	subscription.push(stompClient.subscribe("/topic/gacha/repaint", drawImage), 
+	subscription.push(stompClient.subscribe("/topic/gacha/list", inputGachaList),
+					stompClient.subscribe("/topic/gacha/repaint", drawImage),
 					stompClient.subscribe("/topic/gacha/play", playGacha),
 					stompClient.subscribe("/topic/gacha/end", endGacha));
 	stompClient.publish({destination: "/app/gacha/timer/start"});
@@ -64,6 +63,22 @@ async function inputImage(links){
 	await inputReducedImages(machineImage, links.machineImageLink, RATIO);
 	turnImage = await inputReducedImage(links.turnImageLink, RATIO);
 	dafaultEffectImage.src = links.effectImageLink;
+}
+
+function inputGachaList(data){
+	JSON.parse(data.body).forEach(addGachaList);
+	selectGacha(gachaList.querySelector('li'));
+}
+
+function addGachaList(element){
+	const addList = document.createElement('li');
+	addList.dataset.id = element.id;
+	addList.textContent = element.label.name;
+	gachaList.appendChild(addList);
+}
+
+function removeGachaList(){
+	gachaList.innerHTML = "";
 }
 
 function drawImage(data) {
@@ -156,10 +171,29 @@ function sendPoint(e, address){
 
 
 document.addEventListener('DOMContentLoaded', () => {
+	gachaList.addEventListener('click', gachaListAction);
 	detailButton.addEventListener('click', detailButtonAction);
 	countButton.addEventListener('click', countButtonAction);
 	returnButton.addEventListener('click', returnButtonAction);
 });
+
+function gachaListAction(e){
+	const target = e.target.closest('li');
+	if(!target){
+		return;
+	}
+	document.querySelectorAll('#gacha-list li').forEach(i => i.classList.remove('selected'));
+	selectGacha(target);
+}
+
+function selectGacha(target){
+	target.classList.add('selected');
+	const selectId = target.dataset.id;
+	stompClient.publish({
+		destination: "/app/gacha/select",
+		body: JSON.stringify({selectId})
+	});
+}
 
 function detailButtonAction(){
 	
@@ -179,8 +213,8 @@ function changeCountButtonText(){
 }
 
 function returnButtonAction(_){
-	gachaPage.classList.add('hidden');
-	topPage.classList.remove('hidden');
+	document.querySelector('.gacha-item').classList.add('hidden');
+	document.querySelector('.toppage-item').classList.remove('hidden');
 	topRepaintStart();
 	gachaRepaintStop();
 }
@@ -189,6 +223,7 @@ function gachaRepaintStop(){
 	if(subscription.length === 0){
 		return;
 	}
+	removeGachaList();
 	removeMouseListener();
 	subscription.forEach(data => data.unsubscribe());
 	subscription = [];
