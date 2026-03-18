@@ -7,7 +7,6 @@ const stompClient = new StompJs.Client({
     webSocketFactory: () => new SockJS('/ws-game'),
 	reconnectDelay: 5000,
 });
-let inputSubscribe;
 let timerSubscribe;
 const topPage = document.querySelector('.toppage-item');
 const gachaPage = document.querySelector('.gacha-item');
@@ -17,32 +16,26 @@ const TITLE_X = 80;
 const TITLE_Y = 40;
 const INTERVAL = 25000;
 
-stompClient.onConnect = _ => {
-	inputSubscribe = stompClient.subscribe("/topic/top/images", initialize);
-	stompClient.publish({destination:"/app/top/images"});
+stompClient.onConnect = async _ => {
+	try{
+		const response = await fetch('/api/top/data');
+		const data = await response.json();
+		inputImage(data);
+		topRepaintStart();
+	}catch (e) {
+		console.error("トップページの初期化失敗:", e);
+	}
 };
 
 stompClient.activate();
 
-function initialize(data){
-	inputImage(data);
-	postProcessing();
-}
-
-function inputImage(data){
-	const imageList = JSON.parse(data.body);
+function inputImage(imageList){
 	titleImage.src = imageList[0];
 	for(let i = 1; i < imageList.length; i++){
 		const image = new Image();
 		image.src = imageList[i];
 		coreImages.push(image);
 	}
-}
-
-function postProcessing(){
-	inputSubscribe.unsubscribe();
-	inputSubscribe = null;
-	topRepaintStart();
 }
 
 export function topRepaintStart(){

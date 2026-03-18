@@ -48,3 +48,10 @@
 	background-color:rgb(200, 200, 200);
 	font-weight: bold;
 }
+
+.disable-scroll {
+	overflow-y: hidden;
+	pointer-events: none;
+	user-select: none;
+	opacity: 0.6;
+}

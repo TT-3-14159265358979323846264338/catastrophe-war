@@ -5,6 +5,7 @@ const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
 let stompClient;
 let subscription = [];
+const gachaScroll = document.querySelector('.gacha-scroll');
 const gachaList = document.getElementById("gacha-list");
 const detailButton = document.getElementById("gacha-detail");
 const countButton = document.getElementById("gacha-count");
@@ -32,8 +33,7 @@ const EFFECT_Y = 350;
 export function gacha(stomp){
 	if(!stompClient){
 		stompClient = stomp;
-		subscription.push(stompClient.subscribe("/topic/gacha/data", dataInstall));	
-		stompClient.publish({destination: "/app/gacha/data"});
+		initialize();
 	}
 	addMouseListener();
 	subscription.push(stompClient.subscribe("/topic/gacha/list", inputGachaList),
@@ -43,11 +43,16 @@ export function gacha(stomp){
 	stompClient.publish({destination: "/app/gacha/timer/start"});
 }
 
-function dataInstall(data){
-	const gachaData = JSON.parse(data.body);
-	id = gachaData.id
-	inputGachaData(gachaData.gachaCount);
-	inputImage(gachaData.links);
+async function initialize(){
+	try{
+		const response = await fetch('/api/gacha/data');
+		const data = await response.json();
+		id = data.id
+		inputGachaData(data.gachaCount);
+		inputImage(data.links);
+	}catch (e) {
+		console.error("ガチャ画面の初期化失敗:", e);
+	}
 }
 
 function inputGachaData(countText){
@@ -104,11 +109,13 @@ function drawImage(data) {
 }
 
 function playGacha(){
+	gachaScroll.classList.add('disable-scroll');
 	switchAllButton(true);
 	removeMouseListener();
 }
 
 function endGacha(){
+	gachaScroll.classList.remove('disable-scroll');
 	switchAllButton(false);
 	addMouseListener();
 }
@@ -162,13 +169,6 @@ function sendPoint(e, address){
 		body: JSON.stringify({x, y})
 	});
 }
-
-
-
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
 	gachaList.addEventListener('click', gachaListAction);
