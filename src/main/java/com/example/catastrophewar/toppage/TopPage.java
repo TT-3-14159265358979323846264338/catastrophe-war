@@ -10,14 +10,15 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
 import com.example.defaultdata.Core;
 import com.example.defaultdata.other.OtherData;
 
-@Controller
+@RestController
 public class TopPage extends Timer{
 	@Autowired
 	private SimpMessagingTemplate messaging;
@@ -57,9 +58,9 @@ public class TopPage extends Timer{
 		return new Random();
 	}
 	
-	@MessageMapping("/top/images")
-	void sendImage() {
-		messaging.convertAndSend("/topic/top/images", createImageLinkList());
+	@GetMapping("/api/top/data")
+	public List<String> sendImage() {
+		return createImageLinkList();
 	}
 	
 	List<String> createImageLinkList(){
@@ -79,7 +80,7 @@ public class TopPage extends Timer{
 	}
 	
 	@MessageMapping("/top/timer/start")
-	void timerStart() {
+	public void timerStart() {
 		if(isRunning()) {
 			return;
 		}

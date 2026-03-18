@@ -9,8 +9,10 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
@@ -18,7 +20,7 @@ import com.example.defaultdata.Gacha;
 import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.other.OtherData;
 
-@Controller
+@RestController
 public class ItemGetPage extends Timer{
 	@Autowired
 	private SimpMessagingTemplate messaging;
@@ -58,9 +60,9 @@ public class ItemGetPage extends Timer{
 		return new HandleMotion(this, fallBallMotion, scheduler);
 	}
 	
-	@MessageMapping("/gacha/data")
-	void sendGachaData() {
-		messaging.convertAndSend("/topic/gacha/data", createData());
+	@GetMapping("/api/gacha/data")
+	public DefaultGachaData sendGachaData() {
+		return createData();
 	}
 	
 	DefaultGachaData createData(){
@@ -101,10 +103,11 @@ public class ItemGetPage extends Timer{
 			String effectImageLink) {}
 	
 	@MessageMapping("/gacha/timer/start")
-	void timerStart() {
-		messaging.convertAndSend("/topic/gacha/list", createGachaList());
+	@SendTo("/topic/gacha/list")
+	public Gacha[] timerStart() {
 		timerStart(this::repaint);
 		autoRotate.timerStart();
+		return createGachaList();
 	}
 	
 	Gacha[] createGachaList(){
@@ -161,38 +164,38 @@ public class ItemGetPage extends Timer{
 	}
 	
 	@MessageMapping("/gacha/mouse/pressed")
-	void mousePressed(@Payload ClickPoint clickPoint) {
+	public void mousePressed(@Payload ClickPoint clickPoint) {
 		handleMotion.mousePressed(clickPoint.x, clickPoint.y);
 	}
 	
 	@MessageMapping("/gacha/mouse/dragged")
-	void mouseDragged(@Payload ClickPoint clickPoint) {
+	public void mouseDragged(@Payload ClickPoint clickPoint) {
 		handleMotion.mouseDragged(clickPoint.x, clickPoint.y);
 	}
 	
 	@MessageMapping("/gacha/mouse/released")
-	void mouseReleased() {
+	public void mouseReleased() {
 		handleMotion.mouseReleased();
 	}
 	
 	record ClickPoint(int x, int y) {}
 	
 	@MessageMapping("/gacha/select")
-	void changeSelected(SelectId selectId) {
+	public void changeSelected(SelectId selectId) {
 		selectGacha.setSelectId(selectId.selectId);
 	}
 	
 	record SelectId(int selectId) {}
 	
 	@MessageMapping("/gacha/count/change")
-	void changeCount(@Payload ChangeId changeId) {
+	public void changeCount(@Payload ChangeId changeId) {
 		selectGacha.setGachaCount(changeId.id);
 	}
 	
 	record ChangeId(int id) {}
 	
 	@MessageMapping("/gacha/timer/stop")
-	void endTimer() {
+	public void endTimer() {
 		timerStop();
 		autoRotate.timerStop();
 	}
