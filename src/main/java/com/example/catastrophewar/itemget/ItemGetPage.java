@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
-import com.example.defaultdata.DefaultEnum;
 import com.example.defaultdata.Gacha;
 import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.other.OtherData;
@@ -29,7 +28,6 @@ public class ItemGetPage extends Timer{
 	private final HandleMotion handleMotion;
 	private final FallBallMotion fallBallMotion;
 	private final OpenBallMotion openBallMotion;
-	private GachaCount gachaCount;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
@@ -38,7 +36,6 @@ public class ItemGetPage extends Timer{
 		openBallMotion = createOpenBallMotion(scheduler);
 		fallBallMotion = createfallBallMotion(scheduler);
 		handleMotion = createHandleMotion(scheduler);
-		gachaCount = GachaCount.TEN;
 	}
 	
 	SelectGacha createSelectGacha(){
@@ -66,11 +63,11 @@ public class ItemGetPage extends Timer{
 		messaging.convertAndSend("/topic/gacha/data", createData());
 	}
 	
-	GachaData createData(){
-		return new GachaData(createGachaCount(), gachaCount.getId(), createImageLink());
+	DefaultGachaData createData(){
+		return new DefaultGachaData(createGachaCount(), selectGacha.getGachaCountId(), createImageLink());
 	}
 	
-	record GachaData(List<String> gachaCount, int id, GachaImageLink links) {};
+	record DefaultGachaData(List<String> gachaCount, int id, GachaImageLink links) {};
 	
 	List<String> createGachaCount(){
 		return Stream.of(GachaCount.values()).map(this::gachaCountComment).toList();
@@ -189,7 +186,7 @@ public class ItemGetPage extends Timer{
 	
 	@MessageMapping("/gacha/count/change")
 	void changeCount(@Payload ChangeId changeId) {
-		gachaCount = DefaultEnum.getEnum(GachaCount.values(), changeId.id);
+		selectGacha.setGachaCount(changeId.id);
 	}
 	
 	record ChangeId(int id) {}
