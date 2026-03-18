@@ -1,0 +1,11 @@
+.toppage-item {
+	bottom: 2%;
+	left: 0%;
+	height: 10%;
+	width: 100%;
+}
+
+.toppage-item button {
+	height: 100%;
+	width: 20%;
+}

@@ -1,0 +1,24 @@
+@import "base.css";
+@import "app/app.css";
+@import "gacha/gacha.css";
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	background-color: white;
+	color: black;
+}
+
+.canvas-container{
+	position: relative;
+	display: inline-block;
+}
+
+.main-canvas {
+	border: 2px solid rgb(0, 0, 0);
+	background-color: rgb(240, 170, 80);
+	display: block;
+}
