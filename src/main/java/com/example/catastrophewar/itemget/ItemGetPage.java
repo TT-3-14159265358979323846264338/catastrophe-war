@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Timer;
+import com.example.defaultdata.Core;
 import com.example.defaultdata.Gacha;
 import com.example.defaultdata.GachaCount;
+import com.example.defaultdata.Weapon;
 import com.example.defaultdata.other.OtherData;
 
 @RestController
@@ -186,6 +188,13 @@ public class ItemGetPage extends Timer{
 	}
 	
 	record SelectId(int selectId) {}
+	
+	@GetMapping("/api/gacha/detail")
+	public Detail sendDetail() {
+		return new Detail(selectGacha.getCoreLineup(), selectGacha.getCoreRatio(), selectGacha.getWeaponLineup(), selectGacha.getWeaponRatio());
+	}
+	
+	record Detail(List<Core> coreLineup, List<Double> coreRatio, List<Weapon> weaponLineup, List<Double> weaponRatio) {}
 	
 	@MessageMapping("/gacha/count/change")
 	public void changeCount(@Payload ChangeId changeId) {
