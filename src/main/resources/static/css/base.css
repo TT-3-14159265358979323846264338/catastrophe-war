@@ -33,13 +33,16 @@
 }
 
 .default-scroll-list{
-	list-style: none;
+	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
 	font-size: 30px;
+	white-space: pre;
+	list-style: none;
 	padding: 10px;
 	margin: 0;
 }
 
 .default-scroll-list li{
+	display: flex;
 	border-bottom: 2px solid rgb(192, 192, 192);
 	cursor: pointer;
 }
@@ -54,4 +57,14 @@
 	pointer-events: none;
 	user-select: none;
 	opacity: 0.6;
+}
+
+.right-aligned{
+	display: inline-block;
+	text-align: right;
+}
+
+.left-aligned{
+	display: inline-block;
+	text-align: left;
 }

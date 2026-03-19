@@ -1,6 +1,8 @@
 @import "base.css";
 @import "app/app.css";
 @import "gacha/gacha.css";
+@import "gacha/gacha-detail.css";
+
 body {
 	margin: 0;
 	padding: 0;
