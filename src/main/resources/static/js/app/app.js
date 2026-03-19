@@ -1,5 +1,5 @@
 import {gacha} from '../gacha/gacha.js';
-import {rotateDraw} from '../editImage.js';
+import {rotateDraw} from '../edit-image.js';
 
 const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
