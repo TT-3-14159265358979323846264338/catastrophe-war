@@ -47,10 +47,9 @@ function addElement(elementId, lineup, ratioLineup){
 function addDetailList(id, leftComment, rightComment){
 	addList(addList => {
 		addList.id = id;
-		addList.innerHTML = `
-			<span class="left-aligned">${leftComment}</span>
-			<span class="right-aligned">${rightComment}%</span>
-		`;
+		addList.innerHTML = 
+			`<span class="left-aligned">${leftComment}</span>
+			<span class="right-aligned">${rightComment}%</span>`;
 	});
 }
 
