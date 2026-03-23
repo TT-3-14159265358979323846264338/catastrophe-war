@@ -2,6 +2,7 @@
 @import "app/app.css";
 @import "gacha/gacha.css";
 @import "gacha/gacha-detail.css";
+@import "status/status.css";
 
 body {
 	margin: 0;

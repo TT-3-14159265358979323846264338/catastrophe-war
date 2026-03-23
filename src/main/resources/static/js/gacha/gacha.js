@@ -1,6 +1,6 @@
 import {topRepaintStart} from '../app/app.js';
 import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from '../edit-image.js';
-import {gachaDetailPage} from '../gacha/gacha-detail.js'
+import {gachaDetailPage} from './gacha-detail.js'
 
 const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');

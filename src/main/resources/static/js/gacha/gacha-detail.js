@@ -1,9 +1,11 @@
-import {endGacha} from '../gacha/gacha.js'
+import {endGacha} from './gacha.js'
+import {weaponLink, coreLink, status} from '../status/status.js'
 
 const detailList = document.getElementById("gacha-detail-list");
 const returnButton = document.getElementById("go-to-gacha-from-gacha-detail");
 const coreId = "コア";
 const weaponId = "武器";
+const noId = "no id";
 
 export async function gachaDetailPage(){
 	try{
@@ -31,7 +33,7 @@ function initialize(data){
 }
 
 function addTotalRatio(elementId, ratioLineup){
-	addDetailList(elementId, `【${elementId}】`, totalRatio(ratioLineup));
+	addDetailList(noId, noId, `【${elementId}】`, totalRatio(ratioLineup));
 }
 
 function totalRatio(ratioLineup){
@@ -40,13 +42,14 @@ function totalRatio(ratioLineup){
 
 function addElement(elementId, lineup, ratioLineup){
 	for(let i = 0; i < lineup.length; i++){
-		addDetailList(`${elementId}${lineup[i].id}`, lineup[i].label.name, ratioLineup[i].toFixed(2));
+		addDetailList(elementId, lineup[i].id, lineup[i].label.name, ratioLineup[i].toFixed(2));
 	}
 }
 
-function addDetailList(id, leftComment, rightComment){
+function addDetailList(elementId, id, leftComment, rightComment){
 	addList(addList => {
-		addList.id = id;
+		addList.dataset.elementId = elementId;
+		addList.dataset.id = id;
 		addList.innerHTML = 
 			`<span class="left-aligned">${leftComment}</span>
 			<span class="right-aligned">${rightComment}%</span>`;
@@ -69,8 +72,12 @@ function detailListAction(e){
 	if(!target){
 		return;
 	}
-	const selectId = target.id;
-	
+	const id = target.dataset.id;
+	if(!id || id === noId){
+		return;
+	}
+	const link = target.dataset.elementId === coreId? coreLink: weaponLink;
+	status(link, id);
 }
 
 function returnButtonAction(){
