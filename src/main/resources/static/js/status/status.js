@@ -54,20 +54,24 @@ function changeWeapon(weaponElement, leftWeaponStatus, rightWeaponStatus){
 }
 
 function changeUnit(unitElement, unitStatus){
-	
+	const span = document.querySelectorAll("#core-status span");
+	const halfLength = span.length / 2;
+	for(let i = 0; i < halfLength; i++){
+		span[i].textContent = unitElement[i];
+		span[i + halfLength].textContent = unitStatus[i];
+	}
 }
 
 function changeCut(cutElement, cutStatus){
-	
+	const span = document.querySelectorAll("#cut-status span");
+	const quarterLength = span.length / 4;
+	for(let i = 0; i < quarterLength; i++){
+		span[i].textContent = cutElement[i];
+		span[i + quarterLength].textContent = cutStatus[i];
+		span[i + quarterLength * 2].textContent = cutElement[i + quarterLength];
+		span[i + quarterLength * 3].textContent = cutStatus[i + quarterLength];
+	}
 }
-
-
-
-
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById("go-to-original-from-status").addEventListener('click', returnButtonAction);
