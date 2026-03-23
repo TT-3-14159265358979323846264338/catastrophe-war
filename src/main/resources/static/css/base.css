@@ -10,7 +10,14 @@
 	z-index: 10;
 }
 
-.default-menu-button button{
+.default-label span{
+	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	background-color:rgb(240, 240, 240);
+}
+
+.default-button button{
 	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
 	font-size: 30px;
 	font-weight: bold;
@@ -20,7 +27,7 @@
 	cursor: pointer;
 }
 
-.default-menu-button button:active {
+.default-button button:active {
 	border-color: rgb(192, 192, 192) rgb(255, 255, 200) rgb(255, 255, 200) rgb(192, 192, 192);
 	transform: translate(3px, 3px);
 }

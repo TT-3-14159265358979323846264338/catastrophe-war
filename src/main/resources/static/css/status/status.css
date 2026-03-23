@@ -1,6 +1,57 @@
 .status-page{
+	flex-direction: column;
+	align-items: center;
 	inset: 0;
 	box-sizing: border-box;
+}
+
+.status-container{
+	height: 100%;
+	width: 50%;
+}
+
+.status-container span{
+	font-size: 20px;
+	display: block;
+}
+
+.long-width span{
+	height: 100%;
+}
+
+.weapon-status-container{
+	width: 50%;
+}
+
+.weapon-container{
+	display: flex;
+	align-items: flex-start;
+	height: 60%;
+	width: 100%;
+}
+
+.unit-container{
+	width: 100%;
+}
+
+.status-image{
+	height: 100%;
+	width: 50%;
+	background-color:rgb(240, 240, 240);
+	flex-shrink: 0;
+}
+
+.status-gird{
+	display: grid;
+	grid-auto-flow: column;
+}
+
+.weapon-grid{
+	grid-template-rows: repeat(9, auto);
+}
+
+.unit-grid{
+	grid-template-rows: repeat(5, auto);
 }
 
 .status-button{
