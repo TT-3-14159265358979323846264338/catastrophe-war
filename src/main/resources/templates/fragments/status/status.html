@@ -2,29 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="statusPage" class="status-page main-canvas default-container default-label default-button hidden">
 	<div class="status-item-container default-container">
-		<div class="status-container">
-			<span class="long-width">【名称】</span>
-			<span id="element-name" class="long-width"></span>
-			<div class="weapon-container">
-				<div class="status-image"></div>
-				<div class="weapon-status-container">
-					<span class="long-width">【武器ステータス】</span>
-					<div id="weapon-status" class="weapon-grid status-gird">
-						<span th:each="i : ${#numbers.sequence(1, 27)}"></span>
+		<div class="status-left-container">
+			<div class="status-part-container">
+				<span class="long-width">【名称】</span>
+				<span id="status-element-name" class="status-long-width"></span>
+			</div>
+			<div class="status-weapon-container">
+				<div class="status-image">
+					<img th:each="i : ${#numbers.sequence(0, 2)}" class="status-image-style" style="display: none;">
+				</div>
+				<div class="status-weapon-detail-container">
+					<span class="status-long-width">【武器ステータス】</span>
+					<div id="weapon-status" class="status-weapon-grid status-gird">
+						<span th:each="i : ${#numbers.sequence(0, 26)}" 
+								th:class="${(i / 9) == 0 || i == 9 || i == 18} ? 'status-color-lightgray' : 'status-color-yellow'"></span>
 					</div>
 				</div>
 			</div>
-			<span class="long-width">【ユニットステータス】</span>
-			<div class="unit-container">
-				<div id="core-status" class="core-gird unit-grid status-gird">
-					<span th:each="i : ${#numbers.sequence(1, 12)}"></span>
-				</div>
-				<div id="cut-status" class="cut-gird unit-grid status-gird">
-					<span th:each="i : ${#numbers.sequence(1, 24)}"></span>
+			<div class="status-part-container">
+				<span class="status-long-width">【ユニットステータス】</span>
+				<div class="status-unit-container">
+					<div id="core-status" class="status-core-gird status-unit-grid status-gird">
+						<span th:each="i : ${#numbers.sequence(0, 11)}" 
+								th:class="${(i / 6) == 0} ? 'status-color-lightgray' : 'status-color-yellow'"></span>
+					</div>
+					<div id="cut-status" class="status-cut-gird status-unit-grid status-gird">
+						<span th:each="i : ${#numbers.sequence(0, 23)}" 
+								th:class="${(i / 6) % 2 == 0} ? 'status-color-lightgray' : 'status-color-yellow'"></span>
+					</div>
 				</div>
 			</div>
 		</div>
-		<button id="go-to-original-from-status" class="status-button" type="button">戻る</button>
+		<div class="status-right-container">
+			<div class="status-explanation-container">
+				<span th:each="i : ${#numbers.sequence(0, 5)}" 
+						th:class="${i % 2 == 0} ? 'status-explanation-item status-color-lightgray' : 'status-explanation status-color-yellow'"></span>
+			</div>
+			<button id="go-to-original-from-status" class="status-button" type="button">戻る</button>
+		</div>
 	</div>
 </div>
 </html>
