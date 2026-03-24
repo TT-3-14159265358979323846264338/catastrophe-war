@@ -20,14 +20,16 @@ public class WeaponStatus extends ElementStatus{
 	@GetMapping("/api/status/weapon/{id}")
 	public Status sendStatus(@PathVariable int id) {
 		WeaponData select = DefaultEnum.getLabel(Weapon.values(), id);
-		return new Status(select.getName(),
+		return new Status(defaultName(select.getRarity(), select.getName()),
+				List.of(select.getImageName()),
 				getLabel(),
 				getWeaponStatus(select),
 				null,
 				defaultLabel(WeaponUnit.values()),
 				select.getUnitStatus(),
 				cutLabel(),
-				addPercent(select.getCutStatus()));
+				addPercent(select.getCutStatus()),
+				List.of(select.getExplanation()));
 	}
 	
 	List<String> getLabel(){

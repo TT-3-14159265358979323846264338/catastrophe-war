@@ -10,7 +10,7 @@ public abstract class WeaponData {
 	/**
 	 * 武器の名称。
 	 * @return 武器の名称を返却する。<br>
-	 * 			最大字数は全角で11字。
+	 * 			最大字数は全角で13字。
 	 */
 	public abstract String getName();
 	
@@ -18,7 +18,7 @@ public abstract class WeaponData {
 	 * 武器の説明。<br>
 	 * 所有するバフ・デバフを記載する。
 	 * @return 武器の説明を返却する。<br>
-	 * 			最大字数は全角で39字。
+	 * 			最大字数は全角で84字。
 	 */
 	public abstract String getExplanation();
 	
@@ -72,7 +72,7 @@ public abstract class WeaponData {
 	
 	/**
 	 * 武器属性コード。
-	 * @return 武器に付与される全ての属性コードを返却する。コードは{@link defaultdata.Element Element}参照。攻撃しない時は空のArrays.asList()を返却する。
+	 * @return 武器に付与される全ての属性コードを返却する。最大数は3種類まで。コードは{@link defaultdata.Element Element}参照。攻撃しない時は空のArrays.asList()を返却する。
 	 */
 	public abstract List<Element> getElement();
 	

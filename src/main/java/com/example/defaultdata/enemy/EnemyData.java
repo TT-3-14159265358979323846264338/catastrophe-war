@@ -10,7 +10,7 @@ public abstract class EnemyData {
 	/**
 	 * 敵の名称。
 	 * @return 敵の名称を返却する。<br>
-	 * 			最大字数は全角で14字。
+	 * 			最大字数は全角で47字。
 	 */
 	public abstract String getName();
 	
@@ -18,7 +18,7 @@ public abstract class EnemyData {
 	 * 敵の説明。<br>
 	 * 所有するバフ・デバフを記載する。
 	 * @return 敵の説明を返却する。<br>
-	 * 			最大字数は全角で39字。
+	 * 			最大字数は全角で84字。
 	 */
 	public abstract String getExplanation();
 	
@@ -60,7 +60,7 @@ public abstract class EnemyData {
 	
 	/**
 	 * 武器属性コード。
-	 * @return 武器に付与される全ての属性コードを返却する。コードは{@link defaultdata.Element Element}参照。
+	 * @return 武器に付与される全ての属性コードを返却する。最大数は3種類まで。コードは{@link defaultdata.Element Element}参照。
 	 */
 	public abstract List<Element> getElement();
 	

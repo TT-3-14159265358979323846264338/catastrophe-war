@@ -18,14 +18,16 @@ public class CoreStatus extends ElementStatus{
 	@GetMapping("/api/status/core/{id}")
 	public Status sendStatus(@PathVariable int id) {
 		CoreData select = DefaultEnum.getLabel(Core.values(), id);
-		return new Status(select.getName(),
+		return new Status(defaultName(select.getRarity(), select.getName()),
+				List.of(select.getImageName()),
 				defaultLabel(CoreAtack.values()),
 				addTimes(select.getWeaponStatus()),
 				null,
 				defaultLabel(CoreUnit.values()),
 				addTimes(select.getUnitStatus()),
 				cutLabel(),
-				addPercent(select.getCutStatus()));
+				addPercent(select.getCutStatus()),
+				List.of(select.getExplanation()));
 	}
 	
 	List<String> addTimes(List<?> elements){

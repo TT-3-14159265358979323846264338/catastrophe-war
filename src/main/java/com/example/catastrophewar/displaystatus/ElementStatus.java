@@ -10,13 +10,19 @@ abstract class ElementStatus {
 	abstract public Status sendStatus(int id);
 	
 	protected record Status(String name,
+			List<String> imageLink,
 			List<?> weaponElement, 
 			List<?> leftWeaponStatus, 
 			List<?> rightWeaponStatus,
 			List<?> unitElement, 
 			List<?> unitStatus, 
 			List<String> cutElement, 
-			List<String> cutStatus) {}
+			List<String> cutStatus, 
+			List<String> explanation) {}
+	
+	protected String defaultName(int rarity, String name) {
+		return String.format("★%d %s", rarity, name);
+	}
 	
 	protected <U extends DefaultEnum<String>> List<String> defaultLabel(U[] elements){
 		return defaultLabelStream(elements).toList();

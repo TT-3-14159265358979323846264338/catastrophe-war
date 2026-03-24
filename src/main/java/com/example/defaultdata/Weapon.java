@@ -1,7 +1,9 @@
 package com.example.defaultdata;
 
 import com.example.defaultdata.weapon.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Weapon implements DefaultEnum<WeaponData>{
 	SWORD(0, new No0000JapaneseSword()),
 	BOW(1, new No0001Bow()),

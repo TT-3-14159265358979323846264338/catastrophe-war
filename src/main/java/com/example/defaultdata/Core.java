@@ -1,7 +1,9 @@
 package com.example.defaultdata;
 
 import com.example.defaultdata.core.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Core implements DefaultEnum<CoreData>{
 	NORMAL_CORE(0, new No0000NormalCore()),
 	ATACK_CORE(1, new No0001NormalAtackCore()),

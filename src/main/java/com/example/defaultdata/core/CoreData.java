@@ -6,7 +6,7 @@ public abstract class CoreData {
 	/**
 	 * コアの名称。
 	 * @return コアの名称を返却する。<br>
-	 * 			最大字数は全角で11字。
+	 * 			最大字数は全角で13字。
 	 */
 	public abstract String getName();
 	
@@ -14,7 +14,7 @@ public abstract class CoreData {
 	 * コアの説明。<br>
 	 * 所有するバフ・デバフを記載する。
 	 * @return コアの説明を返却する。<br>
-	 * 			最大字数は全角で39字。
+	 * 			最大字数は全角で84字。
 	 */
 	public abstract String getExplanation();
 	
