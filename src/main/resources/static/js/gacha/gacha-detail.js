@@ -41,9 +41,7 @@ function totalRatio(ratioLineup){
 }
 
 function addElement(elementId, lineup, ratioLineup){
-	for(let i = 0; i < lineup.length; i++){
-		addDetailList(elementId, lineup[i].id, lineup[i].label.name, ratioLineup[i].toFixed(2));
-	}
+	lineup.forEach((lineupElement, i) => addDetailList(elementId, lineupElement.id, lineupElement.label.name, ratioLineup[i].toFixed(2)));
 }
 
 function addDetailList(elementId, id, leftComment, rightComment){

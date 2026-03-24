@@ -13,42 +13,50 @@ export async function status(link, id){
 }
 
 function initialize(data){
+	drawImage(data.imageLink);
 	changeName(data.name);
 	changeWeapon(data.weaponElement, data.leftWeaponStatus, data.rightWeaponStatus);
 	changeUnit(data.unitElement, data.unitStatus)
 	changeCut(data.cutElement, data.cutStatus)
-	
-	
-	
-	
-	
-	
+	changeExplanation(data.explanation);
+}
+
+function drawImage(imageLink){
+	const imageArea = document.querySelectorAll(".status-image img");
+	imageArea.forEach((image, i) => {
+		if(imageLink[i]){
+			image.src = imageLink[i];
+			image.style.display = 'block';
+		}else{
+			image.style.display = 'none';
+		}
+	});
 }
 
 function changeName(name){
-	document.getElementById("element-name").textContent = name;
+	document.getElementById("status-element-name").textContent = name;
 }
 
 function changeWeapon(weaponElement, leftWeaponStatus, rightWeaponStatus){
 	const span = document.querySelectorAll("#weapon-status span");
-	span[0].textContent = "　";
+	span[0].textContent = branck();
 	for(let i = 1; i < 9; i++){
-		span[i].textContent = weaponElement[i - 1]? weaponElement[i - 1]: "　";
+		span[i].textContent = weaponElement[i - 1]? weaponElement[i - 1]: branck();
 	}
 	for(let i = 10; i < 18; i++){
-		span[i].textContent = leftWeaponStatus[i - 10]? leftWeaponStatus[i - 10]: "　";
+		span[i].textContent = leftWeaponStatus[i - 10]? leftWeaponStatus[i - 10]: branck();
 	}
 	if(rightWeaponStatus){
 		span[9].textContent = "左武器";
 		span[18].textContent = "右武器";
 		for(let i = 19; i < span.length; i++){
-			span[i].textContent = rightWeaponStatus[i - 19]? rightWeaponStatus[i - 19]: "　";
+			span[i].textContent = rightWeaponStatus[i - 19]? rightWeaponStatus[i - 19]: branck();
 		}
 	}else{
 		span[9].textContent = "武器性能";
-		span[18].textContent = "　";
+		span[18].textContent = branck();
 		for(let i = 19; i < span.length; i++){
-			span[i].textContent = "　";
+			span[i].textContent = branck();
 		}
 	}
 }
@@ -71,6 +79,26 @@ function changeCut(cutElement, cutStatus){
 		span[i + quarterLength * 2].textContent = cutElement[i + quarterLength];
 		span[i + quarterLength * 3].textContent = cutStatus[i + quarterLength];
 	}
+}
+
+function changeExplanation(explanation){
+	const span = document.querySelectorAll(".status-explanation-container span");
+	if(explanation[1]){
+		span[0].textContent = "右武器";
+		span[2].textContent = "コア";
+		span[4].textContent = "左武器";
+	}else{
+		span[0].textContent = "能力/説明";
+		span[2].textContent = branck();
+		span[4].textContent = branck();
+	}
+	for(let i = 0; i < span.length / 2; i++){
+		span[i * 2 + 1].textContent = explanation[i]? explanation[i]: branck();
+	}
+}
+
+function branck(){
+	return "　";
 }
 
 document.addEventListener('DOMContentLoaded', () => {
