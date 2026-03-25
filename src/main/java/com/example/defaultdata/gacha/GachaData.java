@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 import com.example.defaultdata.Core;
 import com.example.defaultdata.Weapon;
-import com.example.savedata.SaveGameProgress;
+import com.example.savedata.olddata.SaveGameProgress;
 
 public abstract class GachaData {
 	/**

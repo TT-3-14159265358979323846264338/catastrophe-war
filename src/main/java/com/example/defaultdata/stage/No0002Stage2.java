@@ -8,12 +8,12 @@ import java.util.List;
 import com.example.defaultdata.Difficulty;
 import com.example.defaultdata.Enemy;
 import com.example.defaultdata.Facility;
+import com.example.savedata.olddata.SaveGameProgress;
 import com.example.catastrophewar.battle.BattleEnemy;
 import com.example.catastrophewar.battle.BattleFacility;
 import com.example.catastrophewar.battle.BattleUnit;
 import com.example.catastrophewar.battle.GameData;
 import com.example.catastrophewar.battle.GameTimer;
-import com.example.savedata.SaveGameProgress;
 
 public class No0002Stage2 extends StageData{
 	@Override

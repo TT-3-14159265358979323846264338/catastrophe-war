@@ -1,6 +1,6 @@
 package com.example.defaultdata.gacha;
 
-import com.example.savedata.SaveGameProgress;
+import com.example.savedata.olddata.SaveGameProgress;
 
 public class No0003WeaponGachaRarity1 extends GachaData{
 	@Override

@@ -14,8 +14,8 @@ import com.example.catastrophewar.battle.BattleFacility;
 import com.example.catastrophewar.battle.BattleUnit;
 import com.example.catastrophewar.battle.GameData;
 import com.example.catastrophewar.battle.GameTimer;
-import com.example.savedata.SaveGameProgress;
-import com.example.savedata.SaveItem;
+import com.example.savedata.olddata.SaveGameProgress;
+import com.example.savedata.olddata.SaveItem;
 
 public abstract class StageData {
 	/**
