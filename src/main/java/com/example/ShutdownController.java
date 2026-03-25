@@ -1,4 +1,4 @@
-package com.example.catastrophewar;
+package com.example;
 
 import java.util.concurrent.CompletableFuture;
 

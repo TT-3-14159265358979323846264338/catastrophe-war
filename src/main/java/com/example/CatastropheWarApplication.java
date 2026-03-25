@@ -1,4 +1,4 @@
-package com.example.catastrophewar;
+package com.example;
 
 import java.awt.Desktop;
 import java.net.URI;
