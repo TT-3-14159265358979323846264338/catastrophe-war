@@ -2,6 +2,7 @@ package com.example.savedata;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.LongStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -89,9 +90,7 @@ public class InitializeSQL implements CommandLineRunner{
 	}
 	
 	<T extends JpaRepository<U, Integer>, U extends BaseSQL> void addNewUnitSQL(T repository, Supplier<U> supplier, int count) {
-		for(int i = 0; i < count - repository.count(); i++) {
-			addUnitSQL(repository, supplier, NO_DATA);
-		}
+		LongStream.range(0, count - repository.count()).forEach(_ -> addUnitSQL(repository, supplier, NO_DATA));
 	}
 	
 	void initializeItemSQL(){
@@ -117,11 +116,11 @@ public class InitializeSQL implements CommandLineRunner{
 	}
 	
 	void initializeProgressSQL(){
-		for(int i = 0; i < Stage.values().length - progressRepository.count(); i++) {
+		LongStream.range(0, Stage.values().length - progressRepository.count()).forEach(_ -> {
 			ProgressSQL sql = createProgressSQL();
 			sql.initialize();
 			progressRepository.save(sql);
-		}
+		});
 	}
 	
 	ProgressSQL createProgressSQL() {
