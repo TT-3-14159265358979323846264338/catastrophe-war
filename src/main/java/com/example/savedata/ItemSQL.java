@@ -14,5 +14,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class ItemSQL extends BaseSQL{
+public class ItemSQL extends BaseSQL{@Override
+	protected Integer maxNumber() {
+		return 999999999;
+	}
 }

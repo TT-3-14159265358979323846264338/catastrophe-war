@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "all_composition")
@@ -22,7 +24,8 @@ import lombok.NoArgsConstructor;
 public class CompositionSQL {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition = "INT AUTO_INCREMENT")
+	@Column(columnDefinition = "INT AUTO_INCREMENT", updatable = false)
+	@Setter(AccessLevel.NONE)
 	private Integer id;
 	
 	@Column(length = 20, nullable = false)

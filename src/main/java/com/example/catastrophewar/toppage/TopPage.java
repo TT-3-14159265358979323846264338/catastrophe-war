@@ -20,14 +20,14 @@ import com.example.defaultdata.other.OtherData;
 
 @RestController
 public class TopPage extends Timer{
-	@Autowired
-	private SimpMessagingTemplate messaging;
-	
 	private final FallMotion[] fallMotion;
 	private final FinalMotion[] finalMotion;
 	private final MainTimer mainTimer;
 	private final List<Integer> randamList;
 	private final int NUMBER = 20;
+	
+	@Autowired
+	private SimpMessagingTemplate messaging;
 	
 	TopPage(ScheduledExecutorService scheduler){
 		super(scheduler);

@@ -15,6 +15,15 @@ import com.example.defaultdata.Weapon;
 
 @Component
 public class InitializeSQL implements CommandLineRunner{
+	public static final int MEDAL_INDEX = 1;
+	
+	private final int COMPOSITION_NUMBER = 20;
+	private final int SELECT_NUMBER = 2;
+	private final List<Integer> DEFAULT_WEAPON_NUMBER = List.of(2, 2);
+	private final List<Integer> DEFAULT_CORE_NUMBER = List.of(8);
+	private final int DEFAULT_MEDAL = 1000;
+	private final int NO_DATA = 0;
+
 	@Autowired
 	private CompositionRepository compositionRepository;
 	
@@ -33,13 +42,6 @@ public class InitializeSQL implements CommandLineRunner{
 	@Autowired
 	private ProgressRepository progressRepository;
 	
-	private final int COMPOSITION_NUMBER = 20;
-	private final int SELECT_NUMBER = 2;
-	private final List<Integer> DEFAULT_WEAPON_NUMBER = List.of(2, 2);
-	private final List<Integer> DEFAULT_CORE_NUMBER = List.of(8);
-	private final int DEFAULT_MEDAL = 1000;
-	private final int NO_DATA = 0;
-
 	@Override
 	public void run(String... args) throws Exception {
 		initializeProgressSQL();

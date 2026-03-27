@@ -12,6 +12,7 @@ import com.example.defaultdata.gacha.GachaData;
 class SelectGacha {
 	private Gacha gacha;
 	private GachaCount gachaCount;
+	private int medal;
 	
 	SelectGacha(){
 		gachaCount = GachaCount.TEN;
@@ -45,7 +46,19 @@ class SelectGacha {
 		return gachaCount.getId();
 	}
 	
+	int getUsedMedal() {
+		return gachaCount.getUsedMedal();
+	}
+	
+	boolean canPlayGacha() {
+		return getUsedMedal() <= medal;
+	}
+	
 	void setGachaCount(int id) {
 		gachaCount = DefaultEnum.getEnum(GachaCount.values(), id);
+	}
+	
+	void setMedal(int medal) {
+		this.medal = medal;
 	}
 }

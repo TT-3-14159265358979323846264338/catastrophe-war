@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,17 +22,23 @@ import com.example.defaultdata.Gacha;
 import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.Weapon;
 import com.example.defaultdata.other.OtherData;
+import com.example.savedata.InitializeSQL;
+import com.example.savedata.ItemRepository;
+import com.example.savedata.ItemSQL;
 
 @RestController
 public class ItemGetPage extends Timer{
-	@Autowired
-	private SimpMessagingTemplate messaging;
-	
 	private final SelectGacha selectGacha;
 	private final AutoRotate autoRotate;
 	private final HandleMotion handleMotion;
 	private final FallBallMotion fallBallMotion;
 	private final OpenBallMotion openBallMotion;
+	
+	@Autowired
+	private SimpMessagingTemplate messaging;
+	
+	@Autowired
+	ItemRepository itemRepository;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
@@ -68,10 +75,19 @@ public class ItemGetPage extends Timer{
 	}
 	
 	DefaultGachaData createData(){
-		return new DefaultGachaData(createGachaCount(), selectGacha.getGachaCountId(), createImageLink());
+		return new DefaultGachaData(medalNumber(), createGachaCount(), selectGacha.getGachaCountId(), createImageLink());
 	}
 	
-	record DefaultGachaData(List<String> gachaCount, int id, GachaImageLink links) {};
+	record DefaultGachaData(int medal, List<String> gachaCount, int id, GachaImageLink links) {};
+	
+	@Transactional(readOnly = true)
+	public int medalNumber() {
+		return getItemSQL().getNumber();
+	}
+	
+	ItemSQL getItemSQL() {
+		return itemRepository.findById(InitializeSQL.MEDAL_INDEX).orElseThrow(() -> new RuntimeException("メダル数を取り込めない"));
+	}
 	
 	List<String> createGachaCount(){
 		return Stream.of(GachaCount.values()).map(this::gachaCountComment).toList();
@@ -107,6 +123,7 @@ public class ItemGetPage extends Timer{
 	@MessageMapping("/gacha/timer/start")
 	@SendTo("/topic/gacha/list")
 	public Gacha[] timerStart() {
+		selectGacha.setMedal(medalNumber());
 		timerStart(this::repaint);
 		autoRotate.timerStart();
 		return createGachaList();
@@ -133,7 +150,7 @@ public class ItemGetPage extends Timer{
 	}
 	
 	boolean canPlayGacha() {
-		return !isPlayingGacha();
+		return !isPlayingGacha() && selectGacha.canPlayGacha();
 	}
 	
 	boolean isPlayingGacha() {
@@ -161,18 +178,28 @@ public class ItemGetPage extends Timer{
 		messaging.convertAndSend("/topic/gacha/play", "");
 	}
 	
-	void endGacha() {
-		messaging.convertAndSend("/topic/gacha/end", "");
+	@Transactional
+	public void endGacha() {
+		ItemSQL itemSQL = getItemSQL();
+		int newMedal = itemSQL.getNumber() - selectGacha.getUsedMedal();
+		itemSQL.setNumber(newMedal);
+		itemRepository.save(itemSQL);
+		selectGacha.setMedal(newMedal);
+		messaging.convertAndSend("/topic/gacha/end", newMedal);
 	}
 	
 	@MessageMapping("/gacha/mouse/pressed")
 	public void mousePressed(@Payload ClickPoint clickPoint) {
-		handleMotion.mousePressed(clickPoint.x, clickPoint.y);
+		if(selectGacha.canPlayGacha()) {
+			handleMotion.mousePressed(clickPoint.x, clickPoint.y);
+		}
 	}
 	
 	@MessageMapping("/gacha/mouse/dragged")
 	public void mouseDragged(@Payload ClickPoint clickPoint) {
-		handleMotion.mouseDragged(clickPoint.x, clickPoint.y);
+		if(selectGacha.canPlayGacha()) {
+			handleMotion.mouseDragged(clickPoint.x, clickPoint.y);
+		}
 	}
 	
 	@MessageMapping("/gacha/mouse/released")
