@@ -1,13 +1,20 @@
 .gacha-item{
 	flex-direction: column;
-	top: 10%;
+	top: 7%;
 	left: 69%;
 	height: 85%;
 	width: 30%;
 }
 
+.gacha-medal{
+	display: block;
+	height: 10%;
+	width: 100%;	
+	flex-shrink: 0;
+}
+
 .gacha-scroll{
-	height: 75%;
+	height: 70%;
 }
 
 .gacha-lower{

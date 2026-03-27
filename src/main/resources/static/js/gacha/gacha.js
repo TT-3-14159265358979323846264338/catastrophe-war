@@ -6,6 +6,7 @@ const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
 let stompClient;
 let subscription = [];
+const medalLabel = document.getElementById("gacha-medal-label");
 const gachaScroll = document.querySelector('.gacha-scroll');
 const gachaList = document.getElementById("gacha-list");
 const detailButton = document.getElementById("gacha-detail");
@@ -48,12 +49,17 @@ async function initialize(){
 	try{
 		const response = await fetch('/api/gacha/data');
 		const data = await response.json();
+		inputMedal(data.medal);
 		id = data.id
 		inputGachaData(data.gachaCount);
 		inputImage(data.links);
 	}catch (e) {
 		console.error("ガチャ画面の初期化失敗:", e);
 	}
+}
+
+function inputMedal(medal){
+	medalLabel.textContent = `メダル数: ${medal}`;
 }
 
 function inputGachaData(countText){
@@ -115,7 +121,12 @@ function playGacha(){
 	removeMouseListener();
 }
 
-export function endGacha(){
+function endGacha(data){
+	inputMedal(JSON.parse(data.body));
+	ableToPlayGacha();
+}
+
+export function ableToPlayGacha(){
 	gachaScroll.classList.remove('disable-scroll');
 	switchAllButton(false);
 	addMouseListener();

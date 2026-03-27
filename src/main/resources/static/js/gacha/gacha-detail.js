@@ -1,4 +1,4 @@
-import {endGacha} from './gacha.js'
+import {ableToPlayGacha} from './gacha.js'
 import {weaponLink, coreLink, status} from '../status/status.js'
 
 const detailList = document.getElementById("gacha-detail-list");
@@ -81,7 +81,7 @@ function detailListAction(e){
 function returnButtonAction(){
 	detailList.innerHTML = "";
 	getClassList().add('hidden');
-	endGacha();
+	ableToPlayGacha();
 }
 
 function getClassList(){

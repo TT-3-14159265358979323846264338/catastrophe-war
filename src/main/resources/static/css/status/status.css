@@ -22,13 +22,6 @@
 	width: 70%;
 }
 
-.status-left-container span{
-	text-align: center;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .status-part-container{
 	width: 100%;
 }

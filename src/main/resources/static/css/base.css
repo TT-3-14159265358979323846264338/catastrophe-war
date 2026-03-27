@@ -17,6 +17,13 @@
 	background-color:rgb(240, 240, 240);
 }
 
+.no-rap-label span{
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .default-button button{
 	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
 	font-size: 30px;
