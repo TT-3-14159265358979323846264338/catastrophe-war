@@ -1,6 +1,7 @@
 import {ableToPlayGacha} from './gacha.js'
 import {weaponLink, coreLink, status} from '../status/status.js'
 
+const gachaDetailPageClass = document.querySelector('.gacha-detail-page').classList;
 const detailList = document.getElementById("gacha-detail-list");
 const returnButton = document.getElementById("go-to-gacha-from-gacha-detail");
 const coreId = "コア";
@@ -15,7 +16,7 @@ export async function gachaDetailPage(){
 	}catch (e) {
 		console.error("ガチャ詳細の取得に失敗:", e);
 	}
-	getClassList().remove('hidden');
+	gachaDetailPageClass.remove('hidden');
 }
 
 function initialize(data){
@@ -80,10 +81,6 @@ function detailListAction(e){
 
 function returnButtonAction(){
 	detailList.innerHTML = "";
-	getClassList().add('hidden');
+	gachaDetailPageClass.add('hidden');
 	ableToPlayGacha();
-}
-
-function getClassList(){
-	return document.querySelector('.gacha-detail-page').classList;
 }

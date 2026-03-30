@@ -1,6 +1,9 @@
 export const weaponLink = "weapon";
 export const coreLink = "core";
 
+const statusPageClass = document.querySelector('.status-page').classList;
+const branck = "　";
+
 export async function status(link, id){
 	try{
 		const response = await fetch(`/api/status/${link}/${id}`);
@@ -9,7 +12,7 @@ export async function status(link, id){
 	}catch (e) {
 		console.error("ステータス画面の初期化失敗:", e);
 	}
-	getClassList().remove('hidden');
+	statusPageClass.remove('hidden');
 }
 
 function initialize(data){
@@ -39,24 +42,24 @@ function changeName(name){
 
 function changeWeapon(weaponElement, leftWeaponStatus, rightWeaponStatus){
 	const span = document.querySelectorAll("#weapon-status span");
-	span[0].textContent = branck();
+	span[0].textContent = branck;
 	for(let i = 1; i < 9; i++){
-		span[i].textContent = weaponElement[i - 1]? weaponElement[i - 1]: branck();
+		span[i].textContent = weaponElement[i - 1]? weaponElement[i - 1]: branck;
 	}
 	for(let i = 10; i < 18; i++){
-		span[i].textContent = leftWeaponStatus[i - 10]? leftWeaponStatus[i - 10]: branck();
+		span[i].textContent = leftWeaponStatus[i - 10]? leftWeaponStatus[i - 10]: branck;
 	}
 	if(rightWeaponStatus){
 		span[9].textContent = "左武器";
 		span[18].textContent = "右武器";
 		for(let i = 19; i < span.length; i++){
-			span[i].textContent = rightWeaponStatus[i - 19]? rightWeaponStatus[i - 19]: branck();
+			span[i].textContent = rightWeaponStatus[i - 19]? rightWeaponStatus[i - 19]: branck;
 		}
 	}else{
 		span[9].textContent = "武器性能";
-		span[18].textContent = branck();
+		span[18].textContent = branck;
 		for(let i = 19; i < span.length; i++){
-			span[i].textContent = branck();
+			span[i].textContent = branck;
 		}
 	}
 }
@@ -89,16 +92,12 @@ function changeExplanation(explanation){
 		span[4].textContent = "左武器";
 	}else{
 		span[0].textContent = "能力/説明";
-		span[2].textContent = branck();
-		span[4].textContent = branck();
+		span[2].textContent = branck;
+		span[4].textContent = branck;
 	}
 	for(let i = 0; i < span.length / 2; i++){
-		span[i * 2 + 1].textContent = explanation[i]? explanation[i]: branck();
+		span[i * 2 + 1].textContent = explanation[i]? explanation[i]: branck;
 	}
-}
-
-function branck(){
-	return "　";
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -106,9 +105,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function returnButtonAction(){
-	getClassList().add('hidden');
-}
-
-function getClassList(){
-	return document.querySelector('.status-page').classList;
+	statusPageClass.add('hidden');
 }

@@ -6,9 +6,9 @@ const canvas = document.getElementById('game-display');
 const ctx = canvas.getContext('2d');
 let stompClient;
 let subscription = [];
-const medalLabel = document.getElementById("gacha-medal-label");
-const gachaScroll = document.querySelector('.gacha-scroll');
-const gachaList = document.getElementById("gacha-list");
+const gachaPageClass = document.querySelector('.gacha-item').classList;
+const gachaScrollClass = document.querySelector('.gacha-scroll').classList;
+const gachaList = document.getElementById("gacha-list")
 const detailButton = document.getElementById("gacha-detail");
 const countButton = document.getElementById("gacha-count");
 const returnButton = document.getElementById("go-to-toppage-from-gacha");
@@ -43,6 +43,7 @@ export function gacha(stomp){
 					stompClient.subscribe("/topic/gacha/play", playGacha),
 					stompClient.subscribe("/topic/gacha/end", endGacha));
 	stompClient.publish({destination: "/app/gacha/timer/start"});
+	gachaPageClass.remove('hidden');
 }
 
 async function initialize(){
@@ -59,7 +60,7 @@ async function initialize(){
 }
 
 function inputMedal(medal){
-	medalLabel.textContent = `メダル数: ${medal}`;
+	document.getElementById("gacha-medal-label").textContent = `メダル数: ${medal}`;
 }
 
 function inputGachaData(countText){
@@ -116,7 +117,7 @@ function drawImage(data) {
 }
 
 function playGacha(){
-	gachaScroll.classList.add('disable-scroll');
+	gachaScrollClass.add('disable-scroll');
 	switchAllButton(true);
 	removeMouseListener();
 }
@@ -127,7 +128,7 @@ function endGacha(data){
 }
 
 export function ableToPlayGacha(){
-	gachaScroll.classList.remove('disable-scroll');
+	gachaScrollClass.remove('disable-scroll');
 	switchAllButton(false);
 	addMouseListener();
 }
@@ -226,8 +227,7 @@ function changeCountButtonText(){
 }
 
 function returnButtonAction(_){
-	document.querySelector('.gacha-item').classList.add('hidden');
-	document.querySelector('.toppage-item').classList.remove('hidden');
+	gachaPageClass.add('hidden');
 	topRepaintStart();
 	gachaRepaintStop();
 }

@@ -1,11 +1,22 @@
 .toppage-item {
+	inset: 0;
+	position: absolute;
+}
+
+.toppage-button{
 	bottom: 2%;
 	left: 0%;
 	height: 10%;
 	width: 100%;
 }
 
-.toppage-item button {
+.toppage-button button {
 	height: 100%;
 	width: 20%;
+}
+
+.toppage-item .edit-button{
+	font-size: 15px;
+	height: 8%;
+	width: 15%;
 }

@@ -8,8 +8,7 @@ const stompClient = new StompJs.Client({
 	reconnectDelay: 5000,
 });
 let timerSubscribe;
-const topPage = document.querySelector('.toppage-item');
-const gachaPage = document.querySelector('.gacha-item');
+const topPageClass = document.querySelector('.toppage-item').classList;
 const titleImage = new Image();
 const coreImages = [];
 const TITLE_X = 80;
@@ -42,6 +41,7 @@ export function topRepaintStart(){
 	topRepaintStop();
 	timerSubscribe = stompClient.subscribe('/topic/top/repaint', drawImage);
 	stompClient.publish({destination:"/app/top/timer/start"});
+	topPageClass.remove('hidden');
 }
 
 function drawImage(data) {
@@ -59,19 +59,15 @@ function draw(coreState){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	const gachaButton = document.getElementById("go-to-gacha-from-toppage");
-	const recycleButton = document.getElementById("go-to-recycle-from-toppage");
-	const compositionButton = document.getElementById("go-to-composition-from-toppage");
-	const stageButton = document.getElementById("go-to-stage-from-toppage");
-	gachaButton.addEventListener('click', gachaButtonAction);
-	recycleButton.addEventListener('click', recycleButtonAction);
-	compositionButton.addEventListener('click', compositionButtonAction);
-	stageButton.addEventListener('click', stageButtonAction);
+	document.getElementById("go-to-gacha-from-toppage").addEventListener('click', gachaButtonAction);
+	document.getElementById("go-to-recycle-from-toppage").addEventListener('click', recycleButtonAction);
+	document.getElementById("go-to-composition-from-toppage").addEventListener('click', compositionButtonAction);
+	document.getElementById("go-to-stage-from-toppage").addEventListener('click', stageButtonAction);
+	document.getElementById("go-to-edit-from-toppage").addEventListener('click', editButtonAction);
 });
 
 function gachaButtonAction(_){
-	topPage.classList.add('hidden');
-	gachaPage.classList.remove('hidden');
+	hiddenPage();
 	gacha(stompClient);
 	topRepaintStop();
 }
@@ -86,6 +82,14 @@ function compositionButtonAction(_){
 
 function stageButtonAction(_){
 	
+}
+
+function editButtonAction(_){
+	
+}
+
+function hiddenPage(){
+	topPageClass.add('hidden');
 }
 
 function topRepaintStop(){

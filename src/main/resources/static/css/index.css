@@ -3,6 +3,7 @@
 @import "gacha/gacha.css";
 @import "gacha/gacha-detail.css";
 @import "status/status.css";
+@import "edit/edit.css";
 
 body {
 	margin: 0;
