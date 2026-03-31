@@ -1,5 +1,5 @@
 package com.example.catastrophewar.editdata;
 
-public class EditUnit {
+public class EditStage {
 	
 }
