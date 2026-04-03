@@ -1,5 +1,8 @@
 タワーディフェンスゲーム  
 
+♦環境♦  
+Java 25, JUnit 5(予定), MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML Living Standard, CSS 3  
+  
 ♦MySQL関連設定♦  
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
 src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、データベース内にテーブルを自動作成する。  
