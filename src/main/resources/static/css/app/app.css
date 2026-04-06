@@ -4,14 +4,10 @@
 }
 
 .toppage-button{
-	bottom: 2%;
-	left: 0%;
-	height: 10%;
-	width: 100%;
+	inset: 88% 0 2%;
 }
 
 .toppage-button button {
-	height: 100%;
 	width: 20%;
 }
 

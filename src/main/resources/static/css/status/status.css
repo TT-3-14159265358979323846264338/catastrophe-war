@@ -4,8 +4,6 @@
 
 .status-item-container{
 	inset: 1% 0;
-	height: 96%;
-	width: 100%;
 }
 
 .status-item-container span{
@@ -18,22 +16,11 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1%;
-	height: 100%;
 	width: 70%;
-}
-
-.status-part-container{
-	width: 100%;
-}
-
-.status-long-width span{
-	height: 100%;
 }
 
 .status-weapon-container{
 	display: flex;
-	height: auto;
-	width: 100%;
 	align-items: stretch;
 }
 
@@ -43,15 +30,13 @@
 
 .status-unit-container{
 	display: flex;
-	width: 100%;
 }
 
 .status-image{
-	height: 100%;
+	position: relative;
 	width: 50%;
 	background-color:rgb(240, 240, 240);
 	border: 1px solid rgb(0, 0, 0);
-	position: relative;
 }
 
 .status-image-style{
@@ -93,30 +78,26 @@
 .status-right-container{
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	gap: 5%;
-	height: 100%;
 	width: 25%;
 }
 
 .status-explanation-container{
 	display: block;
-	flex-direction: column;
+	align-items: stretch;
 	height: 90%;
-	width: 100%;
 }
 
 .status-explanation-item{
 	text-align: center;
 	height: 6%;
-	width: 100%;
 }
 
 .status-explanation{
 	height: 29%;
-	width: 100%;
 }
 
 .status-button{
+	margin-inline: auto;
 	width: 66.7%;
 }

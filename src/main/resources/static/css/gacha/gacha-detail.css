@@ -1,15 +1,10 @@
 .gacha-detail-page{
 	flex-direction: column;
-	align-items: center;
-	top: 10%;
-	left: 25%;
-	height: 90%;
-	width: 50%;
+	inset: 0 20%;
 }
 
 .gacha-detail-scroll{
 	height: 80%;
-	width: 100%;
 }
 
 .gacha-detail-scroll .left-aligned{
@@ -22,4 +17,5 @@
 
 .gacha-detail-button{
 	width: 30%;
+	margin-inline: auto;
 }

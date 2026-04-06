@@ -1,4 +1,5 @@
 import {gacha} from '../gacha/gacha.js';
+import {editUnit} from '../edit/edit-unit.js';
 import {rotateDraw} from '../edit-image.js';
 
 const canvas = document.getElementById('game-display');
@@ -67,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function gachaButtonAction(_){
-	hiddenPage();
-	gacha(stompClient);
-	topRepaintStop();
+	ChangeTopPage(() => gacha(stompClient));
 }
 
 function recycleButtonAction(_){
@@ -85,11 +84,13 @@ function stageButtonAction(_){
 }
 
 function editButtonAction(_){
-	
+	ChangeTopPage(() => editUnit(stompClient));
 }
 
-function hiddenPage(){
+function ChangeTopPage(task){
 	topPageClass.add('hidden');
+	task();
+	topRepaintStop();
 }
 
 function topRepaintStop(){
