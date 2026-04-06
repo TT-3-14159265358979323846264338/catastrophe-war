@@ -1,4 +1,4 @@
-タワーディフェンスゲーム  
+タワーディフェンスゲーム♦作成中♦  
 
 ♦環境♦  
 Java 25, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML Living Standard, CSS 3  
