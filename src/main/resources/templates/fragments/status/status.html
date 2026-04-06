@@ -3,24 +3,24 @@
 <div th:fragment="statusPage" class="status-page main-canvas default-container default-label default-button hidden">
 	<div class="status-item-container default-container">
 		<div class="status-left-container no-rap-label">
-			<div class="status-part-container">
-				<span class="status-long-width">【名称】</span>
-				<span id="status-element-name" class="status-long-width"></span>
+			<div>
+				<span>【名称】</span>
+				<span id="status-element-name"></span>
 			</div>
 			<div class="status-weapon-container">
 				<div class="status-image">
 					<img th:each="i : ${#numbers.sequence(0, 2)}" class="status-image-style" style="display: none;">
 				</div>
 				<div class="status-weapon-detail-container">
-					<span class="status-long-width">【武器ステータス】</span>
+					<span>【武器ステータス】</span>
 					<div id="weapon-status" class="status-weapon-grid status-gird">
 						<span th:each="i : ${#numbers.sequence(0, 26)}" 
 								th:class="${(i / 9) == 0 || i == 9 || i == 18} ? 'status-color-lightgray' : 'status-color-yellow'"></span>
 					</div>
 				</div>
 			</div>
-			<div class="status-part-container">
-				<span class="status-long-width">【ユニットステータス】</span>
+			<div>
+				<span>【ユニットステータス】</span>
 				<div class="status-unit-container">
 					<div id="core-status" class="status-core-gird status-unit-grid status-gird">
 						<span th:each="i : ${#numbers.sequence(0, 11)}" 
