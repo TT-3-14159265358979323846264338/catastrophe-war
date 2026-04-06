@@ -1,7 +1,7 @@
 タワーディフェンスゲーム♦作成中♦  
 
 ♦環境♦  
-Java 25, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML Living Standard, CSS 3  
+Java 25, Spring boot 4.0.3, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML Living Standard, CSS 3  
   
 ♦MySQL関連設定♦  
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
