@@ -5,7 +5,7 @@ Java 25, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML 
   
 ♦MySQL関連設定♦  
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
-src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、データベース内にテーブルを自動作成する。  
+src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、指定のデータベース内にテーブルを自動作成する。  
   
 ♦制作背景♦  
 これまでJava単独でゲームを作成してきたが、より実践的な勉強をするため、Spring boot, JavaScriptを導入することにした。  
