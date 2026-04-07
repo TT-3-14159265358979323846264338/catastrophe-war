@@ -1,11 +1,9 @@
+import {canvasCondition} from '../common/canvas-condition.js';
+import {stompCondition} from '../common/stomp-condition.js';
 import {topRepaintStart} from '../app/app.js';
-import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from '../edit-image.js';
+import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from '../common/edit-image.js';
 import {gachaDetailPage} from './gacha-detail.js'
 
-const canvas = document.getElementById('game-display');
-const ctx = canvas.getContext('2d');
-let stompClient;
-let subscription = [];
 const gachaPageClass = document.querySelector('.gacha-item').classList;
 const gachaScrollClass = document.querySelector('.gacha-scroll').classList;
 const gachaList = document.getElementById("gacha-list")
@@ -32,17 +30,17 @@ const TURN_Y = 266;
 const EFFECT_X = 240;
 const EFFECT_Y = 350;
 
-export function gacha(stomp){
-	if(!stompClient){
-		stompClient = stomp;
+export function gacha(){
+	if(!id){
 		initialize();
 	}
 	addMouseListener();
-	subscription.push(stompClient.subscribe("/topic/gacha/list", inputGachaList),
-					stompClient.subscribe("/topic/gacha/repaint", drawImage),
-					stompClient.subscribe("/topic/gacha/play", playGacha),
-					stompClient.subscribe("/topic/gacha/end", endGacha));
-	stompClient.publish({destination: "/app/gacha/timer/start"});
+	stompCondition.resetSubscriptions();
+	stompCondition.addSubscriptions("/topic/gacha/list", inputGachaList);
+	stompCondition.addSubscriptions("/topic/gacha/repaint", drawImage);
+	stompCondition.addSubscriptions("/topic/gacha/play", playGacha);
+	stompCondition.addSubscriptions("/topic/gacha/end", endGacha);
+	stompCondition.publish("/app/gacha/timer/start");
 	gachaPageClass.remove('hidden');
 }
 
@@ -99,20 +97,20 @@ function drawImage(data) {
 		return;
 	}
 	const state = JSON.parse(data.body);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.drawImage(machineImage[0], GACHA_X, GACHA_Y);
-	rotateDraw(ctx, halfBallImage[0], state.bottomPoint.x, state.bottomPoint.y, state.bottomAngle);
-	rotateDraw(ctx, halfBallImage[1], state.topPoint.x, state.topPoint.y, state.topAngle);
-	ctx.drawImage(machineImage[1], GACHA_X, GACHA_Y);
-	rotateDraw(ctx, handleImage, HANDLE_X, HANDLE_Y, state.handleAngle);
+	canvasCondition.clearArea();
+	canvasCondition.ctx.drawImage(machineImage[0], GACHA_X, GACHA_Y);
+	rotateDraw(halfBallImage[0], state.bottomPoint.x, state.bottomPoint.y, state.bottomAngle);
+	rotateDraw(halfBallImage[1], state.topPoint.x, state.topPoint.y, state.topAngle);
+	canvasCondition.ctx.drawImage(machineImage[1], GACHA_X, GACHA_Y);
+	rotateDraw(handleImage, HANDLE_X, HANDLE_Y, state.handleAngle);
 	if(state.canPlayGacha){
-		rotateDraw(ctx, turnImage, TURN_X, TURN_Y, state.turnAngle);
+		rotateDraw(turnImage, TURN_X, TURN_Y, state.turnAngle);
 	}
 	if(state.color !== 0){
 		const image = effectImage(dafaultEffectImage, state.color, state.expansion);
 		const x = EFFECT_X - state.expansion / 2;
 		const y = EFFECT_Y - state.expansion / 2;
-		ctx.drawImage(image, x, y);
+		canvasCondition.ctx.drawImage(image, x, y);
 	}
 }
 
@@ -133,24 +131,25 @@ export function ableToPlayGacha(){
 	addMouseListener();
 }
 
-function switchAllButton(isActive){
-	switchButton(detailButton, isActive);
-	switchButton(countButton, isActive);
-	switchButton(returnButton, isActive);
+function switchAllButton(isDisabled){
+	switchButton(detailButton, isDisabled);
+	switchButton(countButton, isDisabled);
+	switchButton(returnButton, isDisabled);
 }
 
-function switchButton(button, isActive){
-	button.disabled = isActive;
+function switchButton(button, isDisabled){
+	button.disabled = isDisabled;
 }
 
 function addMouseListener(){
-	canvas.addEventListener('mousedown', mousePressed);
+	removeMouseListener();
+	canvasCondition.canvas.addEventListener('mousedown', mousePressed);
 	window.addEventListener('mousemove', mouseDragged);
 	window.addEventListener('mouseup', mouseReleased);
 }
 
 function removeMouseListener(){
-	canvas.removeEventListener('mousedown', mousePressed);
+	canvasCondition.canvas.removeEventListener('mousedown', mousePressed);
 	window.removeEventListener('mousemove', mouseDragged);
 	window.removeEventListener('mouseup', mouseReleased);
 }
@@ -169,18 +168,15 @@ function mouseDragged(e){
 function mouseReleased(){
 	if(isPressed){
 		isPressed = false;
-		stompClient.publish({destination: "/app/gacha/mouse/released"});
+		stompCondition.publish("/app/gacha/mouse/released");
 	}
 }
 
 function sendPoint(e, address){
-	const canvasRect = canvas.getBoundingClientRect();
+	const canvasRect = canvasCondition.canvas.getBoundingClientRect();
 	const x = Math.round(e.clientX - canvasRect.left);
 	const y = Math.round(e.clientY - canvasRect.top);
-	stompClient.publish({
-		destination: address,
-		body: JSON.stringify({x, y})
-	});
+	stompCondition.publish(address, {x, y});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -202,10 +198,7 @@ function gachaListAction(e){
 function selectGacha(target){
 	target.classList.add('selected');
 	const selectId = target.dataset.id;
-	stompClient.publish({
-		destination: "/app/gacha/select",
-		body: JSON.stringify({selectId})
-	});
+	stompCondition.publish("/app/gacha/select", {selectId});
 }
 
 function detailButtonAction(){
@@ -216,10 +209,7 @@ function detailButtonAction(){
 function countButtonAction(){
 	id = (id === gachaCount.length - 1)? 0: id + 1;
 	changeCountButtonText();
-	stompClient.publish({
-		destination: "/app/gacha/count/change",
-		body: JSON.stringify({id})
-	});
+	stompCondition.publish("/app/gacha/count/change", {id});
 }
 
 function changeCountButtonText(){
@@ -233,12 +223,8 @@ function returnButtonAction(_){
 }
 
 function gachaRepaintStop(){
-	if(subscription.length === 0){
-		return;
-	}
+	stompCondition.resetSubscriptions();
 	removeGachaList();
 	removeMouseListener();
-	subscription.forEach(data => data.unsubscribe());
-	subscription = [];
-	stompClient.publish({destination: "/app/gacha/timer/stop"});
+	stompCondition.publish("/app/gacha/timer/stop");
 }

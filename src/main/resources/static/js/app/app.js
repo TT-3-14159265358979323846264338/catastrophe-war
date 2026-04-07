@@ -1,14 +1,9 @@
+import {canvasCondition} from '../common/canvas-condition.js';
+import {stompCondition} from '../common/stomp-condition.js';
 import {gacha} from '../gacha/gacha.js';
 import {editUnit} from '../edit/edit-unit.js';
-import {rotateDraw} from '../edit-image.js';
+import {rotateDraw} from '../common/edit-image.js';
 
-const canvas = document.getElementById('game-display');
-const ctx = canvas.getContext('2d');
-const stompClient = new StompJs.Client({
-    webSocketFactory: () => new SockJS('/ws-game'),
-	reconnectDelay: 5000,
-});
-let timerSubscribe;
 const topPageClass = document.querySelector('.toppage-item').classList;
 const titleImage = new Image();
 const coreImages = [];
@@ -16,7 +11,7 @@ const TITLE_X = 80;
 const TITLE_Y = 40;
 const INTERVAL = 25000;
 
-stompClient.onConnect = async _ => {
+stompCondition.stompConnected = async _ => {
 	try{
 		const response = await fetch('/api/top/data');
 		const data = await response.json();
@@ -27,7 +22,7 @@ stompClient.onConnect = async _ => {
 	}
 };
 
-stompClient.activate();
+stompCondition.stompActivate();
 
 function inputImage(imageList){
 	titleImage.src = imageList[0];
@@ -39,24 +34,24 @@ function inputImage(imageList){
 }
 
 export function topRepaintStart(){
-	topRepaintStop();
-	timerSubscribe = stompClient.subscribe('/topic/top/repaint', drawImage);
-	stompClient.publish({destination:"/app/top/timer/start"});
+	stompCondition.resetSubscriptions();
+	stompCondition.addSubscriptions('/topic/top/repaint', drawImage);
+	stompCondition.publish("/app/top/timer/start");
 	topPageClass.remove('hidden');
 }
 
 function drawImage(data) {
 	const {state, isEnded} = JSON.parse(data.body);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	canvasCondition.clearArea();
 	state.forEach(draw);
 	if(isEnded){
-		ctx.drawImage(titleImage, TITLE_X, TITLE_Y);
+		canvasCondition.ctx.drawImage(titleImage, TITLE_X, TITLE_Y);
 	}
 }
 
 function draw(coreState){
 	const image = coreImages[coreState.id];
-	rotateDraw(ctx, image, coreState.x, coreState.y, coreState.angle);
+	rotateDraw(image, coreState.x, coreState.y, coreState.angle);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -68,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function gachaButtonAction(_){
-	ChangeTopPage(() => gacha(stompClient));
+	ChangeTopPage(gacha);
 }
 
 function recycleButtonAction(_){
@@ -84,21 +79,13 @@ function stageButtonAction(_){
 }
 
 function editButtonAction(_){
-	ChangeTopPage(() => editUnit(stompClient));
+	ChangeTopPage(editUnit);
 }
 
 function ChangeTopPage(task){
 	topPageClass.add('hidden');
+	stompCondition.resetSubscriptions();
 	task();
-	topRepaintStop();
-}
-
-function topRepaintStop(){
-	if(!timerSubscribe){
-		return;
-	}
-	timerSubscribe.unsubscribe();
-	timerSubscribe = null;
 }
 
 window.addEventListener('pagehide', _ => {

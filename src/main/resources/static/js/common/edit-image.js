@@ -1,3 +1,5 @@
+import {canvasCondition} from './canvas-condition.js';
+
 export async function inputReducedImages(array, imageLinks, ratio){
 	for (const link of imageLinks) {
 		array.push(await inputReducedImage(link, ratio));
@@ -31,18 +33,18 @@ function reducedImage(image, ratio){
 	return canvas;
 }
 
-export function rotateDraw(ctx, image, x, y, angle){
+export function rotateDraw(image, x, y, angle){
 	if(angle === 0){
-		ctx.drawImage(image, x, y);
+		canvasCondition.ctx.drawImage(image, x, y);
 		return;
 	}
 	const width = image.width / 2
 	const height = image.height / 2;
-	ctx.save();
-	ctx.translate(x + width, y + height);
-	ctx.rotate(angle);
-	ctx.drawImage(image, -width, -height);
-	ctx.restore();
+	canvasCondition.ctx.save();
+	canvasCondition.ctx.translate(x + width, y + height);
+	canvasCondition.ctx.rotate(angle);
+	canvasCondition.ctx.drawImage(image, -width, -height);
+	canvasCondition.ctx.restore();
 }
 
 export function effectImage(image, color, expansion){

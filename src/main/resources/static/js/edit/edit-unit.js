@@ -1,19 +1,15 @@
+import {canvasCondition} from '../common/canvas-condition.js';
+import {stompCondition} from '../common/stomp-condition.js';
 import {topRepaintStart} from '../app/app.js';
 import {editStage} from './edit-stage.js';
 
-const canvas = document.getElementById('game-display');
-const ctx = canvas.getContext('2d');
-let stompClient;
-let subscription = [];
 const editUnitClas = document.querySelector(".edit-unit").classList;
 const switchButton = document.getElementById("go-to-edit-stage-from-edit-unit");
 const returnButton = document.getElementById("go-to-toppage-from-edit-unit");
 
-export function editUnit(stomp){
-	if(!stompClient){
-		stompClient = stomp;
-	}
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+export function editUnit(){
+	canvasCondition.clearArea();
+	stompCondition.resetSubscriptions();
 	editUnitClas.remove('hidden');
 }
 
@@ -24,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function switchButtonAction(){
 	endPage();
-	editStage(stompClient);
+	editStage();
 }
 
 function returnButtonAction(){
@@ -34,6 +30,5 @@ function returnButtonAction(){
 
 function endPage(){
 	editUnitClas.add('hidden');
-	subscription.forEach(data => data.unsubscribe());
-	subscription = [];
+	stompCondition.resetSubscriptions();
 }
