@@ -7,19 +7,19 @@ Java 25, Spring boot 4.0.3, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, St
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
 src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、指定のデータベース内にテーブルを自動作成する。  
   
-♦階層♦  
+♦プロジェクト構成♦  
 ├─ src/  
 │　　├─ main/  
-│　　│　　├─ java/com/example/　　　　　　　　:Javaソースコード  
+│　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (Spring boot, 機能やwebページごとにフォルダ化)  
 │　　│　　└─ resources/  
 │　　│　　　　　├─ static/  
-│　　│　　　　　│　　├ css/　　　　　　　　　　:CSSソースコード  
+│　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (webページごとにフォルダ化)  
 │　　│　　　　　│　　├ image/　　　　　　　　　:ゲームで使用する画像ファイル  
-│　　│　　　　　│　　└ js/　　　　　　　　　　　:JavaScriptソースコード  
-│　　│　　　　　├─ templates/　　　　　　　　　:HTMLソースコード  
+│　　│　　　　　│　　└ js/　　　　　　　　　　　:フロントエンド描写制御 (webページごとにフォルダ化)  
+│　　│　　　　　├─ templates/　　　　　　　　　:HTMLソースコード (webページごとにフォルダ化)  
 │　　│　　　　　└─ application.properties　　　　:アプリケーション設定  
-│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード(今後作成予定)  
-├─ other/　　　　　　　　　　　　　　　　　　　:その他ファイル(なくてもゲーム影響なし)  
+│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
+├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
 └─ pom.xml　　　　　　　　　　　　　　　　　　:Mavenの構成  
   
 ♦制作背景♦  
