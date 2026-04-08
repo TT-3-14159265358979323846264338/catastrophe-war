@@ -17,7 +17,7 @@ src/main/resouces/application.properties: このファイルにデータベー�
 │　　│　　　　　│　　├ image/　　　　　　　　　:ゲームで使用する画像ファイル  
 │　　│　　　　　│　　└ js/　　　　　　　　　　　:JavaScriptソースコード  
 │　　│　　　　　├─ templates/　　　　　　　　　:HTMLソースコード  
-│　　│　　　　　└─ application.properties　　:アプリケーション設定  
+│　　│　　　　　└─ application.properties　　　:アプリケーション設定  
 │　　└─ test/　　　　　　　　　　　　　　　　　:テストコード(未作成)  
 ├─ other/　　　　　　　　　　　　　　　　　　　:その他ファイル(なくてもゲーム影響なし)  
 └─ pom.xml　　　　　　　　　　　　　　　　　　　:Mavenの構成  
