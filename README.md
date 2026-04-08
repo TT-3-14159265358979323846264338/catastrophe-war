@@ -22,6 +22,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、指定のデータベース内にテーブルを自動作成する。  
   
 ♦プロジェクト構成♦  
+```text
 ├─ src/  
 │　　├─ main/  
 │　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (機能やwebページごとにフォルダ化)  
