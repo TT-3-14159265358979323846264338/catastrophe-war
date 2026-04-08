@@ -30,9 +30,9 @@ src/main/resouces/application.properties: このファイルにデータベー�
 │　　│　　　　　├─ static/  
 │　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (webページごとにフォルダ化)  
 │　　│　　　　　│　　├ image/　　　　　　　　　:ゲームで使用する画像ファイル  
-│　　│　　　　　│　　└ js/　　　　　　　　　　　:フロントエンド描写制御 (webページごとにフォルダ化)  
-│　　│　　　　　├─ templates/　　　　　　　　　:HTMLソースコード (webページごとにフォルダ化)  
-│　　│　　　　　└─ application.properties　　　　:アプリケーション設定  
+│　　│　　　　　│　　└ js/　　　　　　　　　　 :フロントエンド描写制御 (webページごとにフォルダ化)  
+│　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (webページごとにフォルダ化)  
+│　　│　　　　　└─ application.properties　　:アプリケーション設定  
 │　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
 ├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
-└─ pom.xml　　　　　　　　　　　　　　　　　　:Mavenの構成  
+└─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成  
