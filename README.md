@@ -8,19 +8,19 @@ Java 25, Spring boot 4.0.3, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, St
 src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、指定のデータベース内にテーブルを自動作成する。  
   
 ♦階層♦  
-├── src/  
-│　　　├ main/  
-│　　　│　　├ java/com/example/  
-│　　　│　　└ resources/  
-│　　　│　　　　　├ static/  
-│　　　│　　　　　│　　├ css/  
-│　　　│　　　　　│　　├ image/  
-│　　　│　　　　　│　　└ js/  
-│　　　│　　　　　├ templates/  
-│　　　│　　　　　└ application.properties  
-│　　　└ test/  
-├── other/  
-└── pom.xml
+├─ src/  
+│　　├─ main/  
+│　　│　　├─ java/com/example/  
+│　　│　　└─ resources/  
+│　　│　　　　　├─ static/  
+│　　│　　　　　│　　├ css/  
+│　　│　　　　　│　　├ image/  
+│　　│　　　　　│　　└ js/  
+│　　│　　　　　├─ templates/  
+│　　│　　　　　└─ application.properties  
+│　　└─ test/  
+├─ other/  
+└─ pom.xml
   
 ♦制作背景♦  
 これまでJava単独でゲームを作成してきたが、より実践的な勉強をするため、Spring boot, JavaScriptを導入することにした。  
