@@ -38,7 +38,7 @@ public class ItemGetPage extends Timer{
 	private SimpMessagingTemplate messaging;
 	
 	@Autowired
-	ItemRepository itemRepository;
+	private ItemRepository itemRepository;
 	
 	ItemGetPage(ScheduledExecutorService scheduler){
 		super(scheduler);
@@ -99,8 +99,8 @@ public class ItemGetPage extends Timer{
 	
 	GachaImageLink createImageLink() {
 		OtherData otherData = createOtherData();
-		return new GachaImageLink(ImageLink.normalCoreLinkStream().toList(),
-				ImageLink.normalWeaponLinkStream().toList(),
+		return new GachaImageLink(ImageLink.normalCoreLinkList(),
+				ImageLink.normalWeaponLinkList(),
 				otherData.getHalfBall(),
 				otherData.getHandle(),
 				otherData.getMachine(),
