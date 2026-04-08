@@ -9,13 +9,13 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 前回作: https://github.com/TT-3-14159265358979323846264338/defend_the_castle  
   
 ♦環境♦  
-言語: Java 25, JavaScript ES6+  
+言語:　　　　　 Java 25, JavaScript ES6+  
 フレームワーク: Spring boot 4.0.3  
-データベース: MySQL 9.6  
+データベース:　 MySQL 9.6  
 通信プロトコル: SockJS v1.x, StompJS v7.3.0  
 フロントエンド: HTML Living Standard, CSS 3  
-テスト: JUnit 5  
-ビルド: Maven  
+テスト:　　　　 JUnit 5  
+ビルド:　　　　 Maven  
   
 ♦MySQL関連設定♦  
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
