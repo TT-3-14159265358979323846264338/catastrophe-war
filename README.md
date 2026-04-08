@@ -10,7 +10,7 @@ src/main/resouces/application.properties: このファイルにデータベー�
 ♦プロジェクト構成♦  
 ├─ src/  
 │　　├─ main/  
-│　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (Spring boot, 機能やwebページごとにフォルダ化)  
+│　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (機能やwebページごとにフォルダ化)  
 │　　│　　└─ resources/  
 │　　│　　　　　├─ static/  
 │　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (webページごとにフォルダ化)  
