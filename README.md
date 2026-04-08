@@ -1,5 +1,13 @@
 タワーディフェンスゲーム♦作成中♦  
-
+  
+♦概要♦  
+Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェンスゲーム。  
+  
+♦制作背景♦  
+これまでJava単独でゲームを作成してきたが、より実践的な勉強をするため、Spring boot, JavaScriptを導入することにした。  
+前回作のタワーディフェンスゲームの良いところを残しつつ、webで動作するゲームの作成を開始した。  
+前回作: https://github.com/TT-3-14159265358979323846264338/defend_the_castle  
+  
 ♦環境♦  
 Java 25, Spring boot 4.0.3, JUnit 5, MySQL 9.6, JavaScript ES6+, SockJS v1.x, StompJS v7.3.0, HTML Living Standard, CSS 3  
   
@@ -21,8 +29,3 @@ src/main/resouces/application.properties: このファイルにデータベー�
 │　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
 ├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
 └─ pom.xml　　　　　　　　　　　　　　　　　　:Mavenの構成  
-  
-♦制作背景♦  
-これまでJava単独でゲームを作成してきたが、より実践的な勉強をするため、Spring boot, JavaScriptを導入することにした。  
-前回作のタワーディフェンスゲームの良いところを残しつつ、webで動作するゲームの作成を開始した。  
-前回作: https://github.com/TT-3-14159265358979323846264338/defend_the_castle  
