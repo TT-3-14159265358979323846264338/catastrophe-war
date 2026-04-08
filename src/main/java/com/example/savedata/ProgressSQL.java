@@ -1,6 +1,8 @@
 package com.example.savedata;
 
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,9 +55,25 @@ public class ProgressSQL {
 	private Boolean meritClear9;
 	
 	@Transient
-	private final String CLEAR = "meritClear";
+	private static final String CLEAR = "meritClear";
+	
 	@Transient
-	private final int COUNT = 10;
+	private static final int COUNT = 10;
+	
+	@Transient
+	private static final List<Field> MERIT_FIELD;
+	
+	static {
+		MERIT_FIELD = IntStream.range(0, COUNT).mapToObj(i -> {
+			try {
+				Field field = ProgressSQL.class.getDeclaredField(CLEAR + i);
+				field.setAccessible(true);
+				return field;
+			}catch (Exception e) {
+				throw new ExceptionInInitializerError(e);
+			}
+		}).toList();
+	}
 	
 	public void initialize() {
 		stageClear = false;
@@ -64,12 +82,23 @@ public class ProgressSQL {
 		}
 	}
 	
-	public void setData(int clearId, boolean hasCleared) {
+	public List<Boolean> getMerit(){
+		return IntStream.range(0, COUNT).mapToObj(this::merit).toList();
+	}
+	
+	boolean merit(int meritId) {
 		try {
-			Field field = this.getClass().getDeclaredField(CLEAR + clearId);
-			field.setAccessible(true);
-			field.set(this, hasCleared);
-		} catch (Exception e) {
+			return (Boolean) MERIT_FIELD.get(meritId).get(this);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public void setData(int meritId, boolean hasCleared) {
+		try {
+			MERIT_FIELD.get(meritId).set(this, hasCleared);
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

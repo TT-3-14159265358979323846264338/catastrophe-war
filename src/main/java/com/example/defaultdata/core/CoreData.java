@@ -2,12 +2,16 @@ package com.example.defaultdata.core;
 
 import java.util.List;
 
-public abstract class CoreData {
+import com.example.defaultdata.DefaultData;
+import com.example.defaultdata.DefaultUnit;
+
+public abstract class CoreData implements DefaultData, DefaultUnit{
 	/**
 	 * コアの名称。
 	 * @return コアの名称を返却する。<br>
 	 * 			最大字数は全角で13字。
 	 */
+	@Override
 	public abstract String getName();
 	
 	/**
@@ -16,12 +20,14 @@ public abstract class CoreData {
 	 * @return コアの説明を返却する。<br>
 	 * 			最大字数は全角で84字。
 	 */
+	@Override
 	public abstract String getExplanation();
 	
 	/**
 	 * 通常時のコア画像ファイル名。
 	 * @return コアを単独で表示する際の画像ファイル名を返却する。
 	 */
+	@Override
 	public abstract String getImageName();
 	
 	/**
@@ -34,24 +40,28 @@ public abstract class CoreData {
 	 * コアのレアリティ。
 	 * @return コアのレアリティを返却する。1以上の値をとり、一定の値まで到達したら{@link defendthecastle.screendisplay.SortPanel SortPanel}の表示位置を再調整すること。
 	 */
+	@Override
 	public abstract int getRarity();
 	
 	/**
 	 * 装備した武器のステータス上昇率(倍率上昇)。
 	 * @return {@link defaultdata.CoreAtack CoreAtack}の順にステータス上昇率をリスト化。
 	 */
+	@Override
 	public abstract List<Double> getWeaponStatus();
 	
 	/**
 	 * ユニットのステータス上昇率(倍率上昇)。
 	 * @return {@link defaultdata.CoreUnit CoreUnit}の順にステータス上昇率をリスト化。
 	 */
+	@Override
 	public abstract List<Double> getUnitStatus();
 	
 	/**
 	 * ダメージカット率上昇量(加算上昇)。
 	 * @return {@link defaultdata.Element Element}の順にステータス上昇量をリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getCutStatus();
 	
 	/**
@@ -73,6 +83,7 @@ public abstract class CoreData {
 	 * 			<br>
 	 * 			バフを保有していない場合、空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<List<Double>> getBuff();
 	
 	/**

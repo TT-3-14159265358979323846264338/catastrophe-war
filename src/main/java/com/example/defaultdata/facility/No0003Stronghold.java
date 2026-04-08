@@ -16,6 +16,11 @@ public class No0003Stronghold extends FacilityData{
 	public String getExplanation() {
 		return "味方の防衛拠点。基本的に本陣を取られると敗北となる。";
 	}
+
+	@Override
+	public String getImageName() {
+		return "/image/facility/stronghold.png";
+	}
 	
 	@Override
 	public List<String> getActionImageName() {

@@ -2,16 +2,19 @@ package com.example.defaultdata.enemy;
 
 import java.util.List;
 
+import com.example.defaultdata.DefaultAtack;
+import com.example.defaultdata.DefaultData;
 import com.example.defaultdata.Element;
 import com.example.defaultdata.Move;
 import com.example.defaultdata.Type;
 
-public abstract class EnemyData {
+public abstract class EnemyData implements DefaultData, DefaultAtack{
 	/**
 	 * 敵の名称。
 	 * @return 敵の名称を返却する。<br>
 	 * 			最大字数は全角で47字。
 	 */
+	@Override
 	public abstract String getName();
 	
 	/**
@@ -20,12 +23,14 @@ public abstract class EnemyData {
 	 * @return 敵の説明を返却する。<br>
 	 * 			最大字数は全角で84字。
 	 */
+	@Override
 	public abstract String getExplanation();
 	
 	/**
 	 * 通常時の敵画像ファイル名。
 	 * @return 敵を単独で表示する際の画像ファイル名を返却する。
 	 */
+	@Override
 	public abstract String getImageName();
 	
 	/**
@@ -38,12 +43,14 @@ public abstract class EnemyData {
 	 * 弾丸の画像ファイル名。
 	 * @return 攻撃時に弾丸を飛ばすことがあれば、その画像ファイル名を返却する。なければnullを返却する。
 	 */
+	@Override
 	public abstract String getBulletImageName();
 	
 	/**
 	 * ヒット画像ファイル名。
 	 * @return 攻撃がヒットした時に表示する画像ファイル名を返却する。Listに入っている画像ファイルがヒットモーションとして表示される。なければ空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<String> getHitImageName();
 	
 	/**
@@ -62,30 +69,35 @@ public abstract class EnemyData {
 	 * 武器属性コード。
 	 * @return 武器に付与される全ての属性コードを返却する。最大数は3種類まで。コードは{@link defaultdata.Element Element}参照。
 	 */
+	@Override
 	public abstract List<Element> getElement();
 	
 	/**
 	 * 使用するアタックパターンコード。
 	 * @return {@link defaultdata.AtackPattern#getAtackPattern AtackPattern}のコード番号を返却する。
 	 */
+	@Override
 	public abstract int getAtackPattern();
 	
 	/**
 	 * 武器のステータス。
 	 * @return {@link defaultdata.Atack Atack}の順にステータスをリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getWeaponStatus();
 	
 	/**
 	 * 敵のステータス。
 	 * @return {@link defaultdata.EnemyUnit EnemyUnit}の順にステータスをリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getUnitStatus();
 	
 	/**
 	 * ダメージカット率。
 	 * @return {@link defaultdata.Element Element}の順にステータスをリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getCutStatus();
 	
 	/**
@@ -107,5 +119,6 @@ public abstract class EnemyData {
 	 * 			<br>
 	 * 			バフを保有していない場合、空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<List<Double>> getBuff();
 }

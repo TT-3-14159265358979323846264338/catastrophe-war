@@ -16,6 +16,11 @@ public class No0001FrontGate extends FacilityData{
 	public String getExplanation() {
 		return "敵の進軍を防ぐ門。破壊されるまで全ての敵をブロックする。";
 	}
+
+	@Override
+	public String getImageName() {
+		return "/image/facility/front gate.png";
+	}
 	
 	@Override
 	public List<String> getActionImageName() {

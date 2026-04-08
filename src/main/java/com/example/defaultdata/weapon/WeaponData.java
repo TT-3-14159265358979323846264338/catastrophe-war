@@ -2,16 +2,20 @@ package com.example.defaultdata.weapon;
 
 import java.util.List;
 
+import com.example.defaultdata.DefaultAtack;
+import com.example.defaultdata.DefaultData;
+import com.example.defaultdata.DefaultUnit;
 import com.example.defaultdata.Distance;
 import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
-public abstract class WeaponData {
+public abstract class WeaponData implements DefaultData, DefaultAtack, DefaultUnit{
 	/**
 	 * 武器の名称。
 	 * @return 武器の名称を返却する。<br>
 	 * 			最大字数は全角で13字。
 	 */
+	@Override
 	public abstract String getName();
 	
 	/**
@@ -20,12 +24,14 @@ public abstract class WeaponData {
 	 * @return 武器の説明を返却する。<br>
 	 * 			最大字数は全角で84字。
 	 */
+	@Override
 	public abstract String getExplanation();
 	
 	/**
 	 * 通常時の武器画像ファイル名。
 	 * @return 武器を単独で表示する際の画像ファイル名を返却する。
 	 */
+	@Override
 	public abstract String getImageName();
 	
 	/**
@@ -44,18 +50,21 @@ public abstract class WeaponData {
 	 * 弾丸の画像ファイル名。
 	 * @return 攻撃時に弾丸を飛ばすことがあれば、その画像ファイル名を返却する。なければnullを返却する。
 	 */
+	@Override
 	public abstract String getBulletImageName();
 	
 	/**
 	 * ヒット画像ファイル名。
 	 * @return 攻撃がヒットした時に表示する画像ファイル名を返却する。Listに入っている画像ファイルがヒットモーションとして表示される。なければ空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<String> getHitImageName();
 	
 	/**
 	 * 武器のレアリティ。
 	 * @return 武器のレアリティを返却する。1以上の値をとり、一定の値まで到達したら{@link defendthecastle.screendisplay.SortPanel SortPanel}の表示位置を再調整すること。
 	 */
+	@Override
 	public abstract int getRarity();
 	
 	/**
@@ -74,30 +83,35 @@ public abstract class WeaponData {
 	 * 武器属性コード。
 	 * @return 武器に付与される全ての属性コードを返却する。最大数は3種類まで。コードは{@link defaultdata.Element Element}参照。攻撃しない時は空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<Element> getElement();
 	
 	/**
 	 * 使用するアタックパターンコード。
 	 * @return {@link defaultdata.AtackPattern#getAtackPattern AtackPattern}のコード番号を返却する。
 	 */
+	@Override
 	public abstract int getAtackPattern();
 	
 	/**
 	 * 装備した武器のステータス上昇量(加算上昇)。
 	 * @return {@link defaultdata.Atack Atack}の順にステータス上昇量をリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getWeaponStatus();
 	
 	/**
 	 * ユニットのステータス上昇量(加算上昇)。
 	 * @return {@link defaultdata.WeaponUnit WeaponUnit}の順にステータス上昇量をリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getUnitStatus();
 	
 	/**
 	 * ダメージカット率上昇量(加算上昇)。
 	 * @return {@link defaultdata.Element Element}の順にステータス上昇量をリスト化。
 	 */
+	@Override
 	public abstract List<Integer> getCutStatus();
 	
 	/**
@@ -119,5 +133,6 @@ public abstract class WeaponData {
 	 * 			<br>
 	 * 			バフを保有していない場合、空のArrays.asList()を返却する。
 	 */
+	@Override
 	public abstract List<List<Double>> getBuff();
 }
