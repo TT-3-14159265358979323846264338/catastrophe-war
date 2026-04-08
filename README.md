@@ -10,17 +10,17 @@ src/main/resouces/application.properties: このファイルにデータベー�
 ♦階層♦  
 ├─ src/  
 │　　├─ main/  
-│　　│　　├─ java/com/example/  
+│　　│　　├─ java/com/example/　　　　　　　　:Javaソースコード  
 │　　│　　└─ resources/  
 │　　│　　　　　├─ static/  
-│　　│　　　　　│　　├ css/  
-│　　│　　　　　│　　├ image/  
-│　　│　　　　　│　　└ js/  
-│　　│　　　　　├─ templates/  
-│　　│　　　　　└─ application.properties  
-│　　└─ test/  
-├─ other/  
-└─ pom.xml
+│　　│　　　　　│　　├ css/　　　　　　　　　　:CSSソースコード  
+│　　│　　　　　│　　├ image/　　　　　　　　　:ゲームで使用する画像ファイル  
+│　　│　　　　　│　　└ js/　　　　　　　　　　　:JavaScriptソースコード  
+│　　│　　　　　├─ templates/　　　　　　　　　:HTMLソースコード  
+│　　│　　　　　└─ application.properties　　:アプリケーション設定  
+│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード(未作成)  
+├─ other/　　　　　　　　　　　　　　　　　　　:その他ファイル(なくてもゲーム影響なし)  
+└─ pom.xml　　　　　　　　　　　　　　　　　　　:Mavenの構成  
   
 ♦制作背景♦  
 これまでJava単独でゲームを作成してきたが、より実践的な勉強をするため、Spring boot, JavaScriptを導入することにした。  
