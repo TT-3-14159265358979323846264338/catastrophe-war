@@ -19,6 +19,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
   
 ♦MySQL関連設定♦  
 権限: ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
+```properties
 src/main/resouces/application.properties: このファイルにデータベース情報を記述する。初回のみspring.jpa.hibernate.ddl-auto=updateに変更することで、指定のデータベース内にテーブルを自動作成する。  
   
 ♦プロジェクト構成♦  
