@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -59,24 +58,18 @@ public class TopPage extends Timer{
 	}
 	
 	@GetMapping("/api/top/data")
-	public List<String> sendImage() {
-		return createImageLinkList();
+	public TopImage sendImage() {
+		return new TopImage(getTitle(), createCoreLinkList());
 	}
 	
-	List<String> createImageLinkList(){
-		return Stream.concat(titleStream(), createCoreLinkList()).toList();
-	}
-	
-	Stream<String> titleStream(){
-		return Stream.of(getTitle());
-	}
+	record TopImage(String title, List<String> core) {}
 	
 	String getTitle() {
 		return new OtherData().getTitler();
 	}
 	
-	Stream<String> createCoreLinkList(){
-		return ImageLink.normalCoreLinkStream();
+	List<String> createCoreLinkList(){
+		return ImageLink.normalCoreLinkStream().toList();
 	}
 	
 	@MessageMapping("/top/timer/start")
