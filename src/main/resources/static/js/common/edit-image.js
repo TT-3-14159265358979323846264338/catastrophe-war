@@ -1,23 +1,17 @@
 import {canvasCondition} from './canvas-condition.js';
 
-export async function inputReducedImages(array, imageLinks, ratio){
-	for (const link of imageLinks) {
-		array.push(await inputReducedImage(link, ratio));
+export async function inputReducedImage(imageLink, ratio = 1){
+	if(Array.isArray(imageLink)){
+		return Promise.all(imageLink.map(link => inputReducedImage(link, ratio)));
 	}
-}
-
-export function inputReducedImage(imageLink, ratio){
-	return new Promise(function(resolve) {
-		inputImage(imageLink, ratio, resolve);
-	});
-}
-
-function inputImage(imageLink, ratio, resolve){
-	const image = new Image();
-	image.src = imageLink;
-	image.onload = function(){
-		resolve(reducedImage(image, ratio));
-	};
+	try {
+		const image = new Image();
+		image.src = imageLink;
+		await image.decode();
+		return ratio === 1? image: reducedImage(image, ratio);
+	} catch (e) {
+		throw new Error(`${imageLink}が取り込めませんでした`)
+	}
 }
 
 function reducedImage(image, ratio){

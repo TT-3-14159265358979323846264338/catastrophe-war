@@ -1,7 +1,7 @@
 import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
 import {topRepaintStart} from '../app/app.js';
-import {inputReducedImages, inputReducedImage, rotateDraw, effectImage} from '../common/edit-image.js';
+import {inputReducedImage, rotateDraw, effectImage} from '../common/edit-image.js';
 import {gachaDetailPage} from './gacha-detail.js'
 
 const gachaPageClass = document.querySelector('.gacha-item').classList;
@@ -10,15 +10,15 @@ const gachaList = document.getElementById("gacha-list")
 const detailButton = document.getElementById("gacha-detail");
 const countButton = document.getElementById("gacha-count");
 const returnButton = document.getElementById("go-to-toppage-from-gacha");
-let gachaCount = [];
+let gachaCount;
 let id;
-let coreImage = [];
-let weaponImage = [];
-let halfBallImage = [];
-let handleImage = new Image();
-let machineImage = [];
-let turnImage = new Image();
-let dafaultEffectImage = new Image();
+let coreImage;//この画面で定義するか、ガチャリザルト画面に定義するか未定
+let weaponImage;
+let halfBallImage;
+let handleImage;
+let machineImage;
+let turnImage;
+let dafaultEffectImage;
 let isPressed = false;
 const RATIO = 1.3;
 const GACHA_X = 200;
@@ -30,9 +30,9 @@ const TURN_Y = 266;
 const EFFECT_X = 240;
 const EFFECT_Y = 350;
 
-export function gacha(){
+export async  function gacha(){
 	if(!id){
-		initialize();
+		await initialize();
 	}
 	addMouseListener();
 	stompCondition.resetSubscriptions();
@@ -51,7 +51,7 @@ async function initialize(){
 		inputMedal(data.medal);
 		id = data.id
 		inputGachaData(data.gachaCount);
-		inputImage(data.links);
+		await inputImage(data.links);
 	}catch (e) {
 		console.error("ガチャ画面の初期化失敗:", e);
 	}
@@ -62,18 +62,20 @@ function inputMedal(medal){
 }
 
 function inputGachaData(countText){
-	countText.forEach(i => gachaCount.push(i));
+	gachaCount = countText
 	changeCountButtonText();
 }
 
 async function inputImage(links){
-	await inputReducedImages(coreImage, links.coreImageLink, RATIO);
-	await inputReducedImages(weaponImage, links.weaponImageLink, RATIO);
-	await inputReducedImages(halfBallImage, links.halfBallImageLink, RATIO);
-	handleImage = await inputReducedImage(links.handleImageLink, RATIO);
-	await inputReducedImages(machineImage, links.machineImageLink, RATIO);
-	turnImage = await inputReducedImage(links.turnImageLink, RATIO);
-	dafaultEffectImage.src = links.effectImageLink;
+	[coreImage, weaponImage, halfBallImage, handleImage, machineImage, turnImage, dafaultEffectImage] = 
+		await Promise.all([inputReducedImage(links.coreImageLink, RATIO),
+			inputReducedImage(links.weaponImageLink, RATIO),
+			inputReducedImage(links.halfBallImageLink, RATIO),
+			inputReducedImage(links.handleImageLink, RATIO),
+			inputReducedImage(links.machineImageLink, RATIO),
+			inputReducedImage(links.turnImageLink, RATIO),
+			inputReducedImage(links.effectImageLink)
+		]);
 }
 
 function inputGachaList(data){

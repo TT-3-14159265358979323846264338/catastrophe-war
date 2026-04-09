@@ -1,21 +1,22 @@
 import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
+import {inputReducedImage} from '../common/edit-image.js';
 import {gacha} from '../gacha/gacha.js';
 import {editUnit} from '../edit/edit-unit.js';
 import {rotateDraw} from '../common/edit-image.js';
 
 const topPageClass = document.querySelector('.toppage-item').classList;
-const titleImage = new Image();
-const coreImages = [];
+let titleImage;
+let coreImages;
 const TITLE_X = 80;
 const TITLE_Y = 40;
 const INTERVAL = 25000;
 
-stompCondition.stompConnected = async _ => {
+stompCondition.stompConnected = async () => {
 	try{
 		const response = await fetch('/api/top/data');
 		const data = await response.json();
-		inputImage(data);
+		await inputImage(data);
 		topRepaintStart();
 	}catch (e) {
 		console.error("トップページの初期化失敗:", e);
@@ -24,13 +25,8 @@ stompCondition.stompConnected = async _ => {
 
 stompCondition.stompActivate();
 
-function inputImage(imageList){
-	titleImage.src = imageList[0];
-	for(let i = 1; i < imageList.length; i++){
-		const image = new Image();
-		image.src = imageList[i];
-		coreImages.push(image);
-	}
+async function inputImage(data){
+	[titleImage, coreImages] = await Promise.all([inputReducedImage(data.title), inputReducedImage(data.core)]);
 }
 
 export function topRepaintStart(){
@@ -62,23 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById("go-to-edit-from-toppage").addEventListener('click', editButtonAction);
 });
 
-function gachaButtonAction(_){
+function gachaButtonAction(){
 	ChangeTopPage(gacha);
 }
 
-function recycleButtonAction(_){
+function recycleButtonAction(){
 	
 }
 
-function compositionButtonAction(_){
+function compositionButtonAction(){
 	
 }
 
-function stageButtonAction(_){
+function stageButtonAction(){
 	
 }
 
-function editButtonAction(_){
+function editButtonAction(){
 	ChangeTopPage(editUnit);
 }
 
