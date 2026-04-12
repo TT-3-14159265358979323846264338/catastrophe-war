@@ -18,7 +18,17 @@
 }
 
 .edit-unit-scroll-list{
-	
+	display: flex;
+	height: 10%;
+	flex-grow: 1;
+}
+
+.edit-unit-scroll-list label{
+	width: 80%;
+}
+
+.edit-unit-scroll-list input{
+	width: 15%;
 }
 
 .edit-unit-button-area{

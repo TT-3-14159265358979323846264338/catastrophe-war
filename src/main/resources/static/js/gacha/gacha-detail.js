@@ -1,12 +1,12 @@
 import {ableToPlayGacha} from './gacha.js'
-import {weaponLink, coreLink, status} from '../status/status.js'
+import {WEAPON_LINK, CORE_LINK, status} from '../status/status.js'
 
 const gachaDetailPageClass = document.querySelector('.gacha-detail-page').classList;
 const detailList = document.getElementById("gacha-detail-list");
 const returnButton = document.getElementById("go-to-gacha-from-gacha-detail");
-const coreId = "コア";
-const weaponId = "武器";
-const noId = "no id";
+const CORE_ID = "コア";
+const WEAPON_ID = "武器";
+const NO_ID = "no id";
 
 export async function gachaDetailPage(){
 	try{
@@ -21,20 +21,20 @@ export async function gachaDetailPage(){
 
 function initialize(data){
 	if(data.coreRatio.length !== 0){
-		addTotalRatio(coreId, data.coreRatio);
-		addElement(coreId, data.coreLineup, data.coreRatio);
+		addTotalRatio(CORE_ID, data.coreRatio);
+		addElement(CORE_ID, data.coreLineup, data.coreRatio);
 		addList(addList => addList.innerHTML = "&nbsp;");
 	}
 	if(data.weaponRatio.length !== 0){
-		addTotalRatio(weaponId, data.weaponRatio);
-		addElement(weaponId, data.weaponLineup, data.weaponRatio);	
+		addTotalRatio(WEAPON_ID, data.weaponRatio);
+		addElement(WEAPON_ID, data.weaponLineup, data.weaponRatio);	
 	}else{
 		detailList.lastElementChild.remove();
 	}
 }
 
 function addTotalRatio(elementId, ratioLineup){
-	addDetailList(noId, noId, `【${elementId}】`, totalRatio(ratioLineup));
+	addDetailList(NO_ID, NO_ID, `【${elementId}】`, totalRatio(ratioLineup));
 }
 
 function totalRatio(ratioLineup){
@@ -72,10 +72,10 @@ function detailListAction(e){
 		return;
 	}
 	const id = target.dataset.id;
-	if(!id || id === noId){
+	if(!id || id === NO_ID){
 		return;
 	}
-	const link = target.dataset.elementId === coreId? coreLink: weaponLink;
+	const link = target.dataset.elementId === CORE_ID? CORE_LINK: WEAPON_LINK;
 	status(link, id);
 }
 

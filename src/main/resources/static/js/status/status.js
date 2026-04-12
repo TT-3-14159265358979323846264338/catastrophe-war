@@ -1,5 +1,5 @@
-export const weaponLink = "weapon";
-export const coreLink = "core";
+export const WEAPON_LINK = "weapon";
+export const CORE_LINK = "core";
 
 const statusPageClass = document.querySelector('.status-page').classList;
 const branck = "　";

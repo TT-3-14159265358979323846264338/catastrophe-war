@@ -1,9 +1,10 @@
 import {stompCondition} from '../common/stomp-condition.js';
 import {inputReducedImage} from '../common/edit-image.js';
 import {topRepaintStart} from '../app/app.js';
-import {editUnit} from './edit-unit.js';
+import {activateEditUnit} from './edit-unit.js';
 
 const editUnitClas = document.querySelector(".edit-stage").classList;
+const saveButton = document.getElementById("edit-stage-save");
 const switchButton = document.getElementById("go-to-edit-unit-from-edit-stage");
 const returnButton = document.getElementById("go-to-toppage-from-edit-stage");
 let medal;
@@ -11,7 +12,7 @@ let stageClear = [];
 let meritClear = [];
 const IMAGE_RATIO = 5;
 
-export async function initializeStage(){
+export async function editStage(){
 	try{
 		const response = await fetch("/api/edit/stage/data");
 		const data = await response.json();
@@ -44,19 +45,24 @@ async function createScroll(data){
 
 
 
-export function editStage(){
+export function activateEditStage(){
 	stompCondition.resetSubscriptions();
 	editUnitClas.remove('hidden');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+	saveButton.addEventListener('click', saveButtonAction);
 	switchButton.addEventListener('click', switchButtonAction);
 	returnButton.addEventListener('click', returnButtonAction);
 });
 
+function saveButtonAction(){
+	
+}
+
 function switchButtonAction(){
 	endPage();
-	editUnit(stompClient);
+	activateEditUnit();
 }
 
 function returnButtonAction(){
