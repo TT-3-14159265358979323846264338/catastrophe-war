@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="editUnitPage" class="edit-unit default-container default-label default-button hidden">
-	<span class="edit-unit-comment">保有ユニット</span>
-	<div class="edit-unit-draw-area">
+<div th:fragment="editUnitPage" class="edit-unit default-edit default-container default-label default-button hidden">
+	<span class="edit-comment">保有ユニット</span>
+	<div class="edit-draw-area">
 		<div class="edit-unit-scroll default-scroll">
 			<ul id="edit-unit-core-list" class="default-scroll-list"></ul>
 		</div>
@@ -10,7 +10,7 @@
 			<ul id="edit-unit-weapon-list" class="default-scroll-list"></ul>
 		</div>
 	</div>
-	<div class="edit-unit-button-area">
+	<div class="edit-button-area">
 		<button id="edit-unit-save" type="button">セーブ</button>
 		<button id="go-to-edit-stage-from-edit-unit" type="button">表示切替</button>
 		<button id="go-to-toppage-from-edit-unit" type="button">戻る</button>
