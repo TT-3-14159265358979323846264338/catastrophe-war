@@ -1,19 +1,19 @@
-.edit-stage{
-	
+.edit-item-scroll{
+	width: 18%;
 }
 
-.edit-stage-comment{
-	
+.edit-item-scroll-list{
+	flex-direction: column;
 }
 
 .edit-stage-scroll{
-	
+	width: 80%;
 }
 
-.edit-stage-scroll-list{
-	
+.edit-stage-scroll-list label{
+	width: 10%;
 }
 
-.edit-stage-button{
-	
+.edit-stage-scroll-list input{
+	width: 2%;
 }

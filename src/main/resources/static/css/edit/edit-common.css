@@ -1,0 +1,29 @@
+.default-edit{
+	flex-direction: column;
+	inset: 0 5%;
+}
+
+.default-edit .edit-comment{
+	background-color: #11ffee00;
+}
+
+.edit-draw-area{
+	display: flex;
+	justify-content: space-between;
+	height: 70%;
+}
+
+.edit-scroll-list{
+	display: flex;
+	flex-grow: 1;
+}
+
+.edit-button-area{
+	display: flex;
+	justify-content: space-evenly;
+	height: 10%;
+}
+
+.edit-button-area button{
+	width: 20%;
+}

@@ -3,6 +3,7 @@ import {stompCondition} from '../common/stomp-condition.js';
 import {inputReducedImage} from '../common/edit-image.js';
 import {topRepaintStart} from '../app/app.js';
 import {editStage, activateEditStage} from './edit-stage.js';
+import {addScroll} from './commonEdit.js';
 
 const editUnitClas = document.querySelector(".edit-unit").classList;
 const saveButton = document.getElementById("edit-unit-save");
@@ -10,14 +11,18 @@ const switchButton = document.getElementById("go-to-edit-stage-from-edit-unit");
 const returnButton = document.getElementById("go-to-toppage-from-edit-unit");
 const coreList = document.getElementById("edit-unit-core-list");
 const weaponList = document.getElementById("edit-unit-weapon-list");
-const CORE_ID = "コア";
-const WEAPON_ID = "武器";
+let coreInput;
+let weaponInput;
+const CORE_ID = "core";
+const WEAPON_ID = "weapon";
 const IMAGE_RATIO = 5;
 
 export async function editUnit(){
 	canvasCondition.clearArea();
 	coreList.innerHTML = "";
 	weaponList.innerHTML = "";
+	coreInput = []
+	weaponInput = []
 	try{
 		const response = await fetch("/api/edit/unit/data");
 		const data = await response.json();
@@ -31,40 +36,26 @@ export async function editUnit(){
 
 async function createScroll(data){
 	const [coreImages, weaponImages] = 
-		await Promise.all([inputReducedImage(data.coreImages, IMAGE_RATIO), 
-			inputReducedImage(data.weaponImages, IMAGE_RATIO)]);
-	addScroll(CORE_ID, coreList, data.coreName, coreImages, data.coreNumber);
-	addScroll(WEAPON_ID, weaponList, data.weaponName, weaponImages, data.weaponNumber);
+		await Promise.all([inputReducedImage(data.coreData.map(i => i.image), IMAGE_RATIO), 
+			inputReducedImage(data.weaponData.map(i => i.image), IMAGE_RATIO)]);
+	addScroll(CORE_ID, coreList, coreImages, htmlTask(coreInput, data.coreData));
+	addScroll(WEAPON_ID, weaponList, weaponImages, htmlTask(weaponInput, data.weaponData));
 }
 
-function addScroll(elementId, list, nameList, imageList, numberList){
-	nameList.forEach((name, i) => {
-		const addList = document.createElement('li');
-		addList.dataset.elementId = elementId;
-		addList.dataset.id = i;
-		const imageId = `edit-unit-${elementId}-image-${i}`;
-		const inputId = `edit-unit-${elementId}-input-${i}`;
-		addList.innerHTML = createHTML(imageId, inputId, name, numberList[i]);
-		list.appendChild(addList);
-		imageList[i].toBlob((blob) => imageDraw(blob, imageId));
-	});
+function htmlTask(input, data){
+	return (imageId, i) => createHTML(imageId, i, input, data[i].name, data[i].number);
 }
 
-function createHTML(imageId, inputId, name, number){
+function createHTML(imageId, index, input, text, number){
+	const inputId = `edit-${imageId}-input-${index}`;
+	input.push(inputId);
 	return `
-	<div class="edit-unit-scroll-list default-spinner">
+	<div class="edit-scroll-list edit-unit-scroll-list default-label">
 		<img id="${imageId}">
-		<label for="${inputId}">${name}</label>
-		<input id="${inputId}" name="number" type="number" min="0" max="99" step="1" value="${number}">
+		<label for="${inputId}">${text}</label>
+		<input type="number" id="${inputId}" name="number" min="0" max="99" step="1" value="${number}">
 	</div>
 	`;
-}
-
-function imageDraw(blob, imageId){
-	const url = URL.createObjectURL(blob);
-	const image = document.getElementById(`${imageId}`);
-	image.onload = () => URL.revokeObjectURL(url);
-	image.src = url;	
 }
 
 export function activateEditUnit(){
@@ -78,8 +69,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	returnButton.addEventListener('click', returnButtonAction);
 });
 
-function saveButtonAction(){
-	
+async function saveButtonAction(){
+	const coreNumber = radioValue(coreInput);
+	const weaponNumber = radioValue(weaponInput);
+	try{
+		await fetch("/api/edit/save/unit", {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({coreNumber, weaponNumber})
+		});
+	}catch (e) {
+		console.error("ユニットのセーブに失敗:", e);
+	}
+}
+
+function radioValue(input){
+	return input.map(i => document.getElementById(i).value);
 }
 
 function switchButtonAction(){
@@ -94,5 +99,4 @@ function returnButtonAction(){
 
 function endPage(){
 	editUnitClas.add('hidden');
-	stompCondition.resetSubscriptions();
 }

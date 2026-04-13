@@ -5,6 +5,7 @@
 @import "status/status.css";
 @import "edit/edit-unit.css";
 @import "edit/edit-stage.css";
+@import "edit/edit-common.css";
 
 body {
 	margin: 0;

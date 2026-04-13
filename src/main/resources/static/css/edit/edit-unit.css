@@ -1,26 +1,5 @@
-.edit-unit{
-	flex-direction: column;
-	inset: 0 10%;
-}
-
-.edit-unit .edit-unit-comment{
-	background-color: #11ffee00;
-}
-
-.edit-unit-draw-area{
-	display: flex;
-	justify-content: space-between;
-	height: 70%;
-}
-
 .edit-unit-scroll{
 	width: 49%;
-}
-
-.edit-unit-scroll-list{
-	display: flex;
-	height: 10%;
-	flex-grow: 1;
 }
 
 .edit-unit-scroll-list label{
@@ -29,14 +8,4 @@
 
 .edit-unit-scroll-list input{
 	width: 15%;
-}
-
-.edit-unit-button-area{
-	display: flex;
-	justify-content: space-evenly;
-	height: 10%;
-}
-
-.edit-unit-button-area button{
-	width: 20%;
 }
