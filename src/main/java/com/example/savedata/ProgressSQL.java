@@ -9,8 +9,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+
+import com.example.defaultdata.DefaultEnum;
+import com.example.defaultdata.Stage;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -63,6 +67,9 @@ public class ProgressSQL {
 	@Transient
 	private static final List<Field> MERIT_FIELD;
 	
+	@Transient
+	private int ACTIVE_NUMBER;
+	
 	static {
 		MERIT_FIELD = IntStream.range(0, COUNT).mapToObj(i -> {
 			try {
@@ -75,15 +82,21 @@ public class ProgressSQL {
 		}).toList();
 	}
 	
+	@PostLoad
+	void activeNumber() {
+		ACTIVE_NUMBER = DefaultEnum.getEnum(Stage.values(), id - 1).getLabel().getMerit().size();
+	}
+	
 	public void initialize() {
 		stageClear = false;
 		for(int i = 0; i < COUNT; i++) {
 			setData(i, false);
 		}
+		activeNumber();
 	}
 	
 	public List<Boolean> getMerit(){
-		return IntStream.range(0, COUNT).mapToObj(this::merit).toList();
+		return IntStream.range(0, COUNT).mapToObj(this::merit).limit(ACTIVE_NUMBER).toList();
 	}
 	
 	boolean merit(int meritId) {
@@ -93,6 +106,10 @@ public class ProgressSQL {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public void setData(List<Boolean> merit) {
+		IntStream.range(0, merit.size()).forEach(i -> setData(i, merit.get(i)));
 	}
 	
 	public void setData(int meritId, boolean hasCleared) {
