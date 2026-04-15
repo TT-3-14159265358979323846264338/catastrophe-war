@@ -80,7 +80,7 @@ function detailListAction(e){
 }
 
 function returnButtonAction(){
-	detailList.innerHTML = "";
 	gachaDetailPageClass.add('hidden');
+	detailList.innerHTML = "";
 	ableToPlayGacha();
 }

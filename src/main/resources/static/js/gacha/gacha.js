@@ -220,8 +220,8 @@ function changeCountButtonText(){
 
 function returnButtonAction(_){
 	gachaPageClass.add('hidden');
-	topRepaintStart();
 	gachaRepaintStop();
+	topRepaintStart();
 }
 
 function gachaRepaintStop(){
