@@ -3,7 +3,7 @@ import {stompCondition} from '../common/stomp-condition.js';
 import {inputReducedImage} from '../common/edit-image.js';
 import {topRepaintStart} from '../app/app.js';
 import {editStage, activateEditStage} from './edit-stage.js';
-import {addScroll} from './commonEdit.js';
+import {addScroll} from './common-edit.js';
 
 const editUnitClas = document.querySelector(".edit-unit").classList;
 const saveButton = document.getElementById("edit-unit-save");

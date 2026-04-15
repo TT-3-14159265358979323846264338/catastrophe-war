@@ -1,7 +1,7 @@
 import {inputReducedImage} from '../common/edit-image.js';
 import {topRepaintStart} from '../app/app.js';
 import {activateEditUnit} from './edit-unit.js';
-import {addScroll} from './commonEdit.js';
+import {addScroll} from './common-edit.js';
 
 const editUnitClass = document.querySelector(".edit-stage").classList;
 const saveButton = document.getElementById("edit-stage-save");

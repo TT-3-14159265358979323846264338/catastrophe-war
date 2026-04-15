@@ -1,16 +1,17 @@
 import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
-import {inputReducedImage} from '../common/edit-image.js';
+import {inputReducedImage, rotateDraw} from '../common/edit-image.js';
+import {heartbeat} from '../common/heartbeat.js'
 import {gacha} from '../gacha/gacha.js';
 import {editUnit} from '../edit/edit-unit.js';
-import {rotateDraw} from '../common/edit-image.js';
 
 const topPageClass = document.querySelector('.toppage-item').classList;
 let titleImage;
 let coreImages;
 const TITLE_X = 80;
 const TITLE_Y = 40;
-const INTERVAL = 25000;
+
+heartbeat();
 
 stompCondition.stompConnected = async () => {
 	try{
@@ -82,14 +83,4 @@ function ChangeTopPage(task){
 	topPageClass.add('hidden');
 	stompCondition.resetSubscriptions();
 	task();
-}
-
-window.addEventListener('pagehide', _ => {
-	navigator.sendBeacon('/api/shutdown');
-});
-
-setInterval(sendHeartbeat, INTERVAL);
-
-function sendHeartbeat(){
-	navigator.sendBeacon("/api/heartbeat");
 }
