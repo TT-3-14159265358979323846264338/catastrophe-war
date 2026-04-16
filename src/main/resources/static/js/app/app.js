@@ -32,7 +32,7 @@ async function inputImage(data){
 
 export function topRepaintStart(){
 	stompCondition.resetSubscriptions();
-	stompCondition.addSubscriptions('/topic/top/repaint', drawImage);
+	stompCondition.addSubscriptions('/user/queue/top/repaint', drawImage);
 	stompCondition.publish("/app/top/timer/start");
 	topPageClass.remove('hidden');
 }
