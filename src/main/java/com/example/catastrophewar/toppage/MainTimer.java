@@ -6,16 +6,16 @@ import java.util.stream.Stream;
 import com.example.commonclass.Timer;
 
 class MainTimer extends Timer{
-	private final TopPage topPage;
+	private final TopPageState topPageState;
 	private final FallMotion[] fallMotion;
 	private final FinalMotion[] finalMotion;
 	private int count;
 	private boolean isEndedFallMotion;
 	private final int DELAY = 300;
 	
-	MainTimer(ScheduledExecutorService scheduler, TopPage topPage, FallMotion[] fallMotion, FinalMotion[] finalMotion){
+	MainTimer(ScheduledExecutorService scheduler, TopPageState topPageState, FallMotion[] fallMotion, FinalMotion[] finalMotion){
 		super(scheduler);
-		this.topPage = topPage;
+		this.topPageState = topPageState;
 		this.fallMotion = fallMotion;
 		this.finalMotion = finalMotion;
 	}
@@ -32,7 +32,7 @@ class MainTimer extends Timer{
 	void timerProcess() {
 		if(isEndedFallMotion) {
 			if(Stream.of(finalMotion).noneMatch(FinalMotion::isRunning)) {
-				topPage.endTimer();
+				topPageState.timerStop();
 				timerStop();
 			}
 			return;

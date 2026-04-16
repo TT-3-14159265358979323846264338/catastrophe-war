@@ -1,61 +1,30 @@
 package com.example.catastrophewar.toppage;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.example.commonclass.ImageLink;
-import com.example.commonclass.Timer;
-import com.example.defaultdata.Core;
 import com.example.defaultdata.other.OtherData;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
-public class TopPage extends Timer{
-	private final FallMotion[] fallMotion;
-	private final FinalMotion[] finalMotion;
-	private final MainTimer mainTimer;
-	private final List<Integer> randamList;
-	private final int NUMBER = 20;
-	
-	@Autowired
-	private SimpMessagingTemplate messaging;
-	
-	TopPage(ScheduledExecutorService scheduler){
-		super(scheduler);
-		fallMotion = createFallMotion(scheduler);
-		finalMotion = createFinalMotion(scheduler);
-		mainTimer = createMainTimer(scheduler);
-		randamList = createRandamList();
-	}
-	
-	FallMotion[] createFallMotion(ScheduledExecutorService scheduler){
-		return IntStream.range(0, NUMBER).mapToObj(_ -> new FallMotion(scheduler)).toArray(FallMotion[]::new);
-	}
-	
-	FinalMotion[] createFinalMotion(ScheduledExecutorService scheduler) {
-		return IntStream.range(0, NUMBER).mapToObj(i -> new FinalMotion(scheduler, i)).toArray(FinalMotion[]::new);
-	}
-	
-	MainTimer createMainTimer(ScheduledExecutorService scheduler){
-		return new MainTimer(scheduler, this, fallMotion, finalMotion);
-	}
-	
-	List<Integer> createRandamList(){
-		var random = createRandom();
-		return IntStream.range(0, NUMBER).mapToObj(_ -> random.nextInt(Core.values().length)).toList();
-	}
-	
-	Random createRandom() {
-		return new Random();
-	}
+@RequiredArgsConstructor
+public class TopPage{
+	private final ScheduledExecutorService scheduler;
+	private final SimpMessagingTemplate messaging;
+	private final Map<String, TopPageState> sessions = new ConcurrentHashMap<>();
 	
 	@GetMapping("/api/top/data")
 	public TopImage sendImage() {
@@ -73,35 +42,27 @@ public class TopPage extends Timer{
 	}
 	
 	@MessageMapping("/top/timer/start")
-	public void timerStart() {
-		if(isRunning()) {
-			return;
+	public void timerStart(SimpMessageHeaderAccessor accessor) {
+		String sessionId = accessor.getSessionId();
+		TopPageState state = sessions.computeIfAbsent(sessionId, _ -> new TopPageState(scheduler));
+		state.drawTimerStart(() -> repaint(sessionId));
+	}
+	
+	void repaint(String sessionId) {
+		TopPageState state = sessions.get(sessionId);
+		if(state != null) {
+			SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+	        headerAccessor.setSessionId(sessionId);
+	        headerAccessor.setLeaveMutable(true);
+			messaging.convertAndSendToUser(sessionId, "/queue/top/repaint", state.createState(), headerAccessor.getMessageHeaders());
 		}
-		timerStart(this::repaint);
-		mainTimer.timerStart();
 	}
 	
-	void repaint() {
-		messaging.convertAndSend("/topic/top/repaint", createState());
-	}
-	
-	State createState(){
-		return new State(IntStream.range(0, NUMBER).mapToObj(this::createCoreState).toList(), mainTimer.isEndedFallMotion());
-	}
-	
-	record State(List<CoreState> state, boolean isEnded) {}
-	
-	CoreState createCoreState(int number) {
-		return new CoreState(randamList.get(number), getData(number, CorePosition::getX), getData(number, CorePosition::getY), getData(number, CorePosition::getAngle));
-	}
-	
-	record CoreState(int id, int x, int y, double angle) {}
-	
-	<T> T getData(int number, Function<CorePosition, T> task) {
-		return mainTimer.isEndedFallMotion()? task.apply(finalMotion[number]): task.apply(fallMotion[number]);
-	}
-	
-	void endTimer() {
-		timerStop();
+	@EventListener
+	public void removeSessions(SessionDisconnectEvent event) {
+		TopPageState state = sessions.remove(event.getSessionId());
+		if (state != null) {
+			state.timerStop();
+		}
 	}
 }

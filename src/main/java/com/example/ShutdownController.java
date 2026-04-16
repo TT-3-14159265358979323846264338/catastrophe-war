@@ -17,7 +17,7 @@ public class ShutdownController{
 	private ConfigurableApplicationContext context;
 	
 	private volatile long time;
-	private final int DELAY = 30000;
+	private final int DELAY = 60000;
 	private boolean hasShutDown;
 	
 	ShutdownController(){
@@ -32,13 +32,8 @@ public class ShutdownController{
 	@Scheduled(fixedRate = DELAY)
 	void timerProcess() {
 		if(DELAY < System.currentTimeMillis() - time) {
-			shutdown();
+			CompletableFuture.runAsync(this::shutdownNow);
 		}
-	}
-	
-	@PostMapping("/api/shutdown")
-	public void shutdown() {
-		CompletableFuture.runAsync(this::shutdownNow);
 	}
 	
 	synchronized void shutdownNow(){
