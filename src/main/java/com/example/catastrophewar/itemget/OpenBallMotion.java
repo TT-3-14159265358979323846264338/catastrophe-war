@@ -8,7 +8,7 @@ import com.example.commonclass.Timer;
 class OpenBallMotion extends Timer implements BallState{
 	//private final HoldMedal holdMedal;
 	//private final GachaInformation gachaInformation;
-	private final ItemGetPage itemGetPage;
+	private final ItemGetPageState itemGetPageState;
 	private double bottomAngle;
 	private double topAngle;
 	private Point bottomPoint;
@@ -29,11 +29,11 @@ class OpenBallMotion extends Timer implements BallState{
 	private final int END_COUNT = 30;
 	
 	//OpenBallMotion(HoldMedal holdMedal, GachaInformation gachaInformation, ItemGetImage itemGetImage, ScheduledExecutorService scheduler) {
-	OpenBallMotion(ItemGetPage itemGetPage, ScheduledExecutorService scheduler) {
+	OpenBallMotion(ItemGetPageState itemGetPageState, ScheduledExecutorService scheduler) {
 		super(scheduler);
 		//this.holdMedal = holdMedal;
 		//this.gachaInformation = gachaInformation;
-		this.itemGetPage = itemGetPage;
+		this.itemGetPageState = itemGetPageState;
 		reset();
 	}
 	
@@ -69,7 +69,7 @@ class OpenBallMotion extends Timer implements BallState{
 		if(END_COUNT < count) {
 			gacha();
 			reset();
-			itemGetPage.endGacha();
+			itemGetPageState.endGacha();
 			timerStop();
 		}
 	}

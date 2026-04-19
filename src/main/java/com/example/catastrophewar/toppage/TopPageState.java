@@ -16,7 +16,7 @@ public class TopPageState extends Timer{
 	private final List<Integer> randamList;
 	private final int NUMBER = 20;
 	
-	TopPageState(ScheduledExecutorService scheduler){
+	public TopPageState(ScheduledExecutorService scheduler){
 		super(scheduler);
 		fallMotion = createFallMotion(scheduler);
 		finalMotion = createFinalMotion(scheduler);

@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import com.example.commonclass.Timer;
 
 class HandleMotion extends Timer{
-	private final ItemGetPage itemGetPage;
+	private final ItemGetPageState itemGetPageState;
 	//private final HoldMedal HoldMedal;
 	private final FallBallMotion fallBallMotion;
 	private int startPointX;
@@ -23,9 +23,9 @@ class HandleMotion extends Timer{
 	private final double ANGLE_CHANGE = 0.1;
 	
 	//HandleMotion(MenuItemGet menuItemGet, HoldMedal holdMedal, BallMotion ballMotion, ScheduledExecutorService scheduler) {
-	HandleMotion(ItemGetPage itemGetPage, FallBallMotion fallBallMotion, ScheduledExecutorService scheduler) {
+	HandleMotion(ItemGetPageState itemGetPageState, FallBallMotion fallBallMotion, ScheduledExecutorService scheduler) {
 		super(scheduler);
-		this.itemGetPage = itemGetPage;
+		this.itemGetPageState = itemGetPageState;
 		//this.HoldMedal = holdMedal;
 		this.fallBallMotion = fallBallMotion;
 	}
@@ -89,7 +89,7 @@ class HandleMotion extends Timer{
 	}
 	
 	void autoTurnStart() {
-		itemGetPage.playGacha();
+		itemGetPageState.playGacha();
 		//MenuItemGet.deactivatePanel();
 		timerStart(this::timerProcess);
 	}

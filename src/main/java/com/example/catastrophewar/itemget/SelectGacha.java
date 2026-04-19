@@ -58,6 +58,10 @@ class SelectGacha {
 		gachaCount = DefaultEnum.getEnum(GachaCount.values(), id);
 	}
 	
+	int getMedal() {
+		return medal;
+	}
+	
 	void setMedal(int medal) {
 		this.medal = medal;
 	}
