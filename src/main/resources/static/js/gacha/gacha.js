@@ -2,10 +2,11 @@ import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
 import {topRepaintStart} from '../app/app.js';
 import {inputReducedImage, rotateDraw, effectImage} from '../common/edit-image.js';
-import {gachaDetailPage} from './gacha-detail.js'
+import {gachaDetailPage, activateGachaDetailPage} from './gacha-detail.js'
 
 const gachaPageClass = document.querySelector('.gacha-item').classList;
 const gachaScrollClass = document.querySelector('.gacha-scroll').classList;
+const medalLabel = document.getElementById("gacha-medal-label");
 const gachaList = document.getElementById("gacha-list")
 const detailButton = document.getElementById("gacha-detail");
 const countButton = document.getElementById("gacha-count");
@@ -30,16 +31,17 @@ const TURN_Y = 266;
 const EFFECT_X = 240;
 const EFFECT_Y = 350;
 
-export async  function gacha(){
+export async function gacha(){
 	if(!id){
 		await initialize();
 	}
 	addMouseListener();
 	stompCondition.resetSubscriptions();
-	stompCondition.addSubscriptions("/topic/gacha/list", inputGachaList);
-	stompCondition.addSubscriptions("/topic/gacha/repaint", drawImage);
-	stompCondition.addSubscriptions("/topic/gacha/play", playGacha);
-	stompCondition.addSubscriptions("/topic/gacha/end", endGacha);
+	gachaDetailPage();
+	stompCondition.addSubscriptions("/user/queue/gacha/list", inputGachaData);
+	stompCondition.addSubscriptions("/user/queue/gacha/repaint", drawImage);
+	stompCondition.addSubscriptions("/user/queue/gacha/play", playGacha);
+	stompCondition.addSubscriptions("/user/queue/gacha/end", endGacha);
 	stompCondition.publish("/app/gacha/timer/start");
 	gachaPageClass.remove('hidden');
 }
@@ -49,8 +51,7 @@ async function initialize(){
 		const response = await fetch('/api/gacha/data');
 		const data = await response.json();
 		inputMedal(data.medal);
-		id = data.id
-		inputGachaData(data.gachaCount);
+		inputDefaultGachaData(data.gachaCount);
 		await inputImage(data.links);
 	}catch (e) {
 		console.error("ガチャ画面の初期化失敗:", e);
@@ -58,10 +59,10 @@ async function initialize(){
 }
 
 function inputMedal(medal){
-	document.getElementById("gacha-medal-label").textContent = `メダル数: ${medal}`;
+	medalLabel.textContent = `メダル数: ${medal}`;
 }
 
-function inputGachaData(countText){
+function inputDefaultGachaData(countText){
 	gachaCount = countText
 	changeCountButtonText();
 }
@@ -78,9 +79,13 @@ async function inputImage(links){
 		]);
 }
 
-function inputGachaList(data){
-	JSON.parse(data.body).forEach(addGachaList);
+function inputGachaData(data){
+	const state = JSON.parse(data.body)
+	state.gachaList.forEach(addGachaList);
 	selectGacha(gachaList.querySelector('li'));
+	id = state.gachaCountId;
+	changeCountButtonText();
+	inputMedal(state.medal);
 }
 
 function addGachaList(element){
@@ -204,8 +209,9 @@ function selectGacha(target){
 }
 
 function detailButtonAction(){
+	stompCondition.publish("/app/gacha/detail");
 	playGacha();
-	gachaDetailPage();
+	activateGachaDetailPage();
 }
 
 function countButtonAction(){

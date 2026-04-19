@@ -1,3 +1,4 @@
+import {stompCondition} from '../common/stomp-condition.js';
 import {ableToPlayGacha} from './gacha.js'
 import {WEAPON_LINK, CORE_LINK, status} from '../status/status.js'
 
@@ -9,25 +10,23 @@ const WEAPON_ID = "武器";
 const NO_ID = "no id";
 
 export async function gachaDetailPage(){
-	try{
-		const response = await fetch('/api/gacha/detail');
-		const data = await response.json();
-		initialize(data);
-	}catch (e) {
-		console.error("ガチャ詳細の取得に失敗:", e);
-	}
+	stompCondition.addSubscriptions("/user/queue/gacha/detail/data", initialize);
+}
+
+export function activateGachaDetailPage(){
 	gachaDetailPageClass.remove('hidden');
 }
 
 function initialize(data){
-	if(data.coreRatio.length !== 0){
-		addTotalRatio(CORE_ID, data.coreRatio);
-		addElement(CORE_ID, data.coreLineup, data.coreRatio);
+	const state = JSON.parse(data.body)
+	if(state.coreRatio.length !== 0){
+		addTotalRatio(CORE_ID, state.coreRatio);
+		addElement(CORE_ID, state.coreLineup, state.coreRatio);
 		addList(addList => addList.innerHTML = "&nbsp;");
 	}
-	if(data.weaponRatio.length !== 0){
-		addTotalRatio(WEAPON_ID, data.weaponRatio);
-		addElement(WEAPON_ID, data.weaponLineup, data.weaponRatio);	
+	if(state.weaponRatio.length !== 0){
+		addTotalRatio(WEAPON_ID, state.weaponRatio);
+		addElement(WEAPON_ID, state.weaponLineup, state.weaponRatio);	
 	}else{
 		detailList.lastElementChild.remove();
 	}
