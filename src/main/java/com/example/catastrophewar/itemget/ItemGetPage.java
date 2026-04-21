@@ -3,6 +3,7 @@ package com.example.catastrophewar.itemget;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -13,13 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.catastrophewar.SessionController;
 import com.example.catastrophewar.SessionState;
+import com.example.commonclass.Code;
 import com.example.commonclass.ImageLink;
 import com.example.commonclass.Messaging;
 import com.example.defaultdata.GachaCount;
 import com.example.defaultdata.other.OtherData;
+import com.example.savedata.BaseSQL;
+import com.example.savedata.CoreRepository;
 import com.example.savedata.InitializeSQL;
 import com.example.savedata.ItemRepository;
 import com.example.savedata.ItemSQL;
+import com.example.savedata.WeaponRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +34,8 @@ public class ItemGetPage extends Messaging{
 	private final SimpMessagingTemplate messaging;
 	private final SessionController sessions;
 	private final ItemRepository itemRepository;
+	private final CoreRepository coreRepository;
+	private final WeaponRepository weaponRepository;
 	
 	@GetMapping("/api/gacha/data")
 	public DefaultGachaData sendGachaData() {
@@ -99,13 +106,40 @@ public class ItemGetPage extends Messaging{
 	}
 	
 	@Transactional
-	public int endGacha(int useMedal, String sessionId) {
+	public int endGacha(int useMedal, List<GachaResult> result, String sessionId) {
 		ItemSQL itemSQL = getItemSQL();
 		int newMedal = itemSQL.getNumber() - useMedal;
+		if(newMedal < 0 || result.size() == 0) {
+			sendEndGacha(itemSQL.getNumber(), List.of(), sessionId);
+			return itemSQL.getNumber();
+		}
 		itemSQL.setNumber(newMedal);
 		itemRepository.save(itemSQL);
-		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/end", newMedal, headers(sessionId)));
+		result.stream().forEach(i -> {
+			if(i.unitCode() == Code.CORE) {
+				saveRepository(i.id(), coreRepository);
+			}else {
+				saveRepository(i.id(), weaponRepository);
+			}
+		});
+		sendEndGacha(newMedal, result, sessionId);
 		return newMedal;
+	}
+	
+	record Result(int medal, List<GachaResult> result) {}
+	
+	void sendEndGacha(int medal, List<GachaResult> result, String sessionId) {
+		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/end", createResult(medal, result), headers(sessionId)));
+	}
+	
+	Result createResult(int medal, List<GachaResult> result) {
+		return new Result(medal, result);
+	}
+	
+	<T extends JpaRepository<U, Integer>, U extends BaseSQL> void saveRepository(int id, T repository) {
+		U sql = repository.findById(id + 1).orElseThrow(() -> new RuntimeException("ユニット数を取り込めない"));
+		sql.addNumber();
+		repository.save(sql);
 	}
 	
 	@MessageMapping("/gacha/mouse/pressed")

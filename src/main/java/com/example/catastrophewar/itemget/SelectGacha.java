@@ -46,6 +46,10 @@ class SelectGacha {
 		return gachaCount.getId();
 	}
 	
+	int getGachaCountLabel() {
+		return gachaCount.getLabel();
+	}
+	
 	int getUsedMedal() {
 		return gachaCount.getUsedMedal();
 	}

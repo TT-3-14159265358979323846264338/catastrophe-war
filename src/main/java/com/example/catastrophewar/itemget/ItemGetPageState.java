@@ -104,7 +104,12 @@ public class ItemGetPageState  extends Timer{
 	}
 	
 	void endGacha() {
-		selectGacha.setMedal(itemGetPage.endGacha(selectGacha.getUsedMedal(), sessionId));
+		GachaResultCreating gachaResultCreating = gachaResult();
+		selectGacha.setMedal(itemGetPage.endGacha(selectGacha.getUsedMedal(), gachaResultCreating.getResult(), sessionId));
+	}
+	
+	GachaResultCreating gachaResult() {
+		return new GachaResultCreating(selectGacha.selectGachaData(), selectGacha.getGachaCountLabel());
 	}
 	
 	void mousePressed(int x, int y) {
