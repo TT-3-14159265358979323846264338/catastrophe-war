@@ -26,6 +26,10 @@ public abstract class BaseSQL{
 	@Column(name = "number", columnDefinition = "INT UNSIGNED", nullable = false)
 	private Integer number;
 	
+	public void addNumber() {
+		setNumber(number + 1);
+	}
+	
 	public void setNumber(Integer number) {
 		if(maxNumber() < number) {
 			this.number = maxNumber();
