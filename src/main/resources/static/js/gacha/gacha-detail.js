@@ -9,7 +9,7 @@ const CORE_ID = "コア";
 const WEAPON_ID = "武器";
 const NO_ID = "no id";
 
-export async function gachaDetailPage(){
+export function gachaDetailPage(){
 	stompCondition.addSubscriptions("/user/queue/gacha/detail/data", initialize);
 }
 

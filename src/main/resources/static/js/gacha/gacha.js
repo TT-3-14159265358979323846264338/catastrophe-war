@@ -3,6 +3,7 @@ import {stompCondition} from '../common/stomp-condition.js';
 import {topRepaintStart} from '../app/app.js';
 import {inputReducedImage, rotateDraw, effectImage} from '../common/edit-image.js';
 import {gachaDetailPage, activateGachaDetailPage} from './gacha-detail.js'
+import {gachaResultPage} from './gacha-result.js';
 
 const gachaPageClass = document.querySelector('.gacha-item').classList;
 const gachaScrollClass = document.querySelector('.gacha-scroll').classList;
@@ -128,7 +129,9 @@ function playGacha(){
 }
 
 function endGacha(data){
-	inputMedal(JSON.parse(data.body));
+	const state = JSON.parse(data.body);
+	inputMedal(state.medal);
+	gachaResultPage(state.result);
 	ableToPlayGacha();
 }
 

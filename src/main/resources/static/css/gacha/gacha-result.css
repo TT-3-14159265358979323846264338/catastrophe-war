@@ -1,0 +1,22 @@
+.gacha-result-page{
+	flex-direction: column;
+	inset: 0;overflow: hidden;
+}
+
+.gacha-result-page span{
+	text-align: center;
+	background-color: #11ffee00;
+}
+
+.gacha-result-image-area-style{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 80%;
+	margin-inline: auto;
+}
+
+.gacha-result-button{
+	width: 20%;
+	margin-inline: auto;
+}
