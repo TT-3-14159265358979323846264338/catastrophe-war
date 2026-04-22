@@ -18,7 +18,8 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 **ビルド:**　　　　　　Maven  
   
 **♦MySQL関連設定♦**  
-**権限:** ユーザーの権限はSELECT, INSERT, UPDATE, CREATE (CREATEは初回起動時のみ必要)  
+**権限:** ユーザーの権限はSELECT, INSERT, UPDATE, CREATE, DELET, REFERENCES, INDEX  
+**other/jdbc設定.txt** session用テーブル作成コード。初回起動前にDB内にテーブルを作成しておくこと。  
 **src/main/resouces/application.properties:** このファイルにデータベース情報を記述する。初回のみ次のように変更することで、指定のデータベース内にテーブルを自動作成する。  
 ```properties
 spring.jpa.hibernate.ddl-auto=update
