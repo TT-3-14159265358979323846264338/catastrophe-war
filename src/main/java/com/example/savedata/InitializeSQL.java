@@ -118,9 +118,9 @@ public class InitializeSQL implements CommandLineRunner{
 	}
 	
 	void initializeProgressSQL(){
-		LongStream.range(0, Stage.values().length - progressRepository.count()).forEach(_ -> {
+		LongStream.range(progressRepository.count(), Stage.values().length).forEach(i -> {
 			ProgressSQL sql = createProgressSQL();
-			sql.initialize();
+			sql.initialize((int) i);
 			progressRepository.save(sql);
 		});
 	}

@@ -87,12 +87,12 @@ public class ProgressSQL {
 		ACTIVE_NUMBER = DefaultEnum.getEnum(Stage.values(), id - 1).getLabel().getMerit().size();
 	}
 	
-	public void initialize() {
+	public void initialize(int id) {
 		stageClear = false;
 		for(int i = 0; i < COUNT; i++) {
 			setData(i, false);
 		}
-		activeNumber();
+		ACTIVE_NUMBER = DefaultEnum.getEnum(Stage.values(), id).getLabel().getMerit().size();
 	}
 	
 	public List<Boolean> getMerit(){
