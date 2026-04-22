@@ -12,7 +12,7 @@ public abstract class EnemyData implements DefaultData, DefaultAtack{
 	/**
 	 * 基本的な画像フォルダ
 	 */
-	protected static final String FOLDER = "/image/enemy/";
+	protected static final String FOLDER = "/images/enemy/";
 	
 	/**
 	 * 敵の名称。

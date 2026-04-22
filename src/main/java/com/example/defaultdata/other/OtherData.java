@@ -6,7 +6,7 @@ import com.example.defaultdata.DefaultData;
 
 //その他のデータ
 public class OtherData {
-	private static final String LINK = "/image/gacha/";
+	private static final String LINK = "/images/gacha/";
 	
 	protected String imageLink(String link) {
 		return LINK + link + DefaultData.PNG;

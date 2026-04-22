@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.defaultdata.DefaultData;
 
 public class Placement {
-	private static final String LINK = "/image/field/";
+	private static final String LINK = "/images/field/";
 	
 	protected String imageLink(String link) {
 		return LINK + link + DefaultData.PNG;
