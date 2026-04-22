@@ -8,6 +8,11 @@ import com.example.defaultdata.Element;
 
 public abstract class FacilityData implements DefaultData, DefaultAtack{
 	/**
+	 * 基本的な画像フォルダ
+	 */
+	protected static final String FOLDER = "/images/facility/";
+	
+	/**
 	 * 設備の名称。
 	 * @return 設備の名称を返却する。<br>
 	 * 			最大字数は全角で47字。
@@ -30,6 +35,15 @@ public abstract class FacilityData implements DefaultData, DefaultAtack{
 	 */
 	@Override
 	public abstract String getImageName();
+	
+	/**
+	 * {@link #getImageName}などで使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String imageLink(String link) {
+		return FOLDER + link + PNG;
+	}
 	
 	/**
 	 * 攻撃時の設備画像ファイル名。

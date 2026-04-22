@@ -2,6 +2,7 @@ package com.example.defaultdata.weapon;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Distance;
@@ -9,6 +10,8 @@ import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
 public class No0004FlameRod extends WeaponData{
+	private static final String LINK = "No0004-flame-rod/flame-rod";
+	
 	@Override
 	public String getName() {
 		return "炎ロッド";
@@ -21,39 +24,27 @@ public class No0004FlameRod extends WeaponData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/weapon/No0004 flame rod/flame rod.png";
+		return imageLink(LINK);
 	}
 
 	@Override
 	public List<String> getRightActionImageName() {
-		return Arrays.asList("/image/weapon/No0004 flame rod/flame rod right 0.png",
-				"/image/weapon/No0004 flame rod/flame rod right 1.png",
-				"/image/weapon/No0004 flame rod/flame rod right 2.png",
-				"/image/weapon/No0004 flame rod/flame rod right 3.png",
-				"/image/weapon/No0004 flame rod/flame rod right 4.png",
-				"/image/weapon/No0004 flame rod/flame rod right 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> rightImageLink(LINK, i)).toList();
 	}
 
 	@Override
 	public List<String> getLeftActionImageName() {
-		return Arrays.asList("/image/weapon/No0004 flame rod/flame rod left 0.png",
-				"/image/weapon/No0004 flame rod/flame rod left 1.png",
-				"/image/weapon/No0004 flame rod/flame rod left 2.png",
-				"/image/weapon/No0004 flame rod/flame rod left 3.png",
-				"/image/weapon/No0004 flame rod/flame rod left 4.png",
-				"/image/weapon/No0004 flame rod/flame rod left 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> leftImageLink(LINK, i)).toList();
 	}
 
 	@Override
 	public String getBulletImageName() {
-		return "/image/weapon/No0004 flame rod/flame rod bullet.png";
+		return bulletImageLink(LINK);
 	}
 
 	@Override
 	public List<String> getHitImageName() {
-		return Arrays.asList("/image/weapon/No0004 flame rod/flame rod hit 1.png",
-				"/image/weapon/No0004 flame rod/flame rod hit 2.png",
-				"/image/weapon/No0004 flame rod/flame rod hit 3.png");
+		return IntStream.range(1, 4).mapToObj(i -> hitImageLink(LINK, i)).toList();
 	}
 	
 	@Override

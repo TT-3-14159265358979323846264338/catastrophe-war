@@ -2,31 +2,39 @@ package com.example.defaultdata.other;
 
 import java.util.List;
 
+import com.example.defaultdata.DefaultData;
+
 //その他のデータ
 public class OtherData {
+	private static final String LINK = "/image/gacha/";
+	
+	protected String imageLink(String link) {
+		return LINK + link + DefaultData.PNG;
+	}
+	
 	//タイトル画像ファイル
 	public String getTitler() {
-		return "/image/gacha/title.png";
+		return imageLink("title");
 	}
 
 	//ガチャ画像ファイル
 	public List<String> getHalfBall(){
-		return List.of("/image/gacha/ball bottom.png", "/image/gacha/ball top.png");
+		return List.of(imageLink("ball-bottom"), imageLink("ball-top"));
 	}
 	
 	public String getHandle() {
-		return "/image/gacha/machine handle.png";
+		return imageLink("machine-handle");
 	}
 	
 	public List<String> getMachine(){
-		return List.of("/image/gacha/machine bottom.png", "/image/gacha/machine top.png");
+		return List.of(imageLink("machine-bottom"), imageLink("machine-top"));
 	}
 	
 	public String getTurn() {
-		return "/image/gacha/turn.png";
+		return imageLink("turn");
 	}
 	
 	public String getEffect() {
-		return "/image/gacha/effect.png";
+		return imageLink("effect");
 	}
 }

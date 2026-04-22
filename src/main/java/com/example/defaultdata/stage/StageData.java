@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.example.defaultdata.DefaultData;
 import com.example.defaultdata.Difficulty;
 import com.example.defaultdata.Facility;
 import com.example.catastrophewar.battle.BattleEnemy;
@@ -18,6 +19,11 @@ import com.example.savedata.olddata.SaveGameProgress;
 import com.example.savedata.olddata.SaveItem;
 
 public abstract class StageData {
+	/**
+	 * 基本的な画像フォルダ
+	 */
+	protected static final String FOLDER = "/images/field/";
+	
 	/**
 	 * ステージの名称。
 	 * @return ステージの名称を返却する。<br>
@@ -37,6 +43,15 @@ public abstract class StageData {
 	 * @return ステージ画像ファイル名を返却する。
 	 */
 	public abstract String getImageName();
+	
+	/**
+	 * {@link #getImageName}などで使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String imageLink(String link) {
+		return FOLDER + link + DefaultData.PNG;
+	}
 	
 	/**
 	 * 設備の種類コード

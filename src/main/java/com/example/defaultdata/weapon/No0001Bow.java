@@ -2,6 +2,7 @@ package com.example.defaultdata.weapon;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Distance;
@@ -9,6 +10,8 @@ import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
 public class No0001Bow extends WeaponData{
+	private static final String LINK = "No0001-bow/bow";
+	
 	@Override
 	public String getName() {
 		return "弓";
@@ -21,7 +24,7 @@ public class No0001Bow extends WeaponData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/weapon/No0001 bow/bow.png";
+		return imageLink(LINK);
 	}
 
 	@Override
@@ -31,24 +34,17 @@ public class No0001Bow extends WeaponData{
 
 	@Override
 	public List<String> getLeftActionImageName() {
-		return Arrays.asList("/image/weapon/No0001 bow/bow left 0.png",
-				"/image/weapon/No0001 bow/bow left 1.png",
-				"/image/weapon/No0001 bow/bow left 2.png",
-				"/image/weapon/No0001 bow/bow left 3.png",
-				"/image/weapon/No0001 bow/bow left 4.png",
-				"/image/weapon/No0001 bow/bow left 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> leftImageLink(LINK, i)).toList();
 	}
 
 	@Override
 	public String getBulletImageName() {
-		return "/image/weapon/No0001 bow/bow bullet.png";
+		return bulletImageLink(LINK);
 	}
 
 	@Override
 	public List<String> getHitImageName() {
-		return Arrays.asList("/image/weapon/No0001 bow/bow hit 1.png",
-				"/image/weapon/No0001 bow/bow hit 2.png",
-				"/image/weapon/No0001 bow/bow hit 3.png");
+		return IntStream.range(1, 4).mapToObj(i -> hitImageLink(LINK, i)).toList();
 	}
 	
 	@Override

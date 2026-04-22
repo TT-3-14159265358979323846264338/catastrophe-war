@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class No0001NormalAtackCore extends CoreData{
+	private static final String LINK = "No0001-normal-atack-core/normal-atack-core";
+	
 	@Override
 	public String getName() {
 		return "ノーマルレッドコア";
@@ -16,12 +18,12 @@ public class No0001NormalAtackCore extends CoreData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/core/No0001 normal atack core/normal atack core.png";
+		return imageLink(LINK);
 	}
 	
 	@Override
 	public String getActionImageName() {
-		return "/image/core/No0001 normal atack core/normal atack core center.png";
+		return actionImageLink(LINK);
 	}
 	
 	@Override

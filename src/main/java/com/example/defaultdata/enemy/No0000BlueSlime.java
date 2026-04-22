@@ -9,6 +9,8 @@ import com.example.defaultdata.Move;
 import com.example.defaultdata.Type;
 
 public class No0000BlueSlime extends EnemyData{
+	private static final String LINK = "No0000-blue-slime/blue-slime";
+	
 	@Override
 	public String getName() {
 		return "ブルースライム";
@@ -21,17 +23,17 @@ public class No0000BlueSlime extends EnemyData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/enemy/No0000 blue slime/blue slime.png";
+		return imageLink(LINK);
 	}
 
 	@Override
 	public List<String> getActionImageName() {
-		return Arrays.asList("/image/enemy/No0000 blue slime/blue slime 0.png",
-				"/image/enemy/No0000 blue slime/blue slime 1.png",
-				"/image/enemy/No0000 blue slime/blue slime 2.png",
-				"/image/enemy/No0000 blue slime/blue slime 3.png",
-				"/image/enemy/No0000 blue slime/blue slime 4.png",
-				"/image/enemy/No0000 blue slime/blue slime 5.png");
+		return Arrays.asList(imageLink(LINK + "-0"),
+				imageLink(LINK + "-1"),
+				imageLink(LINK + "-2"),
+				imageLink(LINK + "-3"),
+				imageLink(LINK + "-4"),
+				imageLink(LINK + "-5"));
 	}
 
 	@Override

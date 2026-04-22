@@ -7,6 +7,9 @@ import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Element;
 
 public class No0001FrontGate extends FacilityData{
+	private static final String GATE_LINK = "front-gate";
+	private static final String BREAK_LINK = "break-gate";
+	
 	@Override
 	public String getName() {
 		return "城門";
@@ -19,12 +22,12 @@ public class No0001FrontGate extends FacilityData{
 
 	@Override
 	public String getImageName() {
-		return "/image/facility/front gate.png";
+		return imageLink(GATE_LINK);
 	}
 	
 	@Override
 	public List<String> getActionImageName() {
-		return Arrays.asList("/image/facility/front gate.png");
+		return Arrays.asList(getImageName());
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class No0001FrontGate extends FacilityData{
 	
 	@Override
 	public String getBreakImageName() {
-		return "/image/facility/break gate.png";
+		return imageLink(BREAK_LINK);
 	}
 
 	@Override

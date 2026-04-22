@@ -28,7 +28,7 @@ public class No0004Stage4 extends StageData {
 
 	@Override
 	public String getImageName() {
-		return "/image/field/stage 2.png";
+		return imageLink("stage-2");
 	}
 
 	@Override

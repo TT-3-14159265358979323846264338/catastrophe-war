@@ -9,6 +9,9 @@ import com.example.defaultdata.Move;
 import com.example.defaultdata.Type;
 
 public class No0006FrontGate extends EnemyData{
+	private static final String LINK = "/image/facility/front-gate";
+	private static final String BULLET_LINK = "/image/weapon/No0001-bow/bow-";
+	
 	@Override
 	public String getName() {
 		return "敵城門";
@@ -21,24 +24,24 @@ public class No0006FrontGate extends EnemyData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/facility/front gate.png";
+		return LINK + PNG;
 	}
 
 	@Override
 	public List<String> getActionImageName() {
-		return Arrays.asList("/image/facility/front gate.png");
+		return Arrays.asList(getImageName());
 	}
 
 	@Override
 	public String getBulletImageName() {
-		return "/image/weapon/No0001 bow/bow bullet.png";
+		return BULLET_LINK + "bullet" + PNG;
 	}
 
 	@Override
 	public List<String> getHitImageName() {
-		return Arrays.asList("/image/weapon/No0001 bow/bow hit 1.png",
-				"/image/weapon/No0001 bow/bow hit 2.png",
-				"/image/weapon/No0001 bow/bow hit 3.png");
+		return Arrays.asList(BULLET_LINK + "hit 1" + PNG,
+				BULLET_LINK + "hit 2" + PNG,
+				BULLET_LINK + "hit 3" + PNG);
 	}
 
 	@Override

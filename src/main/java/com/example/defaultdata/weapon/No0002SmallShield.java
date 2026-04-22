@@ -2,6 +2,7 @@ package com.example.defaultdata.weapon;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Distance;
@@ -9,6 +10,8 @@ import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
 public class No0002SmallShield extends WeaponData{
+	private static final String LINK = "No0002-small-shield/small-shield";
+	
 	@Override
 	public String getName() {
 		return "スモールシールド";
@@ -21,17 +24,17 @@ public class No0002SmallShield extends WeaponData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/weapon/No0002 small shield/small shield.png";
+		return imageLink(LINK);
 	}
 
 	@Override
 	public List<String> getRightActionImageName() {
-		return Arrays.asList("/image/weapon/No0002 small shield/small shield right 0.png");
+		return IntStream.range(0, 1).mapToObj(i -> rightImageLink(LINK, i)).toList();
 	}
 
 	@Override
 	public List<String> getLeftActionImageName() {
-		return Arrays.asList("/image/weapon/No0002 small shield/small shield left 0.png");
+		return IntStream.range(0, 1).mapToObj(i -> leftImageLink(LINK, i)).toList();
 	}
 
 	@Override

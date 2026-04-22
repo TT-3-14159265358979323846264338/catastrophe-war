@@ -7,6 +7,11 @@ import com.example.defaultdata.DefaultUnit;
 
 public abstract class CoreData implements DefaultData, DefaultUnit{
 	/**
+	 * 基本的な画像フォルダ
+	 */
+	protected static final String FOLDER = "/images/core/";
+	
+	/**
 	 * コアの名称。
 	 * @return コアの名称を返却する。<br>
 	 * 			最大字数は全角で13字。
@@ -31,10 +36,28 @@ public abstract class CoreData implements DefaultData, DefaultUnit{
 	public abstract String getImageName();
 	
 	/**
+	 * {@link #getImageName}などで使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String imageLink(String link) {
+		return FOLDER + link + PNG;
+	}
+	
+	/**
 	 * 攻撃時のコア画像ファイル名。
 	 * @return 武器と共に表示する際のコア画像ファイル名を返却する。
 	 */
 	public abstract String getActionImageName();
+	
+	/**
+	 * {@link #getActionImageName}で使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String actionImageLink(String link) {
+		return imageLink(link + "-center");
+	}
 	
 	/**
 	 * コアのレアリティ。

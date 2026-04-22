@@ -11,6 +11,11 @@ import com.example.defaultdata.Handle;
 
 public abstract class WeaponData implements DefaultData, DefaultAtack, DefaultUnit{
 	/**
+	 * 基本的な画像フォルダ
+	 */
+	protected static final String FOLDER = "/images/weapon/";
+	
+	/**
 	 * 武器の名称。
 	 * @return 武器の名称を返却する。<br>
 	 * 			最大字数は全角で13字。
@@ -35,16 +40,43 @@ public abstract class WeaponData implements DefaultData, DefaultAtack, DefaultUn
 	public abstract String getImageName();
 	
 	/**
+	 * {@link #getImageName}などで使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String imageLink(String link) {
+		return FOLDER + link + PNG;
+	}
+	
+	/**
 	 * 攻撃時の武器画像ファイル名(右手ver)。
 	 * @return コアと共に表示する際の武器画像ファイル名を返却する。片手武器の時は空のArrays.asList()を入れる
 	 */
 	public abstract List<String> getRightActionImageName();
 	
 	/**
+	 * {@link #getRightActionImageName}で使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String rightImageLink(String link, int number) {
+		return imageLink(link + "-right-" + number);
+	}
+	
+	/**
 	 * 攻撃時の武器画像ファイル名(左手ver)。
 	 * @return コアと共に表示する際の武器画像ファイル名を返却する。
 	 */
 	public abstract List<String> getLeftActionImageName();
+	
+	/**
+	 * {@link #getRightActionImageName}で使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String leftImageLink(String link, int number) {
+		return imageLink(link + "-left-" + number);
+	}
 	
 	/**
 	 * 弾丸の画像ファイル名。
@@ -54,11 +86,29 @@ public abstract class WeaponData implements DefaultData, DefaultAtack, DefaultUn
 	public abstract String getBulletImageName();
 	
 	/**
+	 * {@link #getBulletImageName}で使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String bulletImageLink(String link) {
+		return imageLink(link + "-bullet");
+	}
+	
+	/**
 	 * ヒット画像ファイル名。
 	 * @return 攻撃がヒットした時に表示する画像ファイル名を返却する。Listに入っている画像ファイルがヒットモーションとして表示される。なければ空のArrays.asList()を返却する。
 	 */
 	@Override
 	public abstract List<String> getHitImageName();
+	
+	/**
+	 * {@link #getHitImageName}で使用する画像linkを作成する。
+	 * @param link - 画像に特有なlink部分
+	 * @return 最終的な画像linkを返却する。
+	 */
+	protected String hitImageLink(String link, int number) {
+		return imageLink(link + "-hit-" + number);
+	}
 	
 	/**
 	 * 武器のレアリティ。

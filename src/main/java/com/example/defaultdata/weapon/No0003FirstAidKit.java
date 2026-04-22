@@ -2,6 +2,7 @@ package com.example.defaultdata.weapon;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Distance;
@@ -9,6 +10,8 @@ import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
 public class No0003FirstAidKit extends WeaponData{
+	private static final String LINK = "No0003-first-aid-kit/first-aid-kit";
+	
 	@Override
 	public String getName() {
 		return "救急箱";
@@ -21,27 +24,17 @@ public class No0003FirstAidKit extends WeaponData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/weapon/No0003 first aid kit/first aid kit.png";
+		return imageLink(LINK);
 	}
 
 	@Override
 	public List<String> getRightActionImageName() {
-		return Arrays.asList("/image/weapon/No0003 first aid kit/first aid kit right 0.png",
-				"/image/weapon/No0003 first aid kit/first aid kit right 1.png",
-				"/image/weapon/No0003 first aid kit/first aid kit right 2.png",
-				"/image/weapon/No0003 first aid kit/first aid kit right 3.png",
-				"/image/weapon/No0003 first aid kit/first aid kit right 4.png",
-				"/image/weapon/No0003 first aid kit/first aid kit right 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> rightImageLink(LINK, i)).toList();
 	}
 
 	@Override
 	public List<String> getLeftActionImageName() {
-		return Arrays.asList("/image/weapon/No0003 first aid kit/first aid kit left 0.png",
-				"/image/weapon/No0003 first aid kit/first aid kit left 1.png",
-				"/image/weapon/No0003 first aid kit/first aid kit left 2.png",
-				"/image/weapon/No0003 first aid kit/first aid kit left 3.png",
-				"/image/weapon/No0003 first aid kit/first aid kit left 4.png",
-				"/image/weapon/No0003 first aid kit/first aid kit left 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> leftImageLink(LINK, i)).toList();
 	}
 
 	@Override
@@ -51,9 +44,7 @@ public class No0003FirstAidKit extends WeaponData{
 
 	@Override
 	public List<String> getHitImageName() {
-		return Arrays.asList("/image/weapon/No0003 first aid kit/first aid kit hit 1.png",
-				"/image/weapon/No0003 first aid kit/first aid kit hit 2.png",
-				"/image/weapon/No0003 first aid kit/first aid kit hit 3.png");
+		return IntStream.range(1, 4).mapToObj(i -> hitImageLink(LINK, i)).toList();
 	}
 
 	@Override

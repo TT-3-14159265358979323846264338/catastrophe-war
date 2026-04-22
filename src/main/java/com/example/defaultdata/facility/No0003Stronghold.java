@@ -7,6 +7,8 @@ import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Element;
 
 public class No0003Stronghold extends FacilityData{
+	private static final String LINK = "stronghold";
+	
 	@Override
 	public String getName() {
 		return "本陣";
@@ -19,12 +21,12 @@ public class No0003Stronghold extends FacilityData{
 
 	@Override
 	public String getImageName() {
-		return "/image/facility/stronghold.png";
+		return imageLink(LINK);
 	}
 	
 	@Override
 	public List<String> getActionImageName() {
-		return Arrays.asList("/image/facility/stronghold.png");
+		return Arrays.asList(getImageName());
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class No0003Stronghold extends FacilityData{
 
 	@Override
 	public String getBreakImageName() {
-		return "/image/facility/stronghold.png";
+		return getImageName();
 	}
 
 	@Override

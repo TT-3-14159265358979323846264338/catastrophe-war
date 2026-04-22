@@ -2,6 +2,7 @@ package com.example.defaultdata.weapon;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.example.defaultdata.AtackPattern;
 import com.example.defaultdata.Distance;
@@ -9,6 +10,8 @@ import com.example.defaultdata.Element;
 import com.example.defaultdata.Handle;
 
 public class No0005WindCutter extends WeaponData{
+	private static final String LINK = "No0005-wind-cutter/wind-cutter";
+	
 	@Override
 	public String getName() {
 		return "ウィンドカッター";
@@ -21,7 +24,7 @@ public class No0005WindCutter extends WeaponData{
 	
 	@Override
 	public String getImageName() {
-		return "/image/weapon/No0005 wind cutter/wind cutter.png";
+		return imageLink(LINK);
 	}
 
 	@Override
@@ -31,12 +34,7 @@ public class No0005WindCutter extends WeaponData{
 
 	@Override
 	public List<String> getLeftActionImageName() {
-		return Arrays.asList("/image/weapon/No0005 wind cutter/wind cutter left 0.png",
-				"/image/weapon/No0005 wind cutter/wind cutter left 1.png",
-				"/image/weapon/No0005 wind cutter/wind cutter left 2.png",
-				"/image/weapon/No0005 wind cutter/wind cutter left 3.png",
-				"/image/weapon/No0005 wind cutter/wind cutter left 4.png",
-				"/image/weapon/No0005 wind cutter/wind cutter left 5.png");
+		return IntStream.range(0, 6).mapToObj(i -> leftImageLink(LINK, i)).toList();
 	}
 
 	@Override
