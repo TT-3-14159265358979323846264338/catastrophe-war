@@ -10,7 +10,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
   
 **♦環境♦**  
 **言語:**　　　　　　　Java 25, JavaScript ES6+  
-**フレームワーク:**　　Spring boot 4.0.3  
+**フレームワーク:**　　Spring boot 4.0.3, Spring Security, Spring Session  
 **データベース:**　　　MySQL 9.6  
 **通信プロトコル:**　　SockJS v1.x, StompJS v7.3.0  
 **フロントエンド:**　　HTML Living Standard, CSS 3  
@@ -19,7 +19,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
   
 **♦MySQL関連設定♦**  
 **権限:** ユーザーの権限はSELECT, INSERT, UPDATE, CREATE, DELET, REFERENCES, INDEX  
-**other/jdbc設定.txt** session用テーブル作成コード。初回起動前にDB内にテーブルを作成しておくこと。  
+**other/jdbc設定.txt:** session用テーブル作成コード。初回起動前にDB内にテーブルを作成しておくこと。  
 **src/main/resouces/application.properties:** このファイルにデータベース情報を記述する。初回のみ次のように変更することで、指定のデータベース内にテーブルを自動作成する。  
 ```properties
 spring.jpa.hibernate.ddl-auto=update
