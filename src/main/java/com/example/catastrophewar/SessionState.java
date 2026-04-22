@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SessionState {
 	private final ScheduledExecutorService scheduler;
+	private final String userName;
 	private final String sessionId;
 	private TopPageState topPageState;
 	private ItemGetPageState itemGetPageState;
@@ -51,6 +52,10 @@ public class SessionState {
 	}
 	
 	ItemGetPageState createItemGetPageState() {
-		return new ItemGetPageState(scheduler, sessionId);
+		return new ItemGetPageState(scheduler, userName, sessionId);
+	}
+	
+	String getSessionId() {
+		return sessionId;
 	}
 }

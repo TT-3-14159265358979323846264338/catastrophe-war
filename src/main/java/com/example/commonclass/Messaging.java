@@ -17,8 +17,8 @@ public class Messaging {
         return headerAccessor.getMessageHeaders();
 	}
 	
-	protected void sendMessage(SessionController sessions, String sessionId, Consumer<SessionState> task) {
-		SessionState state = sessions.getState(sessionId);
+	protected void sendMessage(SessionController sessions, String useName, String sessionId, Consumer<SessionState> task) {
+		SessionState state = sessions.getState(useName, sessionId);
 		if(state != null) {
 			task.accept(state);
 		}

@@ -1,5 +1,6 @@
 package com.example.catastrophewar.toppage;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -38,14 +39,14 @@ public class TopPage extends Messaging{
 	}
 	
 	@MessageMapping("/top/timer/start")
-	public void timerStart(SimpMessageHeaderAccessor accessor) {
-		String sessionId = accessor.getSessionId();
-		SessionState state = sessions.getState(sessionId);
+	public void timerStart(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		SessionState state = sessions.getState(principal, sessionId);
 		state.setTopPageState();
-		state.getTopPageState().drawTimerStart(() -> repaint(sessionId));
+		state.getTopPageState().drawTimerStart(() -> repaint(principal.getName(), sessionId));
 	}
 	
-	void repaint(String sessionId) {
-		sendMessage(sessions, sessionId, state -> messaging.convertAndSendToUser(sessionId, "/queue/top/repaint", state.getTopPageState().createState(), headers(sessionId)));
+	void repaint(String userName, String sessionId) {
+		sendMessage(sessions, userName, sessionId, state -> messaging.convertAndSendToUser(userName, "/queue/top/repaint", state.getTopPageState().createState(), headers(sessionId)));
 	}
 }

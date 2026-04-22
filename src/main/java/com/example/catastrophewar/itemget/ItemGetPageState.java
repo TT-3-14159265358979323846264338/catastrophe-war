@@ -12,14 +12,16 @@ import com.example.defaultdata.Weapon;
 
 public class ItemGetPageState  extends Timer{
 	private ItemGetPage itemGetPage;
-	private String sessionId;
+	private final String userName;
+	private final String sessionId;
 	private final SelectGacha selectGacha;
 	private final AutoRotate autoRotate;
 	private final HandleMotion handleMotion;
 	private final FallBallMotion fallBallMotion;
 	private final OpenBallMotion openBallMotion;
 	
-	public ItemGetPageState(ScheduledExecutorService scheduler, String sessionId){
+	public ItemGetPageState(ScheduledExecutorService scheduler, String userName, String sessionId){
+		this.userName = userName;
 		this.sessionId = sessionId;
 		super(scheduler);
 		selectGacha = createSelectGacha();
@@ -100,12 +102,12 @@ public class ItemGetPageState  extends Timer{
 			int expansion) {}
 	
 	void playGacha() {
-		itemGetPage.playGacha(sessionId);
+		itemGetPage.playGacha(userName, sessionId);
 	}
 	
 	void endGacha() {
 		GachaResultCreating gachaResultCreating = gachaResult();
-		selectGacha.setMedal(itemGetPage.endGacha(selectGacha.getUsedMedal(), gachaResultCreating.getResult(), sessionId));
+		selectGacha.setMedal(itemGetPage.endGacha(selectGacha.getUsedMedal(), gachaResultCreating.getResult(), userName, sessionId));
 	}
 	
 	GachaResultCreating gachaResult() {

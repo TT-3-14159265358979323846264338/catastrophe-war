@@ -1,5 +1,6 @@
 package com.example.catastrophewar.itemget;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -89,28 +90,29 @@ public class ItemGetPage extends Messaging{
 			String effectImageLink) {}
 	
 	@MessageMapping("/gacha/timer/start")
-	public void timerStart(SimpMessageHeaderAccessor accessor) {
-		String sessionId = accessor.getSessionId();
-		SessionState state = sessions.getState(sessionId);
+	public void timerStart(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		String userName = principal.getName();
+		SessionState state = sessions.getState(principal, sessionId);
 		state.setItemGetPageState();
-		state.getItemGetPageState().drawTimerStart(() -> repaint(sessionId), medalNumber(), this);
-		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/list", state.getItemGetPageState().gachaData(), headers(sessionId)));
+		state.getItemGetPageState().drawTimerStart(() -> repaint(userName, sessionId), medalNumber(), this);
+		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/list", state.getItemGetPageState().gachaData(), headers(sessionId)));
 	}
 	
-	void repaint(String sessionId) {
-		sendMessage(sessions, sessionId, state -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/repaint", state.getItemGetPageState().createState(), headers(sessionId)));
+	void repaint(String userName, String sessionId) {
+		sendMessage(sessions, userName, sessionId, state -> messaging.convertAndSendToUser(userName, "/queue/gacha/repaint", state.getItemGetPageState().createState(), headers(sessionId)));
 	}
 	
-	void playGacha(String sessionId) {
-		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/play", "", headers(sessionId)));
+	void playGacha(String userName, String sessionId) {
+		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/play", "", headers(sessionId)));
 	}
 	
 	@Transactional
-	public int endGacha(int useMedal, List<GachaResult> result, String sessionId) {
+	public int endGacha(int useMedal, List<GachaResult> result, String userName, String sessionId) {
 		ItemSQL itemSQL = getItemSQL();
 		int newMedal = itemSQL.getNumber() - useMedal;
 		if(newMedal < 0 || result.size() == 0) {
-			sendEndGacha(itemSQL.getNumber(), List.of(), sessionId);
+			sendEndGacha(itemSQL.getNumber(), List.of(), userName, sessionId);
 			return itemSQL.getNumber();
 		}
 		itemSQL.setNumber(newMedal);
@@ -122,14 +124,14 @@ public class ItemGetPage extends Messaging{
 				saveRepository(i.id(), weaponRepository);
 			}
 		});
-		sendEndGacha(newMedal, result, sessionId);
+		sendEndGacha(newMedal, result, userName, sessionId);
 		return newMedal;
 	}
 	
 	record Result(int medal, List<GachaResult> result) {}
 	
-	void sendEndGacha(int medal, List<GachaResult> result, String sessionId) {
-		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/end", createResult(medal, result), headers(sessionId)));
+	void sendEndGacha(int medal, List<GachaResult> result, String userName, String sessionId) {
+		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/end", createResult(medal, result), headers(sessionId)));
 	}
 	
 	Result createResult(int medal, List<GachaResult> result) {
@@ -143,49 +145,56 @@ public class ItemGetPage extends Messaging{
 	}
 	
 	@MessageMapping("/gacha/mouse/pressed")
-	public void mousePressed(@Payload ClickPoint clickPoint, SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).mousePressed(clickPoint.x, clickPoint.y);
+	public void mousePressed(@Payload ClickPoint clickPoint, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).mousePressed(clickPoint.x, clickPoint.y);
 	}
 	
 	@MessageMapping("/gacha/mouse/dragged")
-	public void mouseDragged(@Payload ClickPoint clickPoint, SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).mouseDragged(clickPoint.x, clickPoint.y);
+	public void mouseDragged(@Payload ClickPoint clickPoint, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).mouseDragged(clickPoint.x, clickPoint.y);
 	}
 	
 	record ClickPoint(int x, int y) {}
 	
 	@MessageMapping("/gacha/mouse/released")
-	public void mouseReleased(SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).mouseReleased();
+	public void mouseReleased(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).mouseReleased();
 	}
 	
 	@MessageMapping("/gacha/select")
-	public void changeSelected(SelectId selectId, SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).changeSelected(selectId.selectId);
+	public void changeSelected(SelectId selectId, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).changeSelected(selectId.selectId);
 	}
 	
 	record SelectId(int selectId) {}
 	
 	@MessageMapping("/gacha/detail")
-	public void sendDetail(SimpMessageHeaderAccessor accessor) {
-		String sessionId = accessor.getSessionId();
-		SessionState state = sessions.getState(sessionId);
-		sendMessage(sessions, sessionId, _ -> messaging.convertAndSendToUser(sessionId, "/queue/gacha/detail/data", state.getItemGetPageState().detail(), headers(sessionId)));
+	public void sendDetail(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		String userName = principal.getName();
+		SessionState state = sessions.getState(principal, sessionId);
+		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/detail/data", state.getItemGetPageState().detail(), headers(sessionId)));
 	}
 	
 	@MessageMapping("/gacha/count/change")
-	public void changeCount(@Payload ChangeId changeId, SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).changeCount(changeId.id);
+	public void changeCount(@Payload ChangeId changeId, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).changeCount(changeId.id);
 	}
 	
 	record ChangeId(int id) {}
 	
 	@MessageMapping("/gacha/timer/stop")
-	public void endTimer(SimpMessageHeaderAccessor accessor) {
-		getItemGetPageState(accessor).timerStop();
+	public void endTimer(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
+		String sessionId = headerAccessor.getSessionId();
+		getItemGetPageState(principal, sessionId).timerStop();
 	}
 	
-	ItemGetPageState getItemGetPageState(SimpMessageHeaderAccessor accessor) {
-		return sessions.getState(accessor).getItemGetPageState();
+	ItemGetPageState getItemGetPageState(Principal principal, String sessionId) {
+		return sessions.getState(principal, sessionId).getItemGetPageState();
 	}
 }
