@@ -227,7 +227,7 @@ function changeCountButtonText(){
 	countButton.textContent = gachaCount[id];
 }
 
-function returnButtonAction(_){
+function returnButtonAction(){
 	gachaPageClass.add('hidden');
 	gachaRepaintStop();
 	topRepaintStart();
