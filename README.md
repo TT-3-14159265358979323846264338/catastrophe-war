@@ -32,7 +32,7 @@ spring.jpa.hibernate.ddl-auto=update
 │　　│　　└─ resources/  
 │　　│　　　　　├─ static/  
 │　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (webページごとにフォルダ化)  
-│　　│　　　　　│　　├ image/　　　　　　　　　:ゲームで使用する画像ファイル  
+│　　│　　　　　│　　├ images/　　　　　　　　:ゲームで使用する画像ファイル  
 │　　│　　　　　│　　├ js/　　　　　　　　　　 :フロントエンド描写制御 (webページごとにフォルダ化)
 │　　│　　　　　│　　└ favicon.ico　　　　　　:アイコン画像ファイル  
 │　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (webページごとにフォルダ化)  
