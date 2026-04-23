@@ -8,10 +8,14 @@
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.3.0/bundles/stomp.umd.min.js"></script>
 	<script th:src="@{/js/app/app.js}" type="module"></script>
+	<script th:src="@{/js/index.js}"></script>
 </head>
 <body>
 	<div>
-		<h1>Catastrophe War</h1>
+		<div class="title-area default-button">
+			<h1>Catastrophe War</h1>
+			<button id="logout" class="logout-button" type="button">ログアウト</button>
+		</div>
 		<div class="canvas-container">
 			<canvas id="game-display" class="main-canvas" width="1235" height="600"></canvas>
 			<div th:replace="~{fragments/app/app :: topPage}"></div>

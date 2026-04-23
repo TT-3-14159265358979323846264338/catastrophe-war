@@ -7,6 +7,6 @@
 		<button id="go-to-composition-from-toppage" type="button">編成</button>
 		<button id="go-to-stage-from-toppage" type="button">ステージ選択</button>
 	</div>
-	<button id="go-to-edit-from-toppage" class="edit-button" type="button">テスト用データ編集</button>
+	<button id="go-to-edit-from-toppage" class="edit-button" type="button" sec:authorize="hasRole('ADMIN')">テスト用データ編集</button>
 </div>
 </html>
