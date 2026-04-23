@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById("go-to-recycle-from-toppage").addEventListener('click', recycleButtonAction);
 	document.getElementById("go-to-composition-from-toppage").addEventListener('click', compositionButtonAction);
 	document.getElementById("go-to-stage-from-toppage").addEventListener('click', stageButtonAction);
-	document.getElementById("go-to-edit-from-toppage").addEventListener('click', editButtonAction);
+	const editButton = document.getElementById("go-to-edit-from-toppage");
+	if(editButton){
+		editButton.addEventListener('click', editButtonAction);
+	}
 });
 
 function gachaButtonAction(){

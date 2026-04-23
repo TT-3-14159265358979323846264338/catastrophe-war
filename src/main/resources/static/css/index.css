@@ -20,6 +20,18 @@ body {
 	color: black;
 }
 
+.title-area{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.title-area .logout-button{
+	font-size: 15px;
+	height: 10%;
+	width: 10%;
+}
+
 .canvas-container{
 	position: relative;
 	display: inline-block;

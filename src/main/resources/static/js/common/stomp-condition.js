@@ -1,6 +1,7 @@
 class StompCondition{
 	#stompClient;
 	#subscriptions;
+	#errorSubscriptions;
 	
 	constructor(defaultStomp = null) {
 		if(StompCondition.instance){
@@ -12,13 +13,24 @@ class StompCondition{
 			reconnectDelay: 5000,
 		});
 		this.#subscriptions = [];
+		this.#errorSubscriptions = [];
 	}
 	
 	/**
 	 * @param {Function} task
 	 */
 	set stompConnected(task){
-		this.#stompClient.onConnect = task;
+		this.#stompClient.onConnect = _ => {
+			if(this.#errorSubscriptions.length !== 0){
+				return;
+			}
+			this.#errorSubscriptions.push(this.#stompClient.subscribe("/user/queue/error/double/login", () => this.login()));
+			task();
+		};
+	}
+
+	login(){
+		window.location.href = "/login";
 	}
 	
 	stompActivate(){
