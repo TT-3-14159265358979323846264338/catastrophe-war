@@ -24,6 +24,16 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 ```properties
 spring.jpa.hibernate.ddl-auto=update
 ```
+**ログイン情報**  
+**通常ユーザー用**  
+**ユーザー名:** user  
+**パスワード:** password  
+**特記:** テスト用に使用するセーブデータの編集機能以外が使用可能  
+
+**管理者用**  
+**ユーザー名:** admin  
+**パスワード:** adminpassword  
+**特記:** 全部の機能が使用可能  
   
 **♦プロジェクト構成♦**  
 ```text
