@@ -24,7 +24,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 ```properties
 spring.jpa.hibernate.ddl-auto=update
 ```
-**ログイン情報**  
+**♦ログイン情報♦**  
 **通常ユーザー用**  
 **ユーザー名:** user  
 **パスワード:** password  
