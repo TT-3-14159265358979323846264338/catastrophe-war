@@ -24,6 +24,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 ```properties
 spring.jpa.hibernate.ddl-auto=update
 ```
+
 **♦ログイン情報♦**  
 **通常ユーザー用**  
 **ユーザー名:** user  
@@ -50,4 +51,8 @@ spring.jpa.hibernate.ddl-auto=update
 │　　│　　　　　└─ application.properties　　:アプリケーション設定  
 │　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
 ├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
-└─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成  
+└─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成
+```
+  
+**♦工夫♦**  
+・FindByIndexNameSessionRepositoryやSessionConnectedEvent, sessionDisconnectedのEventListenerなどを用いて、二重ログイン、タブの複製、リロードに対する対策を充実させた。また、これらが発生した時も描写用のExecutorを停止するようにして、リソースリークの防止にも努める。
