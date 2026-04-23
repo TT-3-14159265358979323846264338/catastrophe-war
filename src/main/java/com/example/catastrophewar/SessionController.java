@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Controller;
@@ -15,12 +16,15 @@ import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import com.example.commonclass.Messaging;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class SessionController {
+public class SessionController extends Messaging{
 	private final ScheduledExecutorService scheduler;
+	private final SimpMessagingTemplate messaging;
 	private final Map<String, SessionState> sessions = new ConcurrentHashMap<>();
 	private final FindByIndexNameSessionRepository<? extends Session> sessionRepository;
 	
@@ -32,6 +36,7 @@ public class SessionController {
 			SessionState oldState = sessions.put(userName, newState);
 			if (oldState != null) {
 				oldState.allTimerStop();
+				doubleLoginHandling(userName, oldState.getSessionId());
 			}
 			Map<String, Object> attributes = headers.getSessionAttributes();
 			if(attributes == null) {
@@ -45,6 +50,10 @@ public class SessionController {
 				}
 			}
 		});
+	}
+	
+	void doubleLoginHandling(String userName, String sessionId) {
+		messaging.convertAndSendToUser(userName, "/queue/error/double/login", "", headers(sessionId));
 	}
 	
 	SessionState createSessionState(String userName, String sessionId){
@@ -74,25 +83,22 @@ public class SessionController {
 	}
 	
 	public SessionState getState(Principal principal, String sessionId) {
-		return getState(principal.getName(), sessionId);
+		return activateCheck(principal.getName(), sessionId);
 	}
 	
 	public SessionState getState(String userName, String sessionId) {
-		return activateCheck(validityCheck(userName), sessionId);
+		return activateCheck(userName, sessionId);
 	}
 	
-	SessionState validityCheck(String userName) {
-		SessionState sessionState = sessions.get(userName);
-		if(sessionState != null) {
-			return sessionState;
+	SessionState activateCheck(String userName, String sessionId) {
+		SessionState state = sessions.get(userName);
+		if(state == null) {
+			throw new IllegalStateException("Userが見つかりません。" + userName);
 		}
-		throw new IllegalStateException("Userが見つかりません。" + userName);
-	}
-	
-	SessionState activateCheck(SessionState state, String sessionId) {
 		if(state.getSessionId().equals(sessionId)) {
 			return state;
 		}
-		throw new IllegalStateException(sessionId + "は既に無効なIDです。");
+		doubleLoginHandling(userName, sessionId);
+		throw new IllegalStateException(userName + "の" + sessionId + "は既に無効なIDです。");
 	}
 }

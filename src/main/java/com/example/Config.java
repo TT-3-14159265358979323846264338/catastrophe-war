@@ -68,8 +68,7 @@ public class Config implements WebSocketMessageBrokerConfigurer{
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(request -> request
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				//後でテスト用編集は管理者権限のみにする
-				//.requestMatchers("/api/edit/**").hasRole("ADMIN")
+				.requestMatchers("/api/edit/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login
