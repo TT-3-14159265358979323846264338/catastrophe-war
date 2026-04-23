@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-	console.log("activate");
 	document.getElementById("logout").addEventListener('click', logoutAction);
 });
 
