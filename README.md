@@ -55,4 +55,4 @@ spring.jpa.hibernate.ddl-auto=update
 ```
   
 **♦工夫♦**  
-・FindByIndexNameSessionRepositoryやSessionConnectedEvent, sessionDisconnectedのEventListenerなどを用いて、二重ログイン、タブの複製、リロードに対する対策を充実させた。また、これらが発生した時も描写用のExecutorを停止するようにして、リソースリークの防止にも努める。
+・FindByIndexNameSessionRepositoryやSessionConnectedEvent, sessionDisconnectedのEventListenerなどを用いて、二重ログイン、タブの複製、リロードに対する対策を充実させた。また、これらが発生した時も描写用のExecutorを停止するようにして、リソースリークの防止にも努める。 (../example/catastrophewar/SessionController.java, ../js/index.js)
