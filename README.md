@@ -10,9 +10,9 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
   
 **♦環境♦**  
 **言語:**　　　　　　　Java 25, JavaScript ES6+  
-**フレームワーク:**　　Spring boot 4.0.3, Spring Security, Spring Session  
+**フレームワーク:**　　Spring boot 4.0.3, Spring Security, Spring Session (JDBC)  
 **データベース:**　　　MySQL 9.6  
-**通信プロトコル:**　　SockJS v1.x, StompJS v7.3.0  
+**通信プロトコル:**　　WebSocket (SockJS v1.x, StompJS v7.3.0)  
 **フロントエンド:**　　HTML Living Standard, CSS 3  
 **テスト:**　　　　　　JUnit 5  
 **ビルド:**　　　　　　Maven  
