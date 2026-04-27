@@ -107,6 +107,7 @@ public class ItemGetPage extends Messaging{
 		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/play", "", headers(sessionId)));
 	}
 	
+	//将来PostMappingへ変更予定
 	@Transactional
 	public int endGacha(int useMedal, List<GachaResult> result, String userName, String sessionId) {
 		ItemSQL itemSQL = getItemSQL();
@@ -164,6 +165,7 @@ public class ItemGetPage extends Messaging{
 		getItemGetPageState(principal, sessionId).mouseReleased();
 	}
 	
+	//将来消滅予定
 	@MessageMapping("/gacha/select")
 	public void changeSelected(SelectId selectId, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
 		String sessionId = headerAccessor.getSessionId();
@@ -172,6 +174,7 @@ public class ItemGetPage extends Messaging{
 	
 	record SelectId(int selectId) {}
 	
+	//将来GetMappingにする可能性大
 	@MessageMapping("/gacha/detail")
 	public void sendDetail(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
 		String sessionId = headerAccessor.getSessionId();
@@ -180,6 +183,7 @@ public class ItemGetPage extends Messaging{
 		sendMessage(sessions, userName, sessionId, _ -> messaging.convertAndSendToUser(userName, "/queue/gacha/detail/data", state.getItemGetPageState().detail(), headers(sessionId)));
 	}
 	
+	//将来消滅予定
 	@MessageMapping("/gacha/count/change")
 	public void changeCount(@Payload ChangeId changeId, Principal principal, SimpMessageHeaderAccessor headerAccessor) {
 		String sessionId = headerAccessor.getSessionId();

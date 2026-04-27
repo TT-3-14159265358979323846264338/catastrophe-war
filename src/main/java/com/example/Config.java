@@ -72,14 +72,12 @@ public class Config implements WebSocketMessageBrokerConfigurer{
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login
-					//いずれ自作する時は必要
-					//.loginPage("/login")
+					.loginPage("/login")
 					.defaultSuccessUrl("/")
 					.permitAll()
 			)
 			.logout(logout -> logout
-					//いずれ自作する時は必要
-					//.logoutSuccessUrl("/login?logout")
+					.logoutSuccessUrl("/login?logout")
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID")
 					.permitAll()
