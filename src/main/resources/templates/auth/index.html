@@ -9,6 +9,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.3.0/bundles/stomp.umd.min.js"></script>
 	<script th:src="@{/js/auth/app/app.js}" type="module"></script>
 	<script th:src="@{/js/auth/index.js}"></script>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 	<div>
