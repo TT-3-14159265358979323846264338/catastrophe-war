@@ -4,11 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Catastrophe War</title>
-	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<link rel="stylesheet" th:href="@{/css/auth/index.css}">
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.3.0/bundles/stomp.umd.min.js"></script>
-	<script th:src="@{/js/app/app.js}" type="module"></script>
-	<script th:src="@{/js/index.js}"></script>
+	<script th:src="@{/js/auth/app/app.js}" type="module"></script>
+	<script th:src="@{/js/auth/index.js}"></script>
 </head>
 <body>
 	<div>
@@ -18,14 +18,14 @@
 		</div>
 		<div class="canvas-container">
 			<canvas id="game-display" class="main-canvas" width="1235" height="600"></canvas>
-			<div th:replace="~{fragments/app/app :: topPage}"></div>
-			<div th:replace="~{fragments/gacha/gacha :: gachaPage}"></div>
-			<div th:replace="~{fragments/gacha/gacha-detail :: gachaDetailPage}"></div>
-			<div th:replace="~{fragments/gacha/gacha-result :: gachaResultPage}"></div>
-			<div th:replace="~{fragments/dispose/dispose :: disposePage}"></div>
-			<div th:replace="~{fragments/edit/edit-unit :: editUnitPage}"></div>
-			<div th:replace="~{fragments/edit/edit-stage :: editStagePage}"></div>
-			<div th:replace="~{fragments/status/status :: statusPage}"></div>
+			<div th:replace="~{auth/fragments/app/app :: topPage}"></div>
+			<div th:replace="~{auth/fragments/gacha/gacha :: gachaPage}"></div>
+			<div th:replace="~{auth/fragments/gacha/gacha-detail :: gachaDetailPage}"></div>
+			<div th:replace="~{auth/fragments/gacha/gacha-result :: gachaResultPage}"></div>
+			<div th:replace="~{auth/fragments/dispose/dispose :: disposePage}"></div>
+			<div th:replace="~{auth/fragments/edit/edit-unit :: editUnitPage}"></div>
+			<div th:replace="~{auth/fragments/edit/edit-stage :: editStagePage}"></div>
+			<div th:replace="~{auth/fragments/status/status :: statusPage}"></div>
 		</div>
 	</div>
 </body>
