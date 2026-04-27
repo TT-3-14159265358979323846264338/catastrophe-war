@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 	@GetMapping("/")
 	String index() {
-		return "index";
+		return "auth/index";
 	}
 }
