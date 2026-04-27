@@ -40,14 +40,14 @@ spring.jpa.hibernate.ddl-auto=update
 ```text
 ├─ src/  
 │　　├─ main/  
-│　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (機能やwebページごとにフォルダ化)  
+│　　│　　├─ java/com/example/　　　　　　　　:バックエンド制御 (機能やページごとにフォルダ化)  
 │　　│　　└─ resources/  
 │　　│　　　　　├─ static/  
-│　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (webページごとにフォルダ化)  
+│　　│　　　　　│　　├ css/　　　　　　　　　　:フロントエンドレイアウト制御 (ページごとにフォルダ化)  
 │　　│　　　　　│　　├ images/　　　　　　　　:ゲームで使用する画像ファイル  
-│　　│　　　　　│　　├ js/　　　　　　　　　　 :フロントエンド描写制御 (webページごとにフォルダ化)
+│　　│　　　　　│　　├ js/　　　　　　　　　　 :フロントエンド描写制御 (ページごとにフォルダ化)
 │　　│　　　　　│　　└ favicon.ico　　　　　　:アイコン画像ファイル  
-│　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (webページごとにフォルダ化)  
+│　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (ページごとにフォルダ化)  
 │　　│　　　　　└─ application.properties　　:アプリケーション設定  
 │　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
 ├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
