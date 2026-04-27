@@ -1,6 +1,7 @@
 import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
 import {inputReducedImage} from '../common/edit-image.js';
+import {csrfHeaders} from '../common/csrf-headers.js';
 import {topRepaintStart} from '../app/app.js';
 import {editStage, activateEditStage} from './edit-stage.js';
 import {addScroll} from './common-edit.js';
@@ -75,7 +76,7 @@ async function saveButtonAction(){
 	try{
 		await fetch("/api/edit/save/unit", {
 			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
+			headers: csrfHeaders(),
 			body: JSON.stringify({coreNumber, weaponNumber})
 		});
 	}catch (e) {

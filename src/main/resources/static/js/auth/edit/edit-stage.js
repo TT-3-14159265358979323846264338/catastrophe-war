@@ -1,4 +1,5 @@
 import {inputReducedImage} from '../common/edit-image.js';
+import {csrfHeaders} from '../common/csrf-headers.js';
 import {topRepaintStart} from '../app/app.js';
 import {activateEditUnit} from './edit-unit.js';
 import {addScroll} from './common-edit.js';
@@ -82,7 +83,7 @@ async function saveButtonAction(){
 	try{
 		await fetch("/api/edit/save/stage", {
 			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
+			headers: csrfHeaders(),
 			body: JSON.stringify({medal, clear, merit})
 		});
 	}catch (e) {
