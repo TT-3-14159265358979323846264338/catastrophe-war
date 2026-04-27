@@ -1,5 +1,5 @@
 import {inputReducedImage} from '../common/edit-image.js';
-import {csrfHeaders} from '../common/csrf-headers.js';
+import {csrfHeaders} from '../common/csrf.js';
 import {topRepaintStart} from '../app/app.js';
 import {activateEditUnit} from './edit-unit.js';
 import {addScroll} from './common-edit.js';

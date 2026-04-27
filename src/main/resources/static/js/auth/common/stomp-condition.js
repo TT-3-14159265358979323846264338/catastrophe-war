@@ -24,13 +24,13 @@ class StompCondition{
 			if(this.#errorSubscriptions.length !== 0){
 				return;
 			}
-			this.#errorSubscriptions.push(this.#stompClient.subscribe("/user/queue/error/double/login", () => this.login()));
+			this.#errorSubscriptions.push(this.#stompClient.subscribe("/user/queue/error/double/login", () => this.errorLogout()));
 			task();
 		};
 	}
 
-	login(){
-		window.location.href = "/login";
+	errorLogout(){
+		window.location.href = "/error/logout";
 	}
 	
 	stompActivate(){

@@ -1,7 +1,7 @@
 import {canvasCondition} from '../common/canvas-condition.js';
 import {stompCondition} from '../common/stomp-condition.js';
 import {inputReducedImage} from '../common/edit-image.js';
-import {csrfHeaders} from '../common/csrf-headers.js';
+import {csrfHeaders} from '../common/csrf.js';
 import {topRepaintStart} from '../app/app.js';
 import {editStage, activateEditStage} from './edit-stage.js';
 import {addScroll} from './common-edit.js';
