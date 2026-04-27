@@ -1,13 +1,13 @@
-@import "base.css";
-@import "app/app.css";
-@import "gacha/gacha.css";
-@import "gacha/gacha-detail.css";
-@import "gacha/gacha-result.css";
-@import "dispose/dispose.css";
-@import "edit/edit-unit.css";
-@import "edit/edit-stage.css";
-@import "edit/edit-common.css";
-@import "status/status.css";
+@import "./base.css";
+@import "./app/app.css";
+@import "./gacha/gacha.css";
+@import "./gacha/gacha-detail.css";
+@import "./gacha/gacha-result.css";
+@import "./dispose/dispose.css";
+@import "./edit/edit-unit.css";
+@import "./edit/edit-stage.css";
+@import "./edit/edit-common.css";
+@import "./status/status.css";
 
 body {
 	margin: 0;
