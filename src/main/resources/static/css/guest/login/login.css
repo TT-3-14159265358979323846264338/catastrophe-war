@@ -13,6 +13,10 @@ body {
 	align-items: center;
 }
 
+.login-container button{
+	cursor: pointer;
+}
+
 .logout-message{
 	color: blue;
 }
@@ -30,17 +34,23 @@ body {
 	flex-direction: column;
 }
 
-.default-margin{
+.half-margin{
 	margin-bottom: 0.5em;
 }
 
 .account-button-area{
 	display: flex;
 	justify-content: space-between;
-	gap: 5%;
+	gap: 0.5em;
 }
 
 .account-button-area button{
 	white-space: pre;
 	line-height: 1;
+}
+
+*{
+	font-family: "Yu Mincho", "Yu Gothic", sans-serif;
+	font-size: 15px;
+	font-weight: bold;
 }

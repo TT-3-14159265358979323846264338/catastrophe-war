@@ -1,4 +1,4 @@
-import {csrfForm as csrfFormInput} from './common/csrf.js';
+import {csrfFormInput} from './common/csrf.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById("logout").addEventListener('click', logoutAction);
