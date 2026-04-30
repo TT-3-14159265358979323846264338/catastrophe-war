@@ -2,6 +2,7 @@ const userNameInput = document.getElementById("username-input");
 const passwordInput = document.getElementById("password-input");
 
 document.addEventListener('DOMContentLoaded', () => {
+	userAction();
 	document.getElementById("user-login").addEventListener('click', userAction);
 	document.getElementById("admin-login").addEventListener('click', adminAction);
 });
