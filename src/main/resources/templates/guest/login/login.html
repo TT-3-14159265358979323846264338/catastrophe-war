@@ -8,19 +8,26 @@
 	<script th:src="@{/js/guest/login/login.js}" type="module"></script>
 </head>
 <body>
-	<div th:if="${message}">
-		<p th:text="${message}"></p>
+	<div class="login-container">
+		<div th:if="${message}">
+			<p th:text="${message}" class="logout-message"></p>
+		</div>
+		<div th:if="${error}">
+			<p th:text="${error}" class="error-message"></p>
+		</div>
+		<div class="form-container">
+			<form th:action="@{/login}" method="post" class="login-form default-margin">
+				<label>ユーザー名:</label>
+				<input type="text" name="username">
+				<label>パスワード:</label>
+				<input type="password" name="password" class="default-margin">
+				<button type="submit">ログイン</button>
+			</form>
+			<div class="account-button-area">
+				<button id="user-login" type="button">ユーザー<br>アカウント</button>
+				<button id="admin-login" type="button">管理者<br>アカウント</button>
+			</div>
+		</div>
 	</div>
-	<form th:action="@{/login}" method="post">
-		<div>
-			<label>ユーザー名:</label>
-			<input type="text" name="username">
-		</div>
-		<div>
-			<label>パスワード:</label>
-			<input type="password" name="password">
-		</div>
-		<button type="submit">ログイン</button>
-	</form>
 </body>
 </html>
