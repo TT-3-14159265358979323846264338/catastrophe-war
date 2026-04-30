@@ -1,3 +1,46 @@
 body {
-	
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	background-color: white;
+	color: black;	
+}
+
+.login-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.logout-message{
+	color: blue;
+}
+
+.error-message{
+	color: red;
+}
+
+.form-container{
+	align-items: stretch;
+}
+
+.login-form{
+	display: flex;
+	flex-direction: column;
+}
+
+.default-margin{
+	margin-bottom: 0.5em;
+}
+
+.account-button-area{
+	display: flex;
+	justify-content: space-between;
+	gap: 5%;
+}
+
+.account-button-area button{
+	white-space: pre;
+	line-height: 1;
 }
