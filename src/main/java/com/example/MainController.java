@@ -13,9 +13,13 @@ public class MainController {
 	}
 	
 	@GetMapping("/login")
-	String login(@RequestParam(required = false) String logout, Model model) {
+	String login(@RequestParam(required = false) String logout, @RequestParam(required = false) String error, Model model) {
 		if (logout != null) {
 			model.addAttribute("message", "ログアウトしました。");
+		}
+		
+		if(error != null) {
+			model.addAttribute("error", "ユーザー名もしくはパスワードが違います。");
 		}
 		return "guest/login/login";
 	}
