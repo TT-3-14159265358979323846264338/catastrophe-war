@@ -16,11 +16,11 @@
 			<p th:text="${error}" class="error-message"></p>
 		</div>
 		<div class="form-container">
-			<form th:action="@{/login}" method="post" class="login-form default-margin">
+			<form th:action="@{/login}" method="post" class="login-form half-margin">
 				<label>ユーザー名:</label>
-				<input type="text" name="username">
+				<input id="username-input" type="text" name="username">
 				<label>パスワード:</label>
-				<input type="password" name="password" class="default-margin">
+				<input id = "password-input" type="password" name="password" class="half-margin">
 				<button type="submit">ログイン</button>
 			</form>
 			<div class="account-button-area">
