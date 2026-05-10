@@ -49,13 +49,15 @@ spring.jpa.hibernate.ddl-auto=update
 │　　│　　　　　│　　└ favicon.ico　　　　　　:アイコン画像ファイル  
 │　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (ページごとにフォルダ化)  
 │　　│　　　　　└─ application.properties　　:アプリケーション設定  
-│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)
-├─ bat/                                     :Docker用バッチファイル  
-├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
+│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
 ├─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成  
+│  
 ├─ Dockerfile                               :Docker設計ファイル  
 ├─ docker-compose.yml                       :Dockerコンテナ設定ファイル  
-└─ init.sql                                 :MySQL初期化用コード (Dockerのみ自動取り込み)
+├─ init.sql                                 :MySQL初期化用コード (Dockerのみ自動取り込み)  
+├─ bat/                                     :Docker用バッチファイル  
+│  
+└─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)
 ```
   
 **♦工夫♦**  
