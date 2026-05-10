@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @EnableScheduling
+@ConditionalOnProperty(name = "app.auto-shutdown.enabled", havingValue = "true", matchIfMissing = true)
 public class ShutdownController{
 	@Autowired
 	private ConfigurableApplicationContext context;
