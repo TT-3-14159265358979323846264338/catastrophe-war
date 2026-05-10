@@ -19,7 +19,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
   
 **♦MySQL関連設定♦**  
 **権限:** ユーザーの権限はSELECT, INSERT, UPDATE, CREATE, DELET, REFERENCES, INDEX  
-**other/jdbc設定.txt:** session用テーブル作成コード。初回起動前にDB内にテーブルを作成しておくこと。  
+**init.sql:** session用テーブル作成コード。初回起動前にDB内にテーブルを作成しておくこと。Docker時は自動で取り込まれる。  
 **src/main/resouces/application.properties:** このファイルにデータベース情報を記述する。初回のみ次のように変更することで、指定のデータベース内にテーブルを自動作成する。  
 ```properties
 spring.jpa.hibernate.ddl-auto=update
@@ -49,9 +49,13 @@ spring.jpa.hibernate.ddl-auto=update
 │　　│　　　　　│　　└ favicon.ico　　　　　　:アイコン画像ファイル  
 │　　│　　　　　├─ templates/　　　　　　　　 :HTMLソースコード (ページごとにフォルダ化)  
 │　　│　　　　　└─ application.properties　　:アプリケーション設定  
-│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)  
+│　　└─ test/　　　　　　　　　　　　　　　　　:テストコード (今後作成予定)
+├─ bat/                                     :Docker用バッチファイル  
 ├─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)  
-└─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成
+├─ pom.xml　　　　　　　　　　　　　　　　　　 :Mavenの構成  
+├─ Dockerfile                               :Docker設計ファイル  
+├─ docker-compose.yml                       :Dockerコンテナ設定ファイル  
+└─ init.sql                                 :MySQL初期化用コード (Dockerのみ自動取り込み)
 ```
   
 **♦工夫♦**  
