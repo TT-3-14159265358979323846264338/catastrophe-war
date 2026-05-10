@@ -16,7 +16,7 @@ Java Spring boot, JavaScriptを中心に作成したWeb用タワーディフェ�
 **フロントエンド:**　　HTML Living Standard, CSS 3  
 **テスト:**　　　　　　JUnit 5  
 **ビルド:**　　　　　　Maven  
-**起動:**             Docker, ローカル  
+**起動:**　　　　　　　Docker, ローカル  
   
 **♦MySQL関連設定♦**  
 **権限:** ユーザーの権限はSELECT, INSERT, UPDATE, CREATE, DELET, REFERENCES, INDEX  
