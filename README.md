@@ -56,7 +56,7 @@ spring.jpa.hibernate.ddl-auto=update
 ├─ Dockerfile                               :Docker設計ファイル  
 ├─ docker-compose.yml                       :Dockerコンテナ設定ファイル  
 ├─ init.sql                                 :MySQL初期化用コード (Dockerのみ自動取り込み)  
-├─ env.example                              :Docker用データベース情報ファイル (必要事項を記載してね)
+├─ env.example                              :Docker用データベース情報ファイル (必要事項を記載して.envで保存してね)
 ├─ bat/                                     :Docker用バッチファイル
 │  
 └─ other/　　　　　　　　　　　　　　　　　　　:設計メモなど (なくてもゲーム影響なし)
