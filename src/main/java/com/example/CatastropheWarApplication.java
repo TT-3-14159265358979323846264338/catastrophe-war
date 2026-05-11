@@ -1,7 +1,6 @@
 package com.example;
 
 import java.awt.Desktop;
-import java.awt.GraphicsEnvironment;
 import java.net.URI;
 
 import org.springframework.boot.SpringApplication;
@@ -12,15 +11,19 @@ import org.springframework.context.event.EventListener;
 @SpringBootApplication
 public class CatastropheWarApplication {
 	public static void main(String[] args) {
-		if (System.getenv("IS_DOCKER") == null) {
+		if (!isDocker()) {
 			System.setProperty("java.awt.headless", "false");
 		}
 		SpringApplication.run(CatastropheWarApplication.class, args);
 	}
 	
+	static boolean isDocker() {
+		return "true".equals(System.getenv("IS_DOCKER"));
+	}
+	
 	@EventListener(ApplicationReadyEvent.class)
 	void runApplication() {
-		if (GraphicsEnvironment.isHeadless()) {
+		if (isDocker()) {
 			return;
 		}
 		try {
